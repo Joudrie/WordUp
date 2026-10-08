@@ -1,5 +1,7 @@
 import type { LiveView } from '../lib/search.ts'
+import type { WordIndex } from '../lib/data.ts'
 import type { Word } from '../data/types.ts'
+import { useEntries } from '../lib/hooks.ts'
 
 const STARTERS = ['fork', 'bear', 'algorithm', 'beef', 'posh']
 
@@ -26,7 +28,20 @@ function Picker({ entries }: { entries: Word[] }) {
   )
 }
 
-export function Home({ query, onQuery, view }: { query: string; onQuery: (q: string) => void; view: LiveView }) {
+function ExactCard({ word }: { word: string }) {
+  const { entries } = useEntries(word)
+  if (!entries) return <p className="text-[var(--color-muted)]">Loading…</p>
+  if (entries.length > 1) return <Picker entries={entries} />
+  return (
+    <a href={`#/w/${word}`} className="block rounded-xl border border-[var(--color-rule)] bg-[var(--color-card)] p-5 hover:border-[var(--color-brand)]">
+      <span className="headword text-4xl">{word}</span>
+      <p className="mt-2 text-lg">{entries[0].hook}</p>
+      <p className="mt-3 text-sm text-[var(--color-brand)]">Read the story →</p>
+    </a>
+  )
+}
+
+export function Home({ query, onQuery, view }: { index: WordIndex; query: string; onQuery: (q: string) => void; view: LiveView }) {
   return (
     <section>
       <label htmlFor="word" className="sr-only">Type a word</label>
@@ -56,9 +71,7 @@ export function Home({ query, onQuery, view }: { query: string; onQuery: (q: str
         {view.kind === 'guess' && (
           <div>
             <p className="headword text-3xl">{view.letters}</p>
-            <p className="mt-2 italic text-[var(--color-muted)]">
-              No complete word yet, so the best guess leads.
-            </p>
+            <p className="mt-2 italic text-[var(--color-muted)]">No complete word yet, so the best guess leads.</p>
             {view.guess && (
               <p className="mt-4">
                 Best guess: <WordLink word={view.guess} className="font-medium" />
@@ -67,19 +80,7 @@ export function Home({ query, onQuery, view }: { query: string; onQuery: (q: str
           </div>
         )}
 
-        {view.kind === 'exact' && (
-          <div>
-            {view.entries.length > 1 ? (
-              <Picker entries={view.entries} />
-            ) : (
-              <a href={`#/w/${view.entries[0].word}`} className="block rounded-xl border border-[var(--color-rule)] bg-[var(--color-card)] p-5 hover:border-[var(--color-brand)]">
-                <span className="headword text-4xl">{view.entries[0].word}</span>
-                <p className="mt-2 text-lg">{view.entries[0].hook}</p>
-                <p className="mt-3 text-sm text-[var(--color-brand)]">Read the story →</p>
-              </a>
-            )}
-          </div>
-        )}
+        {view.kind === 'exact' && <ExactCard word={view.letters} />}
 
         {(view.kind === 'exact' || view.kind === 'guess') && view.underneath.length > 0 && (
           <div className="mt-6">
@@ -90,7 +91,6 @@ export function Home({ query, onQuery, view }: { query: string; onQuery: (q: str
           </div>
         )}
       </div>
-
     </section>
   )
 }

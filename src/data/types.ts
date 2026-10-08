@@ -44,6 +44,8 @@ export interface Word {
   /** Pattern callout, e.g. the -ology ending. */
   pattern?: { affix: string; text: string }
   lookalikes?: Lookalike[]
+  /** Hook generated from Wiktionary and not yet reviewed by a person. */
+  draft?: boolean
   /** Popular origin that is false or oversimplified. */
   myth?: boolean
   sources: string[]

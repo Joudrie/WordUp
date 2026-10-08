@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run style-check && tsc && vite build",
-    "test": "node --experimental-strip-types --test src/lib/search.test.ts src/lib/families.test.ts src/data/words.test.ts",
+    "test": "node --experimental-strip-types --test src/lib/search.test.ts src/lib/families.test.ts src/data/words.test.ts scripts/lib/words-core.test.mjs",
     "preview": "vite preview",
     "style-check": "node scripts/style-check.mjs"
   },
