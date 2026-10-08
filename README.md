@@ -5,45 +5,49 @@ its first recorded use, and the words it is related to. Working name, see "Open 
 
 Built with the same stack as Global: React 19, Vite, Tailwind v4, prerendered static pages.
 
-## Status: phase 1 ("Look it up")
+## Status
 
-Done in this phase:
+Phase 1 ("Look it up"), in progress.
+
+Done:
 
 - Live search: results change on every keystroke, with no search button.
-- Word pages: hook, family line, first recorded use (or "not checked yet"), relatives,
-  pattern callout, lookalikes that aren't related, sources, confidence label, myth badge.
+- Word pages: hook, family line, first recorded use (or "not checked yet"), relatives, pattern
+  callout, lookalikes, sources, confidence label, myth badge.
 - Homograph picker: a spelling with several unrelated origins shows the picker before any story.
 - Hash routing (`#/w/bear/1`), so the app works on any static host with no server rules.
 - Light and dark color tokens, reduced-motion support, phone-width layout.
+- Data pipeline: `scripts/build-words.mjs` builds about 21,700 entries for the 20,000 most common
+  English headwords from the kaikki.org Wiktionary dumps, with ancestor chains through Latin,
+  Old/Middle English, Old French, Old Norse, Ancient Greek, Arabic and the proto-languages.
+- Data is split into one file per first letter (`public/data/w/`) plus `public/data/index.json`.
 
-Not done yet (from the brief's phase 1 list):
+Not done yet:
 
-- The data pipeline (kaikki.org Wiktionary dump to chains, relatives and homograph splits).
-- The search index split into small files. Today the seed words are bundled directly.
-- Roughly 20,000 words and about 50 hand-written stories. Only 6 seed entries exist.
-- Word of the Day pages.
+- Human review. Every entry is a draft (`draft: true`): the hook is generated from the chain, and
+  the chain comes straight from Wiktionary, so some are wrong. Known examples: *algorithm* goes
+  through Anglo-Norman and never reaches Arabic, and *fork* starts with a stray "la *furcō" stage.
+  The brief requires review of the top ~1,000 most-visited words before shipping.
+- First recorded use. Left empty until verified against dated quotations.
+- About 50 hand-written stories and the rabbit-hole pages.
+- Word of the Day pages and the phase 2 and 3 features.
 - Reddit feedback before public launch.
 
 ## Data
 
-`src/data/words.ts` holds hand-checked seed entries. Each `firstUse` is `null` until it has been
-checked against Wiktionary's dated quotations, and the UI says so rather than inventing a date.
-Every entry lists its sources. Myth entries can never carry the `known` confidence label; the
-tests enforce this.
+Rebuild the data:
 
-Wiktionary text is CC BY-SA. Published data must stay under that license and carry credit. The
-app's code does not. Etymonline and the OED must not be copied or scraped.
+    scripts/fetch-wiktionary.sh data        # about 3 GB of dumps, into ./data (git-ignored)
+    node --max-old-space-size=8192 scripts/build-words.mjs \
+      --dump data/English.jsonl --dump data/Latin.jsonl ... \
+      --freq data/en_50k.txt --count 20000 --out public/data
 
-## Look
+Headwords come from the English dump. Ancestor stages come from the other-language dumps.
+Frequency ranks come from hermitdave/FrequencyWords (2018, en_50k).
 
-- Colors are tokens in `src/index.css`. The brand color (`#0e6b73`) and language-family colors
-  are provisional. Check contrast in both themes before launch.
-- Headwords use Literata (Google Fonts). The brief's type procedure has not been run yet, so this
-  choice is provisional too.
-- `npm run style-check` fails the build on the brief's banned patterns: em dashes in source files, Inter
-  and other default fonts, gradient text, purple-to-blue gradients, `transition: all`, raw scroll
-  listeners, and cream backgrounds. It is a small stand-in for slopscan, which is not on npm
-  under that name.
+Wiktionary text is CC BY-SA 4.0. Everything under `public/data/` is derived from it, so it must
+stay under that license and keep the credit shown in the footer. The app's code is not covered.
+Etymonline and the OED must not be copied or scraped.
 
 ## Open decisions
 

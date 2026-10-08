@@ -1,0 +1,147 @@
+// Pure logic for turning Wiktionary (kaikki.org) entries into WordUp words.
+// No I/O here, so it can be tested with small hand-written fixtures.
+
+// Language code -> family. Anything not listed is "other" and is shown neutral.
+const FAMILY_BY_CODE = {
+  la: 'latin', 'la-eme': 'latin', 'la-lat': 'latin', 'la-new': 'latin', 'la-med': 'latin',
+  fr: 'french', fro: 'french', frm: 'french', xno: 'french', 'fro-nor': 'french', nrf: 'french',
+  ang: 'germanic', enm: 'germanic', 'gmw-pro': 'germanic', 'gem-pro': 'germanic', goh: 'germanic', de: 'germanic', nl: 'germanic',
+  grc: 'greek', el: 'greek', 'gre-pro': 'greek',
+  ar: 'arabic', 'ar-cla': 'arabic',
+  non: 'norse', odn: 'norse', is: 'norse', sv: 'norse', da: 'norse', no: 'norse',
+}
+
+// Templates that point at an ancestor word.
+const ANCESTOR_TEMPLATES = new Set(['inh', 'der', 'bor', 'lbor', 'slb'])
+
+export const MAX_DEPTH = 6
+
+export function familyOf(code) {
+  return FAMILY_BY_CODE[code] ?? 'other'
+}
+
+// Language names for codes whose dump is not loaded, so chains never show a raw code.
+const LANGUAGE_NAMES = {
+  'itc-pro': 'Proto-Italic', 'gem-pro': 'Proto-Germanic', 'gmw-pro': 'Proto-Germanic', 'ine-pro': 'Proto-Indo-European',
+  'la-new': 'New Latin', 'la-lat': 'Latin', 'la-eme': 'Early Medieval Latin', 'la-med': 'Medieval Latin',
+  xno: 'Anglo-Norman', 'fro-nor': 'Old Norman', 'gre-pro': 'Proto-Hellenic', 'ar-cla': 'Classical Arabic',
+}
+
+export function languageNameFallback(code) {
+  return LANGUAGE_NAMES[code] ?? code
+}
+
+// Lookup key for a term. Diacritics and the reconstruction asterisk are ignored, because
+// English templates and the ancestor entries do not always spell a proto-form the same way.
+export function normalizeTerm(term) {
+  return term.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\*/g, '').trim()
+}
+
+export function keyOf(langCode, term) {
+  return `${langCode}:${normalizeTerm(term)}`
+}
+
+export function isReconstructed(term) {
+  return term.startsWith('*')
+}
+
+export function cleanTerm(term) {
+  return term.replace(/^\*/, '').trim()
+}
+
+// Senses that only point at another spelling or an inflection. Shown as a picker
+// option they add noise, so they are dropped when a real sense exists.
+const FORM_ONLY = /^(alternative (form|spelling)|misspelling|obsolete (form|spelling)|archaic (form|spelling)|dated (form|spelling)|plural of|inflection of|(simple )?past (tense|participle) of|present participle of|third-person singular|abbreviation of|initialism of|synonym of)/i
+
+export function isFormOnly(section) {
+  const gloss = section.senses?.[0]?.glosses?.[0] ?? ''
+  return FORM_ONLY.test(gloss.trim())
+}
+
+/** First ancestor link in a section: { lang, term, gloss } or null. */
+export function ancestorOf(templates = []) {
+  for (const t of templates) {
+    if (!ANCESTOR_TEMPLATES.has(t.name)) continue
+    const lang = t.args?.['2']
+    const term = t.args?.['3']
+    if (!lang || !term || lang === 'en') continue
+    return { lang, term, gloss: t.args?.t || t.args?.gloss || null }
+  }
+  return null
+}
+
+/** Confidence from the etymology text, using Wiktionary's own hedges. */
+export function confidenceOf(etymologyText = '', hasChain) {
+  const text = etymologyText.toLowerCase()
+  if (!hasChain || /origin (is )?unknown|unknown origin/.test(text)) return 'unknown'
+  if (/uncertain|possibly|probably|perhaps|disputed/.test(text)) return 'likely'
+  return 'known'
+}
+
+/**
+ * Walks the ancestor links from an English section up to MAX_DEPTH.
+ * `lookup(key)` returns a compact non-English record { lang, gloss, ancestor }.
+ * Returns stages earliest-first, ending with the English form itself.
+ */
+export function resolveChain(word, firstAncestor, lookup) {
+  const stages = []
+  const seen = new Set()
+  let link = firstAncestor
+  while (link && stages.length < MAX_DEPTH) {
+    const key = keyOf(link.lang, link.term)
+    if (seen.has(key)) break
+    seen.add(key)
+    const record = lookup(key)
+    stages.unshift({
+      code: link.lang,
+      term: link.term,
+      language: record?.lang ?? languageNameFallback(link.lang),
+      gloss: link.gloss ?? record?.gloss ?? undefined,
+    })
+    link = record?.ancestor ?? null
+  }
+  return stages.map((s) => {
+    const reconstructed = isReconstructed(s.term)
+    return {
+      family: familyOf(s.code),
+      language: s.language,
+      form: cleanTerm(s.term),
+      ...(s.gloss ? { gloss: s.gloss } : {}),
+      ...(reconstructed ? { reconstructed: true } : {}),
+    }
+  }).concat([{ family: 'other', language: 'Modern English', form: word }])
+}
+
+// "alternative form of forca (found in compounds)" -> forca, in the same language.
+const ALT_FORM = /^alternative (?:form|spelling) of ([^\s(]+)/i
+
+/** Keeps the compact fields we need from one raw kaikki record. */
+export function compactRecord(raw) {
+  const gloss = raw.senses?.[0]?.glosses?.[0] ?? ''
+  const alt = ALT_FORM.exec(gloss.trim())
+  const ancestor = ancestorOf(raw.etymology_templates)
+    ?? (alt ? { lang: raw.lang_code, term: alt[1], gloss: null } : null)
+  return {
+    lang: raw.lang,
+    gloss: gloss && !ALT_FORM.test(gloss.trim()) ? gloss.slice(0, 120) : undefined,
+    ancestor,
+  }
+}
+
+/** Shard file name for a headword: first letter, or "other". */
+export function shardOf(word) {
+  const c = word[0]
+  return /[a-z]/.test(c) ? c : 'other'
+}
+
+export function sourceLinks(word) {
+  return [`Wiktionary: ${word} (https://en.wiktionary.org/wiki/${encodeURIComponent(word)})`]
+}
+
+/** A short, sourced sentence used as the hook until a human writes one. */
+export function draftHook(stages) {
+  const origin = stages[0]
+  if (stages.length === 1) return 'Wiktionary gives no earlier form for this sense.'
+  const gloss = origin.gloss ? `, meaning "${origin.gloss}"` : ''
+  return `From ${origin.language} ${origin.reconstructed ? '*' : ''}${origin.form}${gloss}.`
+}

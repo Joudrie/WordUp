@@ -1,0 +1,566 @@
+[
+  {
+    "word": "fork",
+    "sense": "eating and serving tool",
+    "hook": "English got 'fork' from a Latin word for a pitchfork, but the Old English form first meant a forked instrument of torture.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "furca",
+        "gloss": "pitchfork, forked stake"
+      },
+      {
+        "family": "germanic",
+        "language": "Proto-West Germanic",
+        "form": "furkō",
+        "reconstructed": true,
+        "gloss": "fork"
+      },
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "forca",
+        "gloss": "forked instrument used to torture"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "forke",
+        "gloss": "digging fork"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "fork"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "bifurcate",
+        "note": "two-pronged, from the same Latin root"
+      }
+    ],
+    "sources": [
+      "Wiktionary: fork",
+      "Wiktionary: furca"
+    ]
+  },
+  {
+    "word": "bifurcate",
+    "sense": "to divide into two branches",
+    "hook": "Two-pronged in Latin: 'bi-' for two and 'furca' for a pitchfork.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "furca",
+        "gloss": "pitchfork, forked stake"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "bifurcus",
+        "gloss": "two-pronged"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "bifurcate"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "fork",
+        "note": "the English descendant of the same root"
+      }
+    ],
+    "sources": [
+      "Wiktionary: bifurcate",
+      "Wiktionary: furca"
+    ]
+  },
+  {
+    "word": "bear",
+    "sense": "the animal",
+    "hook": "English stopped saying the old word for bear, probably because people were afraid to say it.",
+    "chain": [
+      {
+        "family": "germanic",
+        "language": "Proto-Germanic",
+        "form": "berô",
+        "reconstructed": true,
+        "gloss": "probably 'the brown one'"
+      },
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "bera"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "bere"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "bear"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "arctic",
+        "note": "from Greek arktos, 'the Bear'"
+      }
+    ],
+    "sources": [
+      "Wiktionary: bear (noun)"
+    ]
+  },
+  {
+    "word": "bear",
+    "sense": "to carry",
+    "hook": "The same root gave English 'burden', 'transfer' and 'metaphor'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Proto-Indo-European",
+        "form": "bʰer-",
+        "reconstructed": true,
+        "gloss": "to carry"
+      },
+      {
+        "family": "germanic",
+        "language": "Proto-Germanic",
+        "form": "beran",
+        "reconstructed": true,
+        "gloss": "to carry"
+      },
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "beran",
+        "gloss": "to carry, bear, hold"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "bear"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "burden",
+        "note": "from the same root"
+      },
+      {
+        "word": "transfer",
+        "note": "from Latin ferre"
+      },
+      {
+        "word": "metaphor",
+        "note": "from Greek pherein"
+      }
+    ],
+    "sources": [
+      "Wiktionary: bear (verb)",
+      "Wiktionary: bʰer-"
+    ]
+  },
+  {
+    "word": "beef",
+    "sense": "meat from cattle",
+    "hook": "After 1066, the animal kept its English name while the meat got a French one.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "bōs",
+        "gloss": "ox"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "boeuf",
+        "gloss": "ox, cow"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "bef",
+        "gloss": "the meat of a cow or ox"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "beef"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "pork",
+        "note": "from Old French porc"
+      },
+      {
+        "word": "mutton",
+        "note": "from Old French mouton"
+      }
+    ],
+    "sources": [
+      "Wiktionary: beef",
+      "Wiktionary: boeuf"
+    ]
+  },
+  {
+    "word": "algorithm",
+    "sense": "a step-by-step procedure",
+    "hook": "Named after a ninth-century Persian mathematician, al-Khwarizmi.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "al-Khwārizmī",
+        "gloss": "the man from Khwarazm"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "algorismus",
+        "gloss": "the system of Arabic numerals"
+      },
+      {
+        "family": "latin",
+        "language": "Middle English",
+        "form": "algorisme"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "algorithm"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "algebra",
+        "note": "also from Arabic al-"
+      },
+      {
+        "word": "alcohol",
+        "note": "also from Arabic al-"
+      }
+    ],
+    "pattern": {
+      "affix": "al-",
+      "text": "Words starting with al- such as algebra, alcohol and algorithm came through Arabic."
+    },
+    "sources": [
+      "Wiktionary: algorithm"
+    ]
+  },
+  {
+    "word": "algebra",
+    "sense": "the branch of maths using symbols",
+    "hook": "Its name comes from one Arabic word in a ninth-century book title, al-jabr, 'the reunion of broken parts'.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "al-jabr",
+        "gloss": "the reunion of broken parts"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "algebra"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "algebra"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "algorithm",
+        "note": "also from Arabic al-"
+      },
+      {
+        "word": "alcohol",
+        "note": "also from Arabic al-"
+      }
+    ],
+    "pattern": {
+      "affix": "al-",
+      "text": "Words starting with al- such as algebra, alcohol and algorithm came through Arabic."
+    },
+    "sources": [
+      "Wiktionary: algebra"
+    ]
+  },
+  {
+    "word": "alcohol",
+    "sense": "the intoxicating spirit",
+    "hook": "It first meant a fine powder of antimony used as eyeliner, before it meant the spirit in a glass.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "al-kuḥl",
+        "gloss": "powdered antimony, kohl"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "alcohol",
+        "gloss": "fine powder"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "alcohol"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "algebra",
+        "note": "also from Arabic al-"
+      },
+      {
+        "word": "algorithm",
+        "note": "also from Arabic al-"
+      }
+    ],
+    "pattern": {
+      "affix": "al-",
+      "text": "Words starting with al- such as algebra, alcohol and algorithm came through Arabic."
+    },
+    "sources": [
+      "Wiktionary: alcohol"
+    ]
+  },
+  {
+    "word": "salary",
+    "sense": "a fixed regular wage",
+    "hook": "It probably began as a Roman allowance for buying salt, from Latin sal.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "salārium",
+        "gloss": "salt money, allowance"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "salarie"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "salarie"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "salary"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: salary",
+      "Wiktionary: salārium"
+    ]
+  },
+  {
+    "word": "hazard",
+    "sense": "a risk, or an old dice game",
+    "hook": "From the Arabic for 'the die', the dice game where you could lose everything.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "az-zahr",
+        "gloss": "the die"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "azar",
+        "gloss": "a game of dice"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "hasart",
+        "gloss": "a dice game"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "hasard",
+        "gloss": "a dice game"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "hazard"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: hazard",
+      "Wiktionary: azar"
+    ]
+  },
+  {
+    "word": "zenith",
+    "sense": "the highest point",
+    "hook": "From an Arabic phrase, 'the path over the head', shortened to one word on its way into Latin.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "samt ar-raʾs",
+        "gloss": "the path over the head"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "cenit"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "zenith"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "nadir",
+        "note": "the opposite point, also from Arabic"
+      }
+    ],
+    "sources": [
+      "Wiktionary: zenith"
+    ]
+  },
+  {
+    "word": "muscle",
+    "sense": "tissue that moves a body part",
+    "hook": "Latin for 'little mouse', probably for the shape of a flexing muscle.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "musculus",
+        "gloss": "little mouse"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "muscle"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "muscle"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: muscle",
+      "Wiktionary: musculus"
+    ]
+  },
+  {
+    "word": "posh",
+    "sense": "upper-class, stylish",
+    "hook": "The popular story 'port out, starboard home' is a myth. Nobody has settled where the word came from.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "posh",
+        "gloss": "origin unknown"
+      }
+    ],
+    "confidence": "unknown",
+    "firstUse": null,
+    "relatives": [],
+    "myth": true,
+    "sources": [
+      "Wiktionary: posh"
+    ]
+  },
+  {
+    "word": "river",
+    "sense": "a large natural stream",
+    "hook": "Its Latin ancestor meant the bank of a river, not the river itself.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "ripa",
+        "gloss": "river bank"
+      },
+      {
+        "family": "latin",
+        "language": "Early Medieval Latin",
+        "form": "rīpāria",
+        "gloss": "riverbank"
+      },
+      {
+        "family": "french",
+        "language": "Anglo-Norman",
+        "form": "riviere"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "ryver"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "river"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "riviera",
+        "note": "a doublet from the same French word"
+      }
+    ],
+    "sources": [
+      "Wiktionary: river",
+      "Wiktionary: rīpāria"
+    ]
+  }
+]

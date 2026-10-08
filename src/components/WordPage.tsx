@@ -1,5 +1,6 @@
-import { index } from '../lib/wordIndex.ts'
 import type { Confidence, Word } from '../data/types.ts'
+import type { WordIndex } from '../lib/data.ts'
+import { useEntries } from '../lib/hooks.ts'
 import { FamilyLine } from './FamilyLine.tsx'
 
 const CONFIDENCE_TEXT: Record<Confidence, string> = {
@@ -26,10 +27,14 @@ function Picker({ word, entries }: { word: string; entries: Word[] }) {
   )
 }
 
-export function WordPage({ word, sense }: { word: string; sense: number | null }) {
-  const entries = index.byWord.get(word)
+export function WordPage({ index, word, sense }: { index: WordIndex; word: string; sense: number | null }) {
+  const { entries } = useEntries(word)
 
-  if (!entries) {
+  if (entries === null) {
+    return <p className="text-[var(--color-muted)]">Loading…</p>
+  }
+
+  if (entries.length === 0) {
     return (
       <section>
         <h1 className="headword text-4xl">{word}</h1>
@@ -78,7 +83,12 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
         </div>
       </header>
 
-      <p className="text-xl leading-relaxed">{entry.hook}</p>
+      <div>
+        <p className="text-xl leading-relaxed">{entry.hook}</p>
+        {entry.draft && (
+          <p className="mt-2 text-sm text-[var(--color-muted)]">Drafted from Wiktionary; not yet checked by a person.</p>
+        )}
+      </div>
 
       <section aria-labelledby="family-line">
         <h2 id="family-line" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">The family line</h2>
@@ -115,7 +125,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
           <ul className="mt-3 flex flex-wrap gap-2">
             {entry.relatives.map((r) => (
               <li key={r.word}>
-                {index.byWord.has(r.word) ? (
+                {index.set.has(r.word) ? (
                   <a href={`#/w/${r.word}`} className="inline-block rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">{r.word}</a>
                 ) : (
                   <span className="inline-block rounded-full border border-[var(--color-rule)] px-3 py-1">{r.word}</span>
