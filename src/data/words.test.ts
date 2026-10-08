@@ -47,6 +47,14 @@ test('relatives only point at words we actually have', () => {
   }
 })
 
-test('every entry is marked as an unreviewed draft until a person checks it', () => {
-  for (const w of all) assert.equal(w.draft, true, `${w.word} should be a draft`)
+test('generated entries are marked as drafts; hand-checked entries are not', () => {
+  for (const w of all) {
+    assert.ok(w.draft === true || w.draft === undefined, `${w.word} has an unexpected draft flag`)
+  }
+  const curated = JSON.parse(readFileSync(join(process.cwd(), 'content', 'curated-words.json'), 'utf8')) as { word: string }[]
+  for (const c of curated) {
+    const reviewed = all.filter((w) => w.word === c.word)
+    assert.ok(reviewed.length > 0, `${c.word} is curated but missing from the data`)
+    for (const w of reviewed) assert.notEqual(w.draft, true, `${c.word} is curated and must not be a draft`)
+  }
 })

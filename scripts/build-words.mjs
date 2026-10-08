@@ -74,7 +74,7 @@ console.log(`lines: ${lines}, English targets found: ${englishSections.size}, an
 // 3. Group sections into Word entries. Homographs are separate etymology sections.
 const lookup = (key) => ancestors.get(key)
 const parentIndex = new Map() // immediate ancestor key -> headwords that share it
-const built = []
+let built = []
 
 for (const [word, sections] of englishSections) {
   // Drop form-only senses when a real sense exists for the same spelling.
@@ -115,6 +115,16 @@ for (const [word, sections] of englishSections) {
   }
 }
 
+// 3b. Hand-checked entries (content/curated-words.json) replace the generated drafts
+//     for the same headword. They are not marked as drafts.
+const curated = JSON.parse(readFileSync('content/curated-words.json', 'utf8'))
+const curatedWords = new Set(curated.map((w) => w.word))
+built = [
+  ...built.filter((w) => !curatedWords.has(w.word)),
+  ...curated.map((w) => ({ ...w, draft: undefined, _parent: null })),
+]
+console.log(`curated entries applied: ${curated.length}`)
+
 // 4. Relatives: other headwords in the set that share the same immediate ancestor.
 for (const w of built) {
   if (w._parent) {
@@ -123,6 +133,10 @@ for (const w of built) {
   }
   delete w._parent
 }
+
+// 4b. Relatives must point at words we publish. Drop the rest.
+const present = new Set(built.map((w) => w.word))
+for (const w of built) w.relatives = w.relatives.filter((r) => present.has(r.word))
 
 // 5. Write shards and the index.
 const byShard = new Map()
