@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/* Colour tokens. Light is the default; dark follows the system setting.
+   Neutrals are tinted slightly toward the brand hue (see README, "Look"). */
+:root {
+  --color-page: #f5f7f9;
+  --color-ink: #1b2230;
+  --color-muted: #5b6577;
+  --color-rule: #d9dee6;
+  --color-brand: #0e6b73;
+  --color-brand-ink: #ffffff;
+  --color-card: #ffffff;
+
+  --color-latin: #b4450f;
+  --color-french: #6d3fc4;
+  --color-germanic: #1f7a3a;
+  --color-greek: #1d5fc0;
+  --color-arabic: #8a5a00;
+  --color-norse: #0b6e86;
+  --color-neutral: #5b6577;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-page: #12161d;
+    --color-ink: #e8ecf2;
+    --color-muted: #9aa5b8;
+    --color-rule: #2c3442;
+    --color-brand: #5fc4cc;
+    --color-brand-ink: #0b1116;
+    --color-card: #1a202b;
+
+    --color-latin: #f08a5d;
+    --color-french: #b899ff;
+    --color-germanic: #6fd08c;
+    --color-greek: #7fb0ff;
+    --color-arabic: #e6b85c;
+    --color-norse: #6fd0e6;
+    --color-neutral: #9aa5b8;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-page: #12161d;
+  --color-ink: #e8ecf2;
+  --color-muted: #9aa5b8;
+  --color-rule: #2c3442;
+  --color-brand: #5fc4cc;
+  --color-brand-ink: #0b1116;
+  --color-card: #1a202b;
+
+  --color-latin: #f08a5d;
+  --color-french: #b899ff;
+  --color-germanic: #6fd08c;
+  --color-greek: #7fb0ff;
+  --color-arabic: #e6b85c;
+  --color-norse: #6fd0e6;
+  --color-neutral: #9aa5b8;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.headword {
+  font-family: Literata, Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "wght" 600;
+}
+
+/* Only position and opacity move. Respect the reduce-motion setting. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
