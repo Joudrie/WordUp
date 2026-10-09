@@ -20,7 +20,7 @@ test('familyOf maps known codes and falls back to other', () => {
 
 test('ancestorOf takes the first inherited or borrowed link, skipping English', () => {
   const link = ancestorOf([
-    { name: 'ety', args: { 2: ':inh', 3: 'enm:x' } },
+    { name: 'ety', args: { 2: ':af', 3: 're-', 4: 'write' } },
     { name: 'inh', args: { 1: 'en', 2: 'enm', 3: 'ryver' } },
   ])
   assert.deepEqual(link, { lang: 'enm', term: 'ryver', gloss: null })
@@ -160,4 +160,40 @@ test('nameFromExpansion keeps clean language names and rejects noise', () => {
   assert.equal(nameFromExpansion('Anglo-Norman noun, non,', 'x'), null)
   assert.equal(nameFromExpansion('Old Dutch *klokka', '*klokka'), 'Old Dutch')
   assert.equal(nameFromExpansion('', 'x'), null)
+})
+
+import { cleanGloss, isLatinScript, keyOf } from './words-core.mjs'
+
+test('cleanGloss keeps the first plain phrase', () => {
+  assert.equal(cleanGloss('To write (draw letters on paper to form words); note the following common specialised senses'), 'to write')
+  assert.equal(cleanGloss('destruction; ruin'), 'destruction')
+  assert.equal(cleanGloss('alternative form of forca'), undefined)
+  assert.equal(cleanGloss('Rome'), 'Rome')
+  assert.ok(cleanGloss('a'.repeat(30) + ' ' + 'b'.repeat(40)).endsWith('…'))
+})
+
+test('a non-Latin form is shown romanized, with the original kept', () => {
+  assert.equal(isLatinScript('philosophíā'), true)
+  assert.equal(isLatinScript('φιλοσοφία'), false)
+  assert.equal(isLatinScript('ʔăḇaddōn'), true)
+  const records = new Map([[keyOf('grc', 'φιλοσοφία'), { lang: 'Ancient Greek', roman: 'philosophíā', gloss: 'love of wisdom', ancestor: null }]])
+  const chain = resolveChain('philosophy', { lang: 'grc', term: 'φιλοσοφία', gloss: null }, (k) => records.get(k))
+  assert.equal(chain[0].form, 'philosophíā')
+  assert.equal(chain[0].native, 'φιλοσοφία')
+  assert.equal(chain[0].gloss, 'love of wisdom')
+})
+
+import { parseTreeArg } from './words-core.mjs'
+
+test('tree-style ety templates give an ancestor link', () => {
+  const link = ancestorOf([{ name: 'ety', args: { 1: 'en', 2: ':lbor', 3: 'hbo:הַלְּלוּיָהּ', tree: '1' } }])
+  assert.equal(link.lang, 'hbo')
+  assert.equal(link.term, 'הַלְּלוּיָהּ')
+  assert.deepEqual(parseTreeArg('fr:kiosque<t:pavilion>'), { lang: 'fr', term: 'kiosque', gloss: 'pavilion' })
+  assert.equal(parseTreeArg('nonsense'), null)
+  assert.equal(ancestorOf([{ name: 'bor+', args: { 1: 'en', 2: 'sw', 3: 'safari' } }]).lang, 'sw')
+})
+
+test('confix parts read as prefix + suffix', () => {
+  assert.deepEqual(partsOf([{ name: 'confix', args: { 1: 'en', 2: 'bio', 3: 'logy' } }]).map((p) => p.form), ['bio-', '-logy'])
 })

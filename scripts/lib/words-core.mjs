@@ -12,7 +12,24 @@ const FAMILY_BY_CODE = {
 }
 
 // Templates that point at an ancestor word.
-const ANCESTOR_TEMPLATES = new Set(['inh', 'der', 'bor', 'lbor', 'slb'])
+const ANCESTOR_TEMPLATES = new Set(['inh', 'der', 'bor', 'lbor', 'slb', 'inh+', 'der+', 'bor+', 'lbor+', 'uder', 'ubor'])
+
+// The tree-style templates write the link as one argument: {{ety|en|:lbor|hbo:הַלְּלוּיָהּ}},
+// sometimes with inline modifiers: fr:kiosque<t:pavilion><tr:...>.
+const TREE_TEMPLATES = new Set(['ety', 'etymon'])
+const TREE_LINK = /^:(inh|der|bor|lbor|slb|uder|ubor|inh\+|der\+|bor\+|lbor\+)$/
+
+export function parseTreeArg(arg) {
+  const m = /^([a-z]{2,3}(?:-[a-z]+)*):(.+)$/.exec(String(arg ?? '').trim())
+  if (!m) return null
+  const mods = {}
+  const term = m[2].replace(/<(\w+):([^>]*)>/g, (_, k, v) => {
+    mods[k] = v
+    return ''
+  }).trim()
+  if (!term) return null
+  return { lang: m[1], term, gloss: mods.t || mods.gloss || null, ...(mods.tr ? { tr: mods.tr } : {}) }
+}
 
 export const MAX_DEPTH = 6
 
@@ -75,14 +92,41 @@ export function isFormOnly(section) {
   return FORM_ONLY.test(gloss.trim())
 }
 
-/** First ancestor link in a section: { lang, term, gloss } or null. */
+// Wiktionary glosses are written for dictionary pages. In a family line we want the
+// first plain phrase: "To write (draw letters on paper to form words); note the
+// following common specialised senses" -> "to write".
+export function cleanGloss(gloss) {
+  if (!gloss) return undefined
+  let g = String(gloss)
+  for (let i = 0; i < 3; i++) g = g.replace(/\([^()]*\)/g, '') // nested parentheses
+  g = g.split(/[;:]|\.\s/)[0].replace(/\s+/g, ' ').replace(/[\s.,]+$/, '').trim()
+  if (!g || /^(alternative|obsolete|archaic|plural|inflection|misspelling) (form|spelling|of)/i.test(g)) return undefined
+  if (g.length > 60) g = `${g.slice(0, 60).replace(/\s+\S*$/, '')}…`
+  // Lower-case a sentence-style capital ("To write"), but keep names ("Christ", "Rome").
+  if (/^[A-Z][a-z]+\s/.test(g) && /^(A|An|The|To|Of|Any|One|Something|Someone|Being|Having|In|Of)\s/.test(g)) g = g[0].toLowerCase() + g.slice(1)
+  return g
+}
+
+// Latin script, including the accents and marks used in romanizations (ā, ḥ, ʿ, ʔ).
+const LATIN_SCRIPT = /^[\p{Script=Latin}\p{M}\s'’ʼʾʿʔ*.\-]+$/u
+
+export function isLatinScript(term) {
+  return LATIN_SCRIPT.test(term)
+}
+
+/** First ancestor link in a section: { lang, term, gloss, tr } or null. */
 export function ancestorOf(templates = []) {
   for (const t of templates) {
+    if (TREE_TEMPLATES.has(t.name) && TREE_LINK.test(t.args?.['2'] ?? '')) {
+      const link = parseTreeArg(t.args?.['3'])
+      if (link && link.lang !== 'en') return link
+      continue
+    }
     if (!ANCESTOR_TEMPLATES.has(t.name)) continue
     const lang = t.args?.['2']
     const term = t.args?.['3']
     if (!lang || !term || lang === 'en') continue
-    return { lang, term, gloss: t.args?.t || t.args?.gloss || null }
+    return { lang, term, gloss: t.args?.t || t.args?.gloss || null, ...(t.args?.tr ? { tr: t.args.tr } : {}) }
   }
   return null
 }
@@ -112,17 +156,20 @@ export function resolveChain(word, firstAncestor, lookup) {
     stages.unshift({
       code: link.lang,
       term: link.term,
+      roman: link.tr ?? record?.roman,
       language: record?.lang ?? languageNameFallback(link.lang),
-      gloss: link.gloss ?? record?.gloss ?? undefined,
+      gloss: cleanGloss(link.gloss) ?? cleanGloss(record?.gloss),
     })
     link = record?.ancestor ?? null
   }
   return stages.map((s) => {
     const reconstructed = isReconstructed(s.term)
+    const romanize = !isLatinScript(s.term) && s.roman
     return {
       family: familyOf(s.code),
       language: s.language,
-      form: cleanTerm(s.term),
+      form: romanize ? cleanTerm(s.roman) : cleanTerm(s.term),
+      ...(romanize ? { native: cleanTerm(s.term) } : {}),
       ...(s.gloss ? { gloss: s.gloss } : {}),
       ...(reconstructed ? { reconstructed: true } : {}),
     }
@@ -138,10 +185,12 @@ export function compactRecord(raw) {
   const alt = ALT_FORM.exec(gloss.trim())
   const ancestor = ancestorOf(raw.etymology_templates)
     ?? (alt ? { lang: raw.lang_code, term: alt[1], gloss: null } : null)
+  const roman = (raw.forms ?? []).find((f) => f.tags?.includes('romanization'))?.form
   return {
     lang: raw.lang,
     gloss: gloss && !ALT_FORM.test(gloss.trim()) ? gloss.slice(0, 120) : undefined,
     ancestor,
+    ...(roman ? { roman } : {}),
   }
 }
 
@@ -196,7 +245,7 @@ export function draftHook(stages) {
 // Templates that say how an English word was built from parts.
 // prefix|en|un|happy, suffix|en|teach|er, af|en|re-|write, compound|en|black|bird,
 // and the tree form ety|en|:af|happy|-ness.
-const PART_TEMPLATES = new Set(['af', 'affix', 'prefix', 'pre', 'suffix', 'suf', 'compound', 'com'])
+const PART_TEMPLATES = new Set(['af', 'affix', 'prefix', 'pre', 'suffix', 'suf', 'compound', 'com', 'surf', 'blend', 'confix', 'con'])
 
 function numberedArgs(args, from) {
   const out = []
@@ -212,7 +261,7 @@ export function partsOf(templates = []) {
   for (const t of templates) {
     const args = t.args ?? {}
     let forms = null
-    if (t.name === 'ety' && /^:(af|affix|compound|com)$/.test(args['2'] ?? '')) forms = numberedArgs(args, 3)
+    if (TREE_TEMPLATES.has(t.name) && /^:(af|affix|compound|com|surf|blend|confix)$/.test(args['2'] ?? '')) forms = numberedArgs(args, 3)
     else if (!PART_TEMPLATES.has(t.name) || args['1'] !== 'en') continue
     else if (t.name === 'prefix' || t.name === 'pre') {
       const [prefix, ...rest] = numberedArgs(args, 2)
@@ -220,6 +269,12 @@ export function partsOf(templates = []) {
     } else if (t.name === 'suffix' || t.name === 'suf') {
       const [base, ...suffixes] = numberedArgs(args, 2)
       forms = base ? [base, ...suffixes.map((s) => `-${s.replace(/^-/, '')}`)] : null
+    } else if (t.name === 'confix' || t.name === 'con') {
+      // {{confix|en|bio|logy}}: first part is a prefix, last a suffix, anything between a base.
+      const all = numberedArgs(args, 2)
+      forms = all.length >= 2
+        ? all.map((f, i) => (i === 0 && !f.endsWith('-') ? `${f}-` : i === all.length - 1 && !f.startsWith('-') ? `-${f}` : f))
+        : null
     } else forms = numberedArgs(args, 2)
     if (!forms || forms.length < 2) continue
     return forms.map((form) => ({ form, affix: form.startsWith('-') || form.endsWith('-') }))

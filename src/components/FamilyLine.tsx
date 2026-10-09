@@ -26,6 +26,11 @@ export function FamilyLine({ chain }: { chain: ChainStep[] }) {
               {step.reconstructed ? '*' : ''}
               {step.form}
             </div>
+            {step.native && (
+              <div lang="und" className="text-sm" style={{ color }}>
+                {step.native}
+              </div>
+            )}
             <div className="text-sm text-[var(--color-muted)]">
               {step.language}
               {step.gloss ? `, ${step.gloss}` : ''}

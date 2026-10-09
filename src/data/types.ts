@@ -13,6 +13,8 @@ export interface ChainStep {
   /** The form in that language, e.g. "forca". */
   form: string
   gloss?: string
+  /** The original spelling when `form` is a romanization (φιλοσοφία for philosophíā). */
+  native?: string
   /** Reconstructed forms are marked with an asterisk and explained once. */
   reconstructed?: boolean
 }
