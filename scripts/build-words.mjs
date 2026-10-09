@@ -17,8 +17,8 @@ import { createReadStream, readFileSync, mkdirSync, rmSync, writeFileSync } from
 import { createInterface } from 'node:readline'
 import { parseArgs } from 'node:util'
 import {
-  ancestorOf, compactRecord, confidenceOf, draftHook, earliestQuote, isFormOnly, keyOf,
-  letterOf, resolveChain, shardOf,
+  ancestorOf, baseOf, compactRecord, confidenceOf, draftHook, earliestQuote, isFormOnly, keyOf,
+  letterOf, partsHook, partsOf, resolveChain, shardOf,
 } from './lib/words-core.mjs'
 
 const { values } = parseArgs({
@@ -72,6 +72,7 @@ for (const file of values.dump) {
         gloss,
         formOnly: isFormOnly(raw),
         ancestor: ancestorOf(raw.etymology_templates),
+        parts: partsOf(raw.etymology_templates),
         hedge: confidenceOf(raw.etymology_text, true),
         quote: earliestQuote(raw),
       })
@@ -134,6 +135,7 @@ for (const [word, sections] of sectionsByWord) {
       relatives: [],
       sources: ['Wiktionary'],
       _parent: parent,
+      _parts: first.parts,
     })
   }
 }
@@ -155,6 +157,50 @@ built = [
   })),
 ]
 console.log(`curated entries applied: ${curated.length}`)
+
+// 3c. Words built from parts (un- + happy, sun + flower). Show the parts, and when the
+//     word's own history is shorter than its base's, borrow the base's family line:
+//     unhappy -> happy -> Middle English happy -> Old Norse happ.
+const firstEntry = new Map()
+for (const w of built) if (!firstEntry.has(w.word)) firstEntry.set(w.word, w)
+let borrowed = 0
+function chainOf(entry, depth = 0) {
+  if (!entry._parts || entry._done) return entry.chain
+  entry._done = true // set before recursing, so a cycle stops here
+  const base = baseOf(entry._parts)
+  const baseEntry = base && base !== entry.word ? firstEntry.get(base) : null
+  if (baseEntry && depth < 6) {
+    const baseChain = chainOf(baseEntry, depth + 1)
+    entry._baseChain = baseChain
+    if (baseChain.length > 1 && baseChain.length + 1 > entry.chain.length) {
+      entry.chain = [...baseChain, { family: 'other', language: 'Modern English', form: entry.word }]
+      entry.confidence = baseEntry.confidence
+      borrowed++
+    }
+  }
+  return entry.chain
+}
+let withParts = 0
+for (const w of built) {
+  if (!w._parts) continue
+  withParts++
+  chainOf(w)
+  w.parts = w._parts.map((p) => ({
+    form: p.form,
+    ...(p.affix ? { affix: true } : {}),
+    ...(!p.affix && p.form !== w.word && firstEntry.has(p.form) ? { link: true } : {}),
+  }))
+  if (w.draft) {
+    w.hook = partsHook(w._parts, w._baseChain ?? null)
+    if (w.confidence === 'unknown') w.confidence = 'known' // the parts themselves are not in doubt
+  }
+}
+for (const w of built) {
+  delete w._parts
+  delete w._done
+  delete w._baseChain
+}
+console.log(`words built from parts: ${withParts} (${borrowed} borrowed a base's family line)`)
 
 // 4. Relatives: other headwords that share the same immediate ancestor, then keep
 //    only links to words we publish.
@@ -207,6 +253,6 @@ writeFileSync(
   }),
 )
 
-const withChain = built.filter((w) => w.chain.length > 1).length
+const withChain = built.filter((w) => w.chain.length > 1 || w.parts).length
 const withDate = built.filter((w) => w.firstUse).length
-console.log(`wrote ${built.length} entries for ${present.size} headwords (${withChain} with an ancestor chain, ${withDate} with a dated quotation) in ${byShard.size} shards`)
+console.log(`wrote ${built.length} entries for ${present.size} headwords (${withChain} with a family line or parts, ${withDate} with a dated quotation) in ${byShard.size} shards`)

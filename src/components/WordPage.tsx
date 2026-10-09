@@ -96,6 +96,24 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
         )}
       </div>
 
+      {entry.parts && entry.parts.length > 0 && (
+        <section aria-labelledby="parts">
+          <h2 id="parts" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Built from</h2>
+          <p className="mt-3 flex flex-wrap items-center gap-2 text-lg">
+            {entry.parts.map((p, i) => (
+              <span key={`${p.form}-${i}`} className="flex items-center gap-2">
+                {i > 0 && <span aria-hidden="true" className="text-[var(--color-muted)]">+</span>}
+                {p.link ? (
+                  <a href={`#/w/${p.form}`} className="headword rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">{p.form}</a>
+                ) : (
+                  <span className={`headword rounded-full px-3 py-1 ${p.affix ? 'bg-[var(--color-card)] ring-1 ring-[var(--color-rule)]' : 'border border-[var(--color-rule)]'}`}>{p.form}</span>
+                )}
+              </span>
+            ))}
+          </p>
+        </section>
+      )}
+
       <section aria-labelledby="family-line">
         <h2 id="family-line" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">The family line</h2>
         <div className="mt-4"><FamilyLine chain={entry.chain} /></div>

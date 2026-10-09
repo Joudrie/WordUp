@@ -175,3 +175,54 @@ export function draftHook(stages) {
   const gloss = origin.gloss ? `, meaning "${origin.gloss}"` : ''
   return `From ${origin.language} ${origin.reconstructed ? '*' : ''}${origin.form}${gloss}.`
 }
+
+// Templates that say how an English word was built from parts.
+// prefix|en|un|happy, suffix|en|teach|er, af|en|re-|write, compound|en|black|bird,
+// and the tree form ety|en|:af|happy|-ness.
+const PART_TEMPLATES = new Set(['af', 'affix', 'prefix', 'pre', 'suffix', 'suf', 'compound', 'com'])
+
+function numberedArgs(args, from) {
+  const out = []
+  for (let i = from; args[String(i)] !== undefined; i++) out.push(String(args[String(i)]).trim())
+  return out.filter(Boolean)
+}
+
+/**
+ * The parts a word was built from, as [{ form, affix }], or null.
+ * Affixes keep their hyphen ("un-", "-ness") so they read as affixes.
+ */
+export function partsOf(templates = []) {
+  for (const t of templates) {
+    const args = t.args ?? {}
+    let forms = null
+    if (t.name === 'ety' && /^:(af|affix|compound|com)$/.test(args['2'] ?? '')) forms = numberedArgs(args, 3)
+    else if (!PART_TEMPLATES.has(t.name) || args['1'] !== 'en') continue
+    else if (t.name === 'prefix' || t.name === 'pre') {
+      const [prefix, ...rest] = numberedArgs(args, 2)
+      forms = prefix ? [`${prefix.replace(/-$/, '')}-`, ...rest] : null
+    } else if (t.name === 'suffix' || t.name === 'suf') {
+      const [base, ...suffixes] = numberedArgs(args, 2)
+      forms = base ? [base, ...suffixes.map((s) => `-${s.replace(/^-/, '')}`)] : null
+    } else forms = numberedArgs(args, 2)
+    if (!forms || forms.length < 2) continue
+    return forms.map((form) => ({ form, affix: form.startsWith('-') || form.endsWith('-') }))
+  }
+  return null
+}
+
+/** The single non-affix part a derived word is built on, or null for compounds. */
+export function baseOf(parts) {
+  const bases = (parts ?? []).filter((p) => !p.affix)
+  return bases.length === 1 ? bases[0].form : null
+}
+
+/** A short, sourced sentence for a word built from parts. */
+export function partsHook(parts, baseChain) {
+  const built = parts.map((p) => p.form).join(' + ')
+  const bases = parts.filter((p) => !p.affix)
+  if (bases.length > 1) return `A compound of ${built}.`
+  if (!baseChain || baseChain.length < 2) return `Made from ${built}.`
+  const origin = baseChain[0]
+  const gloss = origin.gloss ? `, meaning "${origin.gloss}"` : ''
+  return `Made from ${built}. ${bases[0].form} goes back to ${origin.language} ${origin.reconstructed ? '*' : ''}${origin.form}${gloss}.`
+}

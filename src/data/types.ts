@@ -38,6 +38,8 @@ export interface Word {
   /** Ancestry stages, earliest first, ending at the modern English form. */
   chain: ChainStep[]
   confidence: Confidence
+  /** The parts the word was built from: un- + happy. `link` means the part has its own page. */
+  parts?: { form: string; affix?: boolean; link?: boolean }[]
   /** Earliest dated use if verified; null means "not yet checked". */
   firstUse: { year: number; quote?: string; source?: string } | null
   relatives: Relative[]
