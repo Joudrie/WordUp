@@ -2,85 +2,419 @@
   {
     "id": "lost-n",
     "title": "Words that lost (or stole) an n",
-    "words": ["apron", "umpire", "nickname", "adder"],
+    "words": [
+      "apron",
+      "umpire",
+      "nickname",
+      "adder"
+    ],
     "body": "In Middle English, a napron was a cloth and a noumpere was a referee. Say \"a napron\" quickly and it sounds like \"an apron\", so speakers moved the n, and the words became apron and umpire. Adder (the snake) began as a naddre. It also worked the other way: an ekename, \"an extra name\", became a nekename and then a nickname."
   },
   {
     "id": "ok",
     "title": "OK started as a joke",
-    "words": ["ok"],
+    "words": [
+      "ok"
+    ],
     "body": "In 1839 Boston newspapers had a craze for joke abbreviations of misspelled phrases. OK stood for \"oll korrect\", a deliberate misspelling of all correct. Most of the jokes died; OK spread, helped along by the 1840 presidential campaign of Martin Van Buren, nicknamed Old Kinderhook. The history was worked out by the scholar Allen Walker Read in the 1960s."
   },
   {
     "id": "bug",
     "title": "The first computer bug was not the first bug",
-    "words": ["bug"],
+    "words": [
+      "bug"
+    ],
     "body": "In 1947 engineers working with Grace Hopper found a moth stuck in a relay of the Harvard Mark II computer and taped it into the logbook as the \"first actual case of bug being found\". The joke works because the word was already in use: Thomas Edison was calling technical faults bugs in the 1870s."
   },
   {
     "id": "sandwich",
     "title": "Sandwich is named after an earl",
-    "words": ["sandwich"],
+    "words": [
+      "sandwich"
+    ],
     "body": "John Montagu, the 4th Earl of Sandwich, gave his title to bread with a filling in the 1760s. The famous version says he would not leave a gambling table to eat. The only contemporary source is a French travel writer, and the earl's biographer thought it more likely he ate at his desk while working."
   },
   {
     "id": "salary",
     "title": "Were Roman soldiers paid in salt?",
-    "words": ["salary", "salt"],
+    "words": [
+      "salary",
+      "salt"
+    ],
     "body": "Salary comes from Latin salarium, which is built on sal, salt. That much is certain. The popular story that soldiers were paid in salt has no ancient source behind it. Salarium may have been an allowance for buying salt, or the name may have had nothing to do with wages in salt at all."
   },
   {
     "id": "pumpernickel",
     "title": "Pumpernickel has a rude name",
-    "words": ["pumpernickel"],
+    "words": [
+      "pumpernickel"
+    ],
     "body": "The dark German rye bread takes its name from German pumpern, to break wind, and Nickel, a goblin or devil. Most dictionaries explain it as a joke about how hard the bread was to digest."
   },
   {
     "id": "mortgage",
     "title": "A mortgage is a death pledge",
-    "words": ["mortgage"],
+    "words": [
+      "mortgage"
+    ],
     "body": "From Old French mort, dead, and gage, pledge. The pledge \"dies\" when the debt is paid off, or when the borrower fails to pay and the property is lost."
   },
   {
     "id": "goodbye",
     "title": "Goodbye began as a blessing",
-    "words": ["goodbye"],
+    "words": [
+      "goodbye"
+    ],
     "body": "In the 1500s people said \"God be with ye\". Written letters shortened it to forms like godbwye, and \"good\" slid in to match good day and good night. The religious meaning wore away with the letters."
   },
   {
     "id": "bedlam",
     "title": "Bedlam was a hospital in London",
-    "words": ["bedlam"],
+    "words": [
+      "bedlam"
+    ],
     "body": "The Hospital of St Mary of Bethlehem in London cared for the mentally ill from the 1400s. Londoners shortened Bethlehem to Bedlam, and the name came to mean any scene of noise and chaos."
   },
   {
     "id": "berserk",
     "title": "Berserk: a bear shirt, maybe",
-    "words": ["berserk"],
+    "words": [
+      "berserk"
+    ],
     "body": "Old Norse berserkr named a warrior who fought in a frenzy. The second half means shirt. The first half is disputed: most scholars read it as bear, a warrior in a bearskin, while others read it as bare, a warrior without armour."
   },
   {
     "id": "robot",
     "title": "Robot was coined for a play",
-    "words": ["robot"],
+    "words": [
+      "robot"
+    ],
     "body": "Karel Čapek's 1920 play R.U.R. needed a name for its manufactured workers. His brother Josef suggested roboti, from Czech robota, forced labour. Within a few years the word was in English."
   },
   {
     "id": "quarantine",
     "title": "Quarantine means forty",
-    "words": ["quarantine"],
+    "words": [
+      "quarantine"
+    ],
     "body": "During plague outbreaks in the 1300s and 1400s, Venice and Ragusa made arriving ships wait before anyone could land. The wait settled at forty days, quaranta giorni, and the Italian word for a forty-day period became English quarantine."
   },
   {
     "id": "nice",
     "title": "Nice used to be an insult",
-    "words": ["nice", "silly"],
+    "words": [
+      "nice",
+      "silly"
+    ],
     "body": "Latin nescius meant ignorant. Through Old French it reached English around 1300 meaning foolish. Over the next centuries it drifted through shy, fussy, precise and finally pleasant. Silly travelled the other way: it once meant blessed."
   },
   {
     "id": "helicopter",
     "title": "Helicopter is a spiral wing",
-    "words": ["helicopter", "pterodactyl", "helix"],
+    "words": [
+      "helicopter",
+      "pterodactyl",
+      "helix"
+    ],
     "body": "French hélicoptère, coined in 1861, joins Greek helix, spiral, and pteron, wing. People split it the wrong way, as heli + copter, which is why we now have choppers called copters and landing pads called heliports. The -pter part is the same wing as in pterodactyl, the wing-finger."
+  },
+  {
+    "id": "assassin",
+    "title": "Assassin began as an insult",
+    "words": [
+      "assassin"
+    ],
+    "body": "In the 1100s, enemies of the Nizari Ismailis, a Muslim group known for killing rival leaders, called them hashishiyya in Arabic. Crusaders carried the name back to Europe, where it came to mean any political killer. Whether the Nizaris really used hashish is doubtful. The name was probably a slur meaning riff-raff."
+  },
+  {
+    "id": "sabotage",
+    "title": "Sabotage and the wooden shoe",
+    "words": [
+      "sabotage"
+    ],
+    "body": "The famous story says French workers threw their wooden shoes, sabots, into machines. There is no good evidence for it. French saboter meant to clatter about in sabots, and so to do a job clumsily. Around 1900 labour movements used it for deliberately slow, botched work, and the meaning grew from there."
+  },
+  {
+    "id": "silhouette",
+    "title": "Silhouette was a stingy minister",
+    "words": [
+      "silhouette"
+    ],
+    "body": "Étienne de Silhouette was France's finance minister for a few months in 1759 and became famous for cutting costs. Cheap cut-out profile portraits got his name, either as a joke about his penny-pinching or because he made them as a hobby. Nobody is sure which."
+  },
+  {
+    "id": "boycott",
+    "title": "Boycott was a man",
+    "words": [
+      "boycott"
+    ],
+    "body": "In 1880 Irish tenants, organised by the Land League, refused to work for, serve or trade with Captain Charles Boycott, a land agent in County Mayo who evicted families. Within weeks newspapers were using his name as a verb."
+  },
+  {
+    "id": "sideburns",
+    "title": "Sideburns are backwards",
+    "words": [
+      "sideburns"
+    ],
+    "body": "Ambrose Burnside, a Union general in the American Civil War, wore enormous whiskers joined to his moustache. They were called burnsides. The two halves were later swapped to make sideburns, since they grow on the sides of the face."
+  },
+  {
+    "id": "nightmare",
+    "title": "The mare in nightmare is not a horse",
+    "words": [
+      "nightmare"
+    ],
+    "body": "Old English mære was an evil spirit believed to sit on sleepers' chests and choke them. A nightmare was that spirit's night visit. Only later did the word come to mean the bad dream itself."
+  },
+  {
+    "id": "tantalize",
+    "title": "Tantalize comes from a punished king",
+    "words": [
+      "tantalize"
+    ],
+    "body": "In Greek myth, Tantalus was made to stand in water under a fruit tree. When he bent to drink, the water drained away. When he reached for the fruit, the branches lifted out of reach. His name became a verb for teasing someone with what they cannot have."
+  },
+  {
+    "id": "panic",
+    "title": "Panic belongs to a god",
+    "words": [
+      "panic"
+    ],
+    "body": "Pan, the Greek god of wild places, was blamed for the sudden, causeless terror that seized travellers and herds in lonely country. Greek panikos meant of Pan."
+  },
+  {
+    "id": "hypocrite",
+    "title": "A hypocrite was an actor",
+    "words": [
+      "hypocrite"
+    ],
+    "body": "Greek hypokritēs meant a stage actor, someone who speaks a part from behind a mask. Early Christian writers turned it on people who acted out a goodness they did not have."
+  },
+  {
+    "id": "ketchup",
+    "title": "Ketchup started without tomatoes",
+    "words": [
+      "ketchup"
+    ],
+    "body": "The word probably comes from Hokkien Chinese kê-tsiap, a fermented fish sauce. British traders brought the idea home in the 1600s and made ketchups from mushrooms, walnuts and oysters. Tomato ketchup came later, in the United States."
+  },
+  {
+    "id": "shampoo",
+    "title": "Shampoo was a massage",
+    "words": [
+      "shampoo"
+    ],
+    "body": "Hindi champo meant press, from a word for kneading muscles. In 1814 Sake Dean Mahomed, a Bengali entrepreneur, opened a bathhouse in Brighton offering shampooing, a therapeutic massage. Only around the 1860s did the word move to washing hair."
+  },
+  {
+    "id": "jumbo",
+    "title": "Jumbo was an elephant",
+    "words": [
+      "jumbo"
+    ],
+    "body": "Jumbo was a huge African elephant at London Zoo. When the showman P. T. Barnum bought him in 1882, the British public protested, and his name became a word for anything enormous. Where the zookeepers got the name is unknown."
+  },
+  {
+    "id": "guy",
+    "title": "Every guy is named after Guy Fawkes",
+    "words": [
+      "guy"
+    ],
+    "body": "After the failed Gunpowder Plot of 1605, English crowds burned effigies of Guy Fawkes every 5 November. A ragged effigy was a guy, then any oddly dressed man, and in American English, any man at all."
+  },
+  {
+    "id": "tawdry",
+    "title": "Tawdry was a saint's lace",
+    "words": [
+      "tawdry"
+    ],
+    "body": "At fairs for St Audrey, a 7th-century abbess of Ely, sellers offered silk neckbands called St Audrey's lace. Said quickly it became tawdry lace, and as the lace got cheaper and showier, tawdry came to mean exactly that."
+  },
+  {
+    "id": "bikini",
+    "title": "The bikini was named after a bomb test",
+    "words": [
+      "bikini"
+    ],
+    "body": "In July 1946 the United States tested atomic bombs at Bikini Atoll in the Pacific. Days later the French designer Louis Réard named his tiny two-piece swimsuit after it, hoping it would cause the same kind of explosion."
+  },
+  {
+    "id": "spam",
+    "title": "Spam came from a comedy sketch",
+    "words": [
+      "spam"
+    ],
+    "body": "Spam is a brand of canned meat. In a 1970 Monty Python sketch, every dish in a café comes with Spam and a group of Vikings drowns out all conversation by singing the word. Early internet users borrowed it for junk that floods a channel."
+  },
+  {
+    "id": "serendipity",
+    "title": "Serendipity came from a fairy tale",
+    "words": [
+      "serendipity"
+    ],
+    "body": "Horace Walpole coined the word in a 1754 letter. He was inspired by a Persian fairy tale, The Three Princes of Serendip, whose heroes kept finding things they were not looking for. Serendip was an old name for Sri Lanka."
+  },
+  {
+    "id": "nerd",
+    "title": "Nerd first appeared in Dr. Seuss",
+    "words": [
+      "nerd"
+    ],
+    "body": "The earliest known printed nerd is a creature in Dr. Seuss's If I Ran the Zoo (1950). A year later it was slang in Detroit for a dull person. Whether Seuss started the slang or just happened to use a word already around is not certain."
+  },
+  {
+    "id": "googol",
+    "title": "A nine-year-old named the googol",
+    "words": [
+      "googol",
+      "google"
+    ],
+    "body": "Mathematician Edward Kasner asked his nine-year-old nephew, Milton Sirotta, to name the number 1 followed by 100 zeros. Milton said googol. Decades later, the founders of Google named their search engine after a misspelling of it."
+  },
+  {
+    "id": "quiz",
+    "title": "The quiz bet that never happened",
+    "words": [
+      "quiz"
+    ],
+    "body": "A famous story says a Dublin theatre owner bet in 1791 that he could make a nonsense word known across the city overnight, and had quiz chalked on walls everywhere. No record supports it, and quiz already appears in print before 1791. Its real origin is unknown."
+  },
+  {
+    "id": "sincere",
+    "title": "Sincere does not mean without wax",
+    "words": [
+      "sincere"
+    ],
+    "body": "A popular story says sincere comes from Latin sine cera, without wax, because honest sculptors did not hide cracks with wax. It is not true. Latin sincerus meant pure or clean, and where that came from is uncertain."
+  },
+  {
+    "id": "posh",
+    "title": "Posh does not mean port out, starboard home",
+    "words": [
+      "posh"
+    ],
+    "body": "The tale says posh stood for the shady cabins on ships to India: port side out, starboard side home. No ticket stamped POSH has ever been found, and the shipping lines kept no such code. The real origin is unknown; one guess links it to older slang posh, meaning money."
+  },
+  {
+    "id": "mayday",
+    "title": "Mayday is French",
+    "words": [
+      "mayday"
+    ],
+    "body": "In 1923 Frederick Mockford, a radio officer at Croydon airport near London, needed a distress call that pilots and ground crews would all understand. Much of the traffic flew to Paris, so he chose mayday, from French m'aider, help me."
+  },
+  {
+    "id": "jeans",
+    "title": "Jeans and denim are place names",
+    "words": [
+      "jeans",
+      "denim"
+    ],
+    "body": "Jean was a sturdy cloth from Genoa, called Gênes in French. Denim was serge de Nîmes, a twill from the French town of Nîmes. In 1873 Levi Strauss and Jacob Davis patented copper rivets for denim work trousers, and jeans were on their way."
+  },
+  {
+    "id": "tuxedo",
+    "title": "Tuxedo is a town in New York",
+    "words": [
+      "tuxedo"
+    ],
+    "body": "In 1886 young men at the Tuxedo Club in Tuxedo Park, New York, turned up to dinner in short jackets instead of tailcoats. The style took the name of the place."
+  },
+  {
+    "id": "lunatic",
+    "title": "A lunatic is moonstruck",
+    "words": [
+      "lunatic"
+    ],
+    "body": "Latin luna is the moon. For centuries people believed madness waxed and waned with it, so lunaticus meant moonstruck."
+  },
+  {
+    "id": "influenza",
+    "title": "Influenza blamed the stars",
+    "words": [
+      "influenza"
+    ],
+    "body": "Italian influenza meant influence, especially the influence of the stars, which were blamed for epidemics. After an outbreak in Italy in 1743, English borrowed the word for the disease."
+  },
+  {
+    "id": "malaria",
+    "title": "Malaria means bad air",
+    "words": [
+      "malaria"
+    ],
+    "body": "Italian mal'aria, bad air. The fever was blamed on the foul air rising from marshes around Rome. The real culprit, the mosquito, was not identified until the 1890s."
+  },
+  {
+    "id": "whiskey",
+    "title": "Whiskey is the water of life",
+    "words": [
+      "whiskey"
+    ],
+    "body": "Irish and Scottish Gaelic uisce beatha means water of life, a translation of the Latin aqua vitae. English borrowed it as usquebaugh and wore it down to whiskey."
+  },
+  {
+    "id": "easel",
+    "title": "An easel is a donkey",
+    "words": [
+      "easel"
+    ],
+    "body": "Dutch ezel means donkey. Like a patient animal, a painter's stand carries the load. English picked the word up from Dutch painters in the 1600s."
+  },
+  {
+    "id": "daisy",
+    "title": "Daisy is the day's eye",
+    "words": [
+      "daisy"
+    ],
+    "body": "Old English dæges ēage, the day's eye. The flower opens its petals at dawn and closes them at night."
+  },
+  {
+    "id": "grenade",
+    "title": "A grenade is a pomegranate",
+    "words": [
+      "grenade",
+      "pomegranate"
+    ],
+    "body": "French grenade means pomegranate. Early grenades were round iron balls packed with grains of gunpowder, like a pomegranate packed with seeds."
+  },
+  {
+    "id": "companion",
+    "title": "A companion shares your bread",
+    "words": [
+      "companion"
+    ],
+    "body": "Latin com, with, and panis, bread. A companion is, word for word, someone you share bread with."
+  },
+  {
+    "id": "sarcasm",
+    "title": "Sarcasm tears flesh",
+    "words": [
+      "sarcasm"
+    ],
+    "body": "Greek sarkazein meant to tear flesh like a dog. It came to mean biting your lips in rage, and then to sneer."
+  },
+  {
+    "id": "candidate",
+    "title": "Candidates wore white",
+    "words": [
+      "candidate"
+    ],
+    "body": "Romans running for office wore togas whitened with chalk to look spotless. Latin candidatus means dressed in white, from candidus, shining white."
+  },
+  {
+    "id": "cereal",
+    "title": "Cereal belongs to a goddess",
+    "words": [
+      "cereal"
+    ],
+    "body": "Ceres was the Roman goddess of grain and harvest, and cerealis meant of Ceres. Boxed breakfast cereal arrived much later, in the 1890s."
+  },
+  {
+    "id": "volcano",
+    "title": "Volcano was a god's forge",
+    "words": [
+      "volcano"
+    ],
+    "body": "Vulcan was the Roman god of fire and metalwork, said to keep his forge under Vulcano, an island off Sicily. Italian vulcano became the word for any mountain that spits fire."
   }
 ]
