@@ -105,3 +105,47 @@ test('every word is filed under a real origin section, and the sections add up',
     assert.equal(total, meta.count, `${mode} counts cover every headword once`)
   }
 })
+
+test('explore files only point at words we publish', () => {
+  for (const dir of ['roots', 'affixes']) {
+    const index = JSON.parse(readFileSync(join(DATA, dir, 'index.json'), 'utf8')) as { id: number; n: number; sample: string[] }[]
+    assert.ok(index.length > 100, `${dir} has entries`)
+    for (const item of index.slice(0, 50)) {
+      const full = JSON.parse(readFileSync(join(DATA, dir, `${item.id}.json`), 'utf8')) as { words: string[] }
+      assert.equal(full.words.length, item.n, `${dir}/${item.id} count`)
+      for (const w of full.words) assert.ok(shardOfWord.has(w), `${dir}/${item.id} lists missing ${w}`)
+    }
+  }
+  for (const label of ['internet', 'slang', 'new']) {
+    const words = JSON.parse(readFileSync(join(DATA, 'sections', `${label}.json`), 'utf8')) as string[]
+    for (const w of words) assert.ok(shardOfWord.has(w), `${label} lists missing ${w}`)
+  }
+})
+
+test('every word links to roots and affixes that exist', () => {
+  const roots = new Set(readdirSync(join(DATA, 'roots')).map((f) => f.replace('.json', '')))
+  const affixes = new Set(readdirSync(join(DATA, 'affixes')).map((f) => f.replace('.json', '')))
+  for (const w of all) {
+    for (const r of w.roots ?? []) assert.ok(roots.has(String(r.id)), `${w.word} root ${r.id}`)
+    for (const p of w.parts ?? []) if (p.id !== undefined) assert.ok(affixes.has(String(p.id)), `${w.word} affix ${p.id}`)
+  }
+})
+
+test('pattern stats add up and the origin map decodes to real sections', () => {
+  const patterns = JSON.parse(readFileSync(join(DATA, 'patterns', 'index.json'), 'utf8')) as { id: string; total: number; byOrigin: Record<string, number> }[]
+  for (const p of patterns) {
+    assert.equal(Object.values(p.byOrigin).reduce((a, b) => a + b, 0), p.total, p.id)
+  }
+  const groups = (JSON.parse(readFileSync(join(DATA, 'origins', 'index.json'), 'utf8')) as { groups: unknown[] }).groups.length
+  const map = JSON.parse(readFileSync(join(DATA, 'om', 'f.json'), 'utf8')) as Record<string, number>
+  for (const v of Object.values(map)) {
+    assert.ok(Math.floor(v / 100) < groups && v % 100 < groups, `bad origin map value ${v}`)
+  }
+})
+
+test('every game answer and story word is a real headword', () => {
+  const game = JSON.parse(readFileSync(join(process.cwd(), 'content', 'game.json'), 'utf8')) as { word: string }[]
+  for (const g of game) assert.ok(shardOfWord.has(g.word), `game answer ${g.word}`)
+  const stories = JSON.parse(readFileSync(join(process.cwd(), 'content', 'stories.json'), 'utf8')) as { id: string; words: string[] }[]
+  for (const s of stories) for (const w of s.words) assert.ok(shardOfWord.has(w), `story ${s.id} word ${w}`)
+})

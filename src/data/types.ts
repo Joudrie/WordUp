@@ -41,7 +41,11 @@ export interface Word {
   chain: ChainStep[]
   confidence: Confidence
   /** The parts the word was built from: un- + happy. `link` means the part has its own page. */
-  parts?: { form: string; affix?: boolean; link?: boolean }[]
+  parts?: { form: string; affix?: boolean; link?: boolean; id?: number }[]
+  /** Proto-Indo-European roots, linking to their root pages. */
+  roots?: { root: string; id: number }[]
+  /** Section labels from Wiktionary: internet, slang, new. */
+  labels?: string[]
   /** Earliest dated use if verified; null means "not yet checked". */
   firstUse: { year: number; quote?: string; source?: string } | null
   relatives: Relative[]

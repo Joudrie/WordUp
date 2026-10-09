@@ -1,0 +1,86 @@
+[
+  {
+    "id": "lost-n",
+    "title": "Words that lost (or stole) an n",
+    "words": ["apron", "umpire", "nickname", "adder"],
+    "body": "In Middle English, a napron was a cloth and a noumpere was a referee. Say \"a napron\" quickly and it sounds like \"an apron\", so speakers moved the n, and the words became apron and umpire. Adder (the snake) began as a naddre. It also worked the other way: an ekename, \"an extra name\", became a nekename and then a nickname."
+  },
+  {
+    "id": "ok",
+    "title": "OK started as a joke",
+    "words": ["ok"],
+    "body": "In 1839 Boston newspapers had a craze for joke abbreviations of misspelled phrases. OK stood for \"oll korrect\", a deliberate misspelling of all correct. Most of the jokes died; OK spread, helped along by the 1840 presidential campaign of Martin Van Buren, nicknamed Old Kinderhook. The history was worked out by the scholar Allen Walker Read in the 1960s."
+  },
+  {
+    "id": "bug",
+    "title": "The first computer bug was not the first bug",
+    "words": ["bug"],
+    "body": "In 1947 engineers working with Grace Hopper found a moth stuck in a relay of the Harvard Mark II computer and taped it into the logbook as the \"first actual case of bug being found\". The joke works because the word was already in use: Thomas Edison was calling technical faults bugs in the 1870s."
+  },
+  {
+    "id": "sandwich",
+    "title": "Sandwich is named after an earl",
+    "words": ["sandwich"],
+    "body": "John Montagu, the 4th Earl of Sandwich, gave his title to bread with a filling in the 1760s. The famous version says he would not leave a gambling table to eat. The only contemporary source is a French travel writer, and the earl's biographer thought it more likely he ate at his desk while working."
+  },
+  {
+    "id": "salary",
+    "title": "Were Roman soldiers paid in salt?",
+    "words": ["salary", "salt"],
+    "body": "Salary comes from Latin salarium, which is built on sal, salt. That much is certain. The popular story that soldiers were paid in salt has no ancient source behind it. Salarium may have been an allowance for buying salt, or the name may have had nothing to do with wages in salt at all."
+  },
+  {
+    "id": "pumpernickel",
+    "title": "Pumpernickel has a rude name",
+    "words": ["pumpernickel"],
+    "body": "The dark German rye bread takes its name from German pumpern, to break wind, and Nickel, a goblin or devil. Most dictionaries explain it as a joke about how hard the bread was to digest."
+  },
+  {
+    "id": "mortgage",
+    "title": "A mortgage is a death pledge",
+    "words": ["mortgage"],
+    "body": "From Old French mort, dead, and gage, pledge. The pledge \"dies\" when the debt is paid off, or when the borrower fails to pay and the property is lost."
+  },
+  {
+    "id": "goodbye",
+    "title": "Goodbye began as a blessing",
+    "words": ["goodbye"],
+    "body": "In the 1500s people said \"God be with ye\". Written letters shortened it to forms like godbwye, and \"good\" slid in to match good day and good night. The religious meaning wore away with the letters."
+  },
+  {
+    "id": "bedlam",
+    "title": "Bedlam was a hospital in London",
+    "words": ["bedlam"],
+    "body": "The Hospital of St Mary of Bethlehem in London cared for the mentally ill from the 1400s. Londoners shortened Bethlehem to Bedlam, and the name came to mean any scene of noise and chaos."
+  },
+  {
+    "id": "berserk",
+    "title": "Berserk: a bear shirt, maybe",
+    "words": ["berserk"],
+    "body": "Old Norse berserkr named a warrior who fought in a frenzy. The second half means shirt. The first half is disputed: most scholars read it as bear, a warrior in a bearskin, while others read it as bare, a warrior without armour."
+  },
+  {
+    "id": "robot",
+    "title": "Robot was coined for a play",
+    "words": ["robot"],
+    "body": "Karel Čapek's 1920 play R.U.R. needed a name for its manufactured workers. His brother Josef suggested roboti, from Czech robota, forced labour. Within a few years the word was in English."
+  },
+  {
+    "id": "quarantine",
+    "title": "Quarantine means forty",
+    "words": ["quarantine"],
+    "body": "During plague outbreaks in the 1300s and 1400s, Venice and Ragusa made arriving ships wait before anyone could land. The wait settled at forty days, quaranta giorni, and the Italian word for a forty-day period became English quarantine."
+  },
+  {
+    "id": "nice",
+    "title": "Nice used to be an insult",
+    "words": ["nice", "silly"],
+    "body": "Latin nescius meant ignorant. Through Old French it reached English around 1300 meaning foolish. Over the next centuries it drifted through shy, fussy, precise and finally pleasant. Silly travelled the other way: it once meant blessed."
+  },
+  {
+    "id": "helicopter",
+    "title": "Helicopter is a spiral wing",
+    "words": ["helicopter", "pterodactyl", "helix"],
+    "body": "French hélicoptère, coined in 1861, joins Greek helix, spiral, and pteron, wing. People split it the wrong way, as heli + copter, which is why we now have choppers called copters and landing pads called heliports. The -pter part is the same wing as in pterodactyl, the wing-finger."
+  }
+]

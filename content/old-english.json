@@ -1,0 +1,47 @@
+{
+  "texts": [
+    {
+      "id": "lords-prayer",
+      "title": "The Lord's Prayer, across a thousand years",
+      "intro": "The same short text in Old English (about 1000), Wycliffe's Middle English Bible (about 1389) and the King James Bible (1611). Read down each column to watch the language change.",
+      "columns": [
+        { "label": "Old English", "date": "about 1000", "source": "West Saxon Gospels, Matthew 6" },
+        { "label": "Middle English", "date": "about 1389", "source": "Wycliffe Bible, Matthew 6" },
+        { "label": "Early Modern English", "date": "1611", "source": "King James Bible, Matthew 6" }
+      ],
+      "lines": [
+        ["Fæder ūre þū þe eart on heofonum,", "Oure fadir that art in heuenes,", "Our Father which art in heaven,"],
+        ["Sī þīn nama gehālgod.", "halewid be thi name;", "Hallowed be thy name."],
+        ["Tōbecume þīn rīce,", "thi kyngdoom come to;", "Thy kingdom come."],
+        ["gewurþe ðīn willa, on eorðan swā swā on heofonum.", "be thi wille don, in erthe as in heuene.", "Thy will be done in earth, as it is in heaven."],
+        ["Ūrne gedæghwāmlīcan hlāf syle ūs tō dæg,", "Yyue to vs this dai oure breed ouer othir substaunce;", "Give us this day our daily bread."],
+        ["and forgyf ūs ūre gyltas, swā swā wē forgyfað ūrum gyltendum.", "and foryyue to vs oure dettis, as we foryyuen to oure dettouris;", "And forgive us our debts, as we forgive our debtors."],
+        ["And ne gelǣd þū ūs on costnunge, ac ālȳs ūs of yfele.", "and lede vs not in to temptacioun, but delyuere vs fro yuel.", "And lead us not into temptation, but deliver us from evil."]
+      ],
+      "notes": [
+        { "word": "father", "text": "Fæder is the same word, with the d later softened to th, as in mother (mōdor) and weather (weder)." },
+        { "word": "bread", "text": "Old English said hlāf, which became loaf. Bread (brēad) first meant a crumb or morsel." },
+        { "word": "temptation", "text": "Old English costnung was replaced by temptation, a French loan, by Wycliffe's time." },
+        { "word": "debt", "text": "Middle English dette had no b. Scholars added it later to match Latin debitum, and nobody has ever pronounced it." }
+      ]
+    },
+    {
+      "id": "beowulf",
+      "title": "The opening of Beowulf",
+      "intro": "The first lines of the longest poem in Old English, written down around the year 1000. Alongside is Francis Gummere's 1910 translation.",
+      "columns": [
+        { "label": "Old English", "date": "about 1000", "source": "Beowulf, lines 1 to 3" },
+        { "label": "Modern English", "date": "1910", "source": "Francis B. Gummere's translation" }
+      ],
+      "lines": [
+        ["Hwæt. We Gardena in geardagum,", "LO, praise of the prowess of people-kings"],
+        ["þeodcyninga, þrym gefrunon,", "of spear-armed Danes, in days long sped,"],
+        ["hu ða æþelingas ellen fremedon.", "we have heard, and what honor the athelings won!"]
+      ],
+      "notes": [
+        { "word": "what", "text": "Hwæt is the ancestor of what. Here it works like \"Listen!\" to open the poem." },
+        { "word": "atheling", "text": "Æþeling, a prince, survives only as the rare word atheling." }
+      ]
+    }
+  ]
+}

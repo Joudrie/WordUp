@@ -17,8 +17,9 @@ import { createReadStream, readFileSync, mkdirSync, rmSync, writeFileSync } from
 import { createInterface } from 'node:readline'
 import { parseArgs } from 'node:util'
 import {
-  ancestorOf, baseOf, compactRecord, confidenceOf, draftHook, earliestQuote, isFormOnly, keyOf,
-  learnLanguageName, letterOf, nameFromExpansion, partsHook, partsOf, resolveChain, shardOf,
+  ancestorOf, ancestorsOf, baseOf, compactRecord, confidenceOf, draftHook, earliestQuote, isFormOnly, keyOf,
+  affixGloss, cleanGloss, cleanTerm, labelsOf, learnLanguageName, letterOf, nameFromExpansion, partsHook,
+  partsOf, resolveChain, rootsOf, shardOf,
 } from './lib/words-core.mjs'
 import { classify, ORIGIN_GROUPS } from './lib/origins.mjs'
 
@@ -55,6 +56,7 @@ console.log(values.all ? 'targets: every plain English word' : `targets: top ${t
 //    whole language fits in memory; other languages become ancestor records.
 const sectionsByWord = new Map() // word -> compact English sections
 const ancestors = new Map() // "lang:term" -> compact record
+const affixInfo = new Map() // "-pter" -> { gloss, ancestor }
 let lines = 0
 for (const file of values.dump) {
   const rl = createInterface({ input: createReadStream(file), crlfDelay: Infinity })
@@ -69,6 +71,10 @@ for (const file of values.dump) {
         const code = t.args?.['2']
         if (code && code !== 'en' && t.expansion) learnLanguageName(code, nameFromExpansion(t.expansion, t.args?.['3']))
       }
+      // Prefix and suffix entries ("helico-", "-pter") give each affix page its meaning.
+      if (/^-?[a-z]+-?$/.test(raw.word) && raw.word.includes('-') && !affixInfo.has(raw.word)) {
+        affixInfo.set(raw.word, { gloss: affixGloss(raw.senses?.[0]?.glosses?.[0]), ancestor: ancestorOf(raw.etymology_templates) })
+      }
       if (!isTarget(raw.word)) continue
       const gloss = (raw.senses?.[0]?.glosses?.[0] ?? '').trim()
       const list = sectionsByWord.get(raw.word) ?? []
@@ -77,10 +83,12 @@ for (const file of values.dump) {
         n: raw.etymology_number ?? '1',
         gloss,
         formOnly: isFormOnly(raw),
-        ancestor: ancestorOf(raw.etymology_templates),
+        links: ancestorsOf(raw.etymology_templates),
         parts: partsOf(raw.etymology_templates),
         hedge: confidenceOf(raw.etymology_text, true),
         quote: earliestQuote(raw),
+        labels: labelsOf(raw),
+        roots: rootsOf(raw.etymology_templates),
       })
       sectionsByWord.set(raw.word, list)
       continue
@@ -117,14 +125,15 @@ for (const [word, sections] of sectionsByWord) {
   }
   for (const [, group] of [...byNumber].sort((a, b) => a[0].localeCompare(b[0]))) {
     const first = group[0]
-    const chain = first.ancestor
-      ? resolveChain(word, first.ancestor, lookup)
+    const ancestor = first.links[0] ?? null
+    const chain = ancestor
+      ? resolveChain(word, first.links, lookup)
       : [{ family: 'other', language: 'Modern English', form: word }]
     const quote = group.reduce((acc, s) => earlier(acc, s.quote), null)
     earliestByWord.set(word, earlier(earliestByWord.get(word), quote))
     const gloss = first.gloss
     const sense = gloss ? `${first.pos}: ${gloss.length > 60 ? `${gloss.slice(0, 57).trimEnd()}…` : gloss}` : first.pos
-    const parent = first.ancestor ? keyOf(first.ancestor.lang, first.ancestor.term) : null
+    const parent = ancestor ? keyOf(ancestor.lang, ancestor.term) : null
     if (parent) {
       const set = parentIndex.get(parent) ?? new Set()
       set.add(word)
@@ -142,11 +151,12 @@ for (const [word, sections] of sectionsByWord) {
       sources: ['Wiktionary'],
       _parent: parent,
       _parts: first.parts,
+      _labels: first.labels,
+      _roots: first.roots,
     })
   }
 }
 sectionsByWord.clear()
-ancestors.clear()
 
 // 3b. Hand-checked entries (content/curated-words.json) replace the generated drafts
 //     for the same headword. They keep their own text but borrow the quotation date
@@ -253,6 +263,76 @@ for (let pass = 0; pass < 2; pass++) {
 }
 console.log(`compounds filed by their parts: ${filedByParts}`)
 
+// 4e. Explore data. Most common words first everywhere.
+const byPopularity = (a, b) =>
+  (rank.get(a) ?? Infinity) - (rank.get(b) ?? Infinity) || a.length - b.length || a.localeCompare(b)
+const firstOf = new Map()
+for (const w of built) if (!firstOf.has(w.word)) firstOf.set(w.word, w)
+
+// Roots: Proto-Indo-European stages in a word's family line, plus Wiktionary's root
+// templates. bʰer- -> bear, burden, transfer, metaphor.
+const rootWords = new Map()
+const rootGloss = new Map()
+for (const [word, w] of firstOf) {
+  const forms = new Set()
+  for (const s of w.chain) {
+    if (s.reconstructed && s.language === 'Proto-Indo-European') {
+      forms.add(s.form)
+      if (s.gloss && !rootGloss.has(s.form)) rootGloss.set(s.form, s.gloss)
+    }
+  }
+  for (const r of w._roots ?? []) forms.add(r)
+  for (const f of forms) (rootWords.get(f) ?? rootWords.set(f, new Set()).get(f)).add(word)
+}
+for (const f of rootWords.keys()) {
+  if (!rootGloss.has(f)) {
+    const g = cleanGloss(ancestors.get(keyOf('ine-pro', `*${f}`))?.gloss)
+    if (g) rootGloss.set(f, g)
+  }
+}
+const roots = [...rootWords]
+  .filter(([, set]) => set.size >= 2)
+  .sort((a, b) => b[1].size - a[1].size || a[0].localeCompare(b[0]))
+  .map(([root, set], id) => ({ id, root, gloss: rootGloss.get(root) ?? null, words: [...set].sort(byPopularity) }))
+for (const r of roots) {
+  for (const word of r.words) {
+    const w = firstOf.get(word)
+    if ((w.roots ??= []).length < 3) w.roots.push({ root: r.root, id: r.id })
+  }
+}
+
+// Prefixes and suffixes: every affix used to build at least three words.
+const affixWords = new Map()
+for (const [word, w] of firstOf) {
+  for (const p of w.parts ?? []) if (p.affix) (affixWords.get(p.form) ?? affixWords.set(p.form, new Set()).get(p.form)).add(word)
+}
+const affixes = [...affixWords]
+  .filter(([, set]) => set.size >= 3)
+  .sort((a, b) => b[1].size - a[1].size || a[0].localeCompare(b[0]))
+  .map(([affix, set], id) => {
+    const info = affixInfo.get(affix)
+    const chain = info?.ancestor ? resolveChain(affix, info.ancestor, lookup) : null
+    return { id, affix, gloss: info?.gloss ?? null, origin: chain ? classify(chain).origin : 'unknown', words: [...set].sort(byPopularity) }
+  })
+const affixId = new Map(affixes.map((a) => [a.affix, a.id]))
+for (const w of built) for (const p of w.parts ?? []) if (p.affix && affixId.has(p.form)) p.id = affixId.get(p.form)
+
+// Slang, internet words and new words, from Wiktionary's own labels.
+const labelLists = { internet: [], slang: [], new: [] }
+for (const [word, w] of firstOf) {
+  const labels = w._labels?.length ? w._labels : w.labels ?? []
+  if (labels.length) w.labels = labels
+  // Very common words whose first sense happens to be slang (whatever, dogs, john) would
+  // bury the real slang, so the lists skip the 5,000 most common words unless featured.
+  const tooCommon = (rank.get(word) ?? Infinity) < 5000 && !curatedWords.has(word)
+  if (!tooCommon) for (const l of labels) labelLists[l]?.push(word)
+}
+for (const w of built) {
+  delete w._labels
+  delete w._roots
+}
+console.log(`roots: ${roots.length}, affixes: ${affixes.length}, internet: ${labelLists.internet.length}, slang: ${labelLists.slang.length}, new: ${labelLists.new.length}`)
+
 // 5. Write data shards, per-letter search files and the index.
 rmSync(values.out, { recursive: true, force: true })
 mkdirSync(`${values.out}/w`, { recursive: true })
@@ -319,6 +399,58 @@ writeFileSync(
 )
 const top = Object.entries(tally('origin')).sort((a, b) => b[1] - a[1]).slice(0, 6)
 console.log(`origins (ultimate, all words): ${top.map(([k, n]) => `${k} ${n}`).join(', ')}`)
+
+// Explore files: roots, affixes, slang lists, letter patterns, and a compact
+// word -> origin map the sentence lab uses.
+for (const dir of ['roots', 'affixes', 'sections', 'patterns', 'om']) mkdirSync(`${values.out}/${dir}`, { recursive: true })
+const summary = (list) => list.map((x) => ({ ...Object.fromEntries(Object.entries(x).filter(([k]) => k !== 'words')), n: x.words.length, sample: x.words.slice(0, 8) }))
+writeFileSync(`${values.out}/roots/index.json`, JSON.stringify(summary(roots.filter((r) => r.words.length >= 3))))
+for (const r of roots) writeFileSync(`${values.out}/roots/${r.id}.json`, JSON.stringify(r))
+writeFileSync(`${values.out}/affixes/index.json`, JSON.stringify(summary(affixes)))
+for (const a of affixes) writeFileSync(`${values.out}/affixes/${a.id}.json`, JSON.stringify(a))
+const featured = new Set(curated.filter((w) => w.labels?.length).map((w) => w.word))
+for (const [label, words] of Object.entries(labelLists)) {
+  const sorted = words.sort((a, b) => (featured.has(b) ? 1 : 0) - (featured.has(a) ? 1 : 0) || byPopularity(a, b))
+  writeFileSync(`${values.out}/sections/${label}.json`, JSON.stringify(sorted))
+}
+
+const patterns = JSON.parse(readFileSync('content/patterns.json', 'utf8'))
+const popular = [...present].sort(byPopularity)
+writeFileSync(
+  `${values.out}/patterns/index.json`,
+  JSON.stringify(
+    patterns.map((p) => {
+      const match =
+        p.position === 'start' ? (w) => w.startsWith(p.letters) && w !== p.letters
+        : p.position === 'end' ? (w) => w.endsWith(p.letters) && w !== p.letters
+        : (w) => w.includes(p.letters)
+      const byOrigin = {}
+      const examples = {}
+      let total = 0
+      for (const word of popular) {
+        if (!match(word)) continue
+        // Sound patterns follow the language English borrowed from (chef came through
+        // French); spelling clues like ph follow where the word ultimately comes from.
+        const o = originByWord.get(word)?.[p.basis === 'via' ? 'via' : 'origin']
+        if (!o || o === 'unknown') continue
+        total++
+        byOrigin[o] = (byOrigin[o] ?? 0) + 1
+        if ((examples[o] ??= []).length < 12) examples[o].push(word)
+      }
+      return { ...p, total, byOrigin, examples }
+    }),
+  ),
+)
+
+const groupIndex = new Map(ORIGIN_GROUPS.map((g, i) => [g.id, i]))
+const originMap = new Map()
+for (const [word, o] of originByWord) {
+  if (o.origin === 'unknown') continue
+  const l = letterOf(word)
+  // origin * 100 + via: one small number carries both labels.
+  ;(originMap.get(l) ?? originMap.set(l, {}).get(l))[word] = groupIndex.get(o.origin) * 100 + (groupIndex.get(o.via) ?? groupIndex.get(o.origin))
+}
+for (const [l, map] of originMap) writeFileSync(`${values.out}/om/${l}.json`, JSON.stringify(map))
 
 writeFileSync(
   `${values.out}/index.json`,

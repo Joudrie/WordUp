@@ -83,6 +83,11 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
             {CONFIDENCE_TEXT[entry.confidence]}
           </span>
           <OriginChips origin={entry.origin} via={entry.via} />
+          {entry.labels?.map((l) => (
+            <a key={l} href="#/slang" className="rounded-full bg-[var(--color-card)] px-3 py-1 ring-1 ring-[var(--color-rule)] hover:ring-[var(--color-brand)]">
+              {l === 'internet' ? 'Internet word' : l === 'slang' ? 'Slang' : 'New word'}
+            </a>
+          ))}
           {entry.myth && (
             <span className="rounded-full bg-[var(--color-card)] px-3 py-1 font-medium text-[var(--color-latin)] ring-1 ring-[var(--color-rule)]">
               Myth: a popular origin that is false or oversimplified
@@ -105,14 +110,28 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
             {entry.parts.map((p, i) => (
               <span key={`${p.form}-${i}`} className="flex items-center gap-2">
                 {i > 0 && <span aria-hidden="true" className="text-[var(--color-muted)]">+</span>}
-                {p.link ? (
-                  <a href={`#/w/${p.form}`} className="headword rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">{p.form}</a>
+                {p.link || p.id !== undefined ? (
+                  <a href={p.id !== undefined ? `#/affixes/${p.id}` : `#/w/${p.form}`} className="headword rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">{p.form}</a>
                 ) : (
                   <span className={`headword rounded-full px-3 py-1 ${p.affix ? 'bg-[var(--color-card)] ring-1 ring-[var(--color-rule)]' : 'border border-[var(--color-rule)]'}`}>{p.form}</span>
                 )}
               </span>
             ))}
           </p>
+        </section>
+      )}
+
+      {entry.roots && entry.roots.length > 0 && (
+        <section aria-labelledby="roots">
+          <h2 id="roots" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Ancient root</h2>
+          <p className="mt-3 flex flex-wrap gap-2">
+            {entry.roots.map((r) => (
+              <a key={r.id} href={`#/roots/${r.id}`} className="headword rounded-full border border-[var(--color-rule)] px-3 py-1 text-lg hover:border-[var(--color-brand)]">
+                *{r.root}
+              </a>
+            ))}
+          </p>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">See every English word that grew from the same root.</p>
         </section>
       )}
 

@@ -39,6 +39,20 @@ Not done yet:
 - Word of the Day pages and the phase 2 and 3 features.
 - Reddit feedback before public launch.
 
+## What is on the site
+
+- **Search** by start of word, or **contains** any letters (eau finds beautiful).
+- **Word pages**: hook, parts, ancient root, family line, first recorded use, origin chips, slang label.
+- **Explore**: origins (21 sections), roots (Proto-Indo-European), prefixes and suffixes, spelling
+  patterns, slang and internet words, sentence lab, Old English to modern, word stories.
+- **Play**: a daily word game with no length shown; hints teach the word's language and roots.
+- **Today**: word of the day and story of the day, one per calendar day.
+
+Hand-written content lives in `content/`: `curated-words.json` (checked entries, featured slang),
+`stories.json`, `patterns.json`, `old-english.json` (public-domain texts) and `game.json`.
+Flags in `public/flags/` are copied from Global and used only for sections that map to modern
+countries.
+
 ## Data
 
 Rebuild the data:

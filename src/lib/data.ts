@@ -78,3 +78,41 @@ export function loadSection(id: string): Promise<string[]> {
   }
   return promise
 }
+
+// Generic cached loader for the explore files (roots, affixes, patterns, sections ...).
+const jsonCache = new Map<string, Promise<unknown>>()
+export function cachedJson<T>(path: string): Promise<T> {
+  let promise = jsonCache.get(path)
+  if (!promise) {
+    promise = getJson<T>(path)
+    promise.catch(() => jsonCache.delete(path))
+    jsonCache.set(path, promise)
+  }
+  return promise as Promise<T>
+}
+
+export interface GroupSummary {
+  id: number
+  n: number
+  sample: string[]
+  gloss: string | null
+}
+export interface RootSummary extends GroupSummary {
+  root: string
+}
+export interface AffixSummary extends GroupSummary {
+  affix: string
+  origin: string
+}
+export interface PatternStat {
+  id: string
+  letters: string
+  position: 'start' | 'contains' | 'end'
+  /** Counted by the language English took the word from ("via"), or where it ultimately comes from. */
+  basis: 'via' | 'origin'
+  title: string
+  text: string
+  total: number
+  byOrigin: Record<string, number>
+  examples: Record<string, string[]>
+}

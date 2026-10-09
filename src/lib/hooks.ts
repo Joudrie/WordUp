@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Word } from '../data/types.ts'
-import { loadEntries, loadLetter, loadOrigins, loadSection, type OriginsIndex, type WordIndex } from './data.ts'
+import { cachedJson, loadEntries, loadLetter, loadOrigins, loadSection, type OriginsIndex, type WordIndex } from './data.ts'
 
 /** The search index for one first letter; null while it loads. */
 export function useLetterIndex(letter: string | null): WordIndex | null {
@@ -55,4 +55,18 @@ export function useSection(id: string): string[] | null {
     }
   }, [id])
   return state && state.id === id ? state.words : null
+}
+
+/** Any cached data file under public/data; null while it loads or if it fails. */
+export function useJson<T>(path: string | null): T | null {
+  const [state, setState] = useState<{ path: string; data: T } | null>(null)
+  useEffect(() => {
+    if (!path) return
+    let live = true
+    cachedJson<T>(path).then((data) => live && setState({ path, data })).catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [path])
+  return state && state.path === path ? state.data : null
 }

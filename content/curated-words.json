@@ -2194,5 +2194,412 @@
     "sources": [
       "Wiktionary: clue"
     ]
+  },
+  {
+    "word": "rizz",
+    "sense": "charm, the ability to attract someone",
+    "hook": "Short for charisma, popularised by the streamer Kai Cenat and named Oxford's Word of the Year for 2023.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "khárisma",
+        "gloss": "grace, favour"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "charisma"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "charisma"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "rizz"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "charisma",
+        "note": "the word it was clipped from"
+      }
+    ],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "skibidi",
+    "sense": "a nonsense word used for comic effect",
+    "hook": "From Skibidi Toilet, a viral YouTube animation series that began in 2023. The word itself means nothing, which is the joke.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "skibidi"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "internet"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "derp",
+    "sense": "a sound mocking something foolish",
+    "hook": "Popularised by Trey Parker and Matt Stone, who used it in the 1998 film BASEketball and later in South Park.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "derp"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "ragebait",
+    "sense": "content made to provoke anger for clicks",
+    "hook": "Rage plus bait, modelled on clickbait. Oxford named rage bait its Word of the Year for 2025.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "rage"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "ragebait"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "rage",
+        "note": "the first half"
+      },
+      {
+        "word": "bait",
+        "note": "the second half"
+      }
+    ],
+    "labels": [
+      "internet"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "yeet",
+    "sense": "to throw something hard; a cry of excitement",
+    "hook": "Spread from a 2014 Vine video of a dance called the Yeet, and from there across Black social media.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "yeet"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "sus",
+    "sense": "suspicious",
+    "hook": "A clipping of suspicious or suspect that police slang used for decades; the 2018 game Among Us made it everyone's word.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "suspicere",
+        "gloss": "to look up at, to suspect"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "suspicious"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "sus"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "suspicious",
+        "note": "the word it was clipped from"
+      }
+    ],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "stan",
+    "sense": "an obsessive fan; to support enthusiastically",
+    "hook": "From Eminem's 2000 song Stan, about a fan whose devotion turns dangerous.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "stan"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "simp",
+    "sense": "someone who tries too hard to please",
+    "hook": "Old slang for a simpleton, from around 1900, revived online with a new meaning.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "simpleton"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "simp"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "simpleton",
+        "note": "the older word it was clipped from"
+      }
+    ],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "slay",
+    "sense": "to do something brilliantly",
+    "hook": "Ballroom and drag culture turned the Old English word for killing into the highest praise.",
+    "chain": [
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "slēan",
+        "gloss": "to strike, kill"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "sleen"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "slay"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "goat",
+    "sense": "the greatest of all time",
+    "hook": "An acronym, G.O.A.T., made famous by LL Cool J's 2000 album of that name.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "goat"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "npc",
+    "sense": "a person who seems to act without thinking",
+    "hook": "From video games, where an NPC is a non-player character that follows a script.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "npc"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "internet"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "delulu",
+    "sense": "delusional, usually about a crush or a dream",
+    "hook": "A playful clipping of delusional that spread from K-pop fan communities.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "dēlūdere",
+        "gloss": "to mock, deceive"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "delusional"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "delulu"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "delusional",
+        "note": "the word it was clipped from"
+      }
+    ],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "bussin",
+    "sense": "excellent, especially of food",
+    "hook": "From African American Vernacular English, spread online through food reviews and TikTok.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "bussin"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "labels": [
+      "internet",
+      "slang"
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
+  },
+  {
+    "word": "a",
+    "sense": "the indefinite article",
+    "hook": "A is a worn-down form of one: Old English ān meant both one and a.",
+    "chain": [
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "ān",
+        "gloss": "one"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "a"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "a"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "one",
+        "note": "the same word, kept at full strength"
+      },
+      {
+        "word": "an",
+        "note": "the form before a vowel"
+      }
+    ],
+    "sources": [
+      "Wiktionary"
+    ]
   }
 ]

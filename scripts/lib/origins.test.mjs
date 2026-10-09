@@ -46,3 +46,9 @@ test('a word with no recorded history is unknown', () => {
 test('group ids are unique', () => {
   assert.equal(new Set(ORIGIN_GROUPS.map((g) => g.id)).size, ORIGIN_GROUPS.length)
 })
+
+test('regional Old English still counts as Old English', () => {
+  assert.equal(groupOfLanguage('Anglian Old English'), 'english')
+  assert.equal(groupOfLanguage('Northern Middle English'), 'english')
+  assert.equal(groupOfLanguage('Anglo-Norman'), 'french')
+})

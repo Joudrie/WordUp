@@ -7,7 +7,7 @@
 
 export const ORIGIN_GROUPS = [
   { id: 'english', label: 'Old & Middle English', family: 'germanic',
-    pattern: /^((Early |Late |Northern )?(Old|Middle) English|Scots|Germanic|Proto-(West |North )?Germanic)$/ },
+    pattern: /\b(Old|Middle) English\b|^Scots$|^(Proto-(West |North )?)?Germanic$/ },
   { id: 'latin', label: 'Latin', family: 'latin', pattern: /Latin\b/ },
   { id: 'french', label: 'French', family: 'french', pattern: /French|Anglo-Norman|Norman/ },
   { id: 'greek', label: 'Greek', family: 'greek', pattern: /Greek/ },
