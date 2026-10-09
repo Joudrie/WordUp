@@ -27,8 +27,25 @@ const LANGUAGE_NAMES = {
   xno: 'Anglo-Norman', 'fro-nor': 'Old Norman', 'gre-pro': 'Proto-Hellenic', 'ar-cla': 'Classical Arabic',
 }
 
+// Names learned from Wiktionary's own template text while reading the dump.
+const LEARNED_NAMES = new Map()
+
+// "Classical Nahuatl āhuacatl" -> "Classical Nahuatl". Rejects expansions that are
+// not a clean language name ("Anglo-Norman noun, non,", "Old Dutch *klokka").
+export function nameFromExpansion(expansion, term) {
+  if (!expansion) return null
+  const bare = (term ?? '').replace(/^\*/, '')
+  const i = bare ? expansion.indexOf(bare) : -1
+  const name = (i > 0 ? expansion.slice(0, i) : expansion).replace(/[\s*]+$/, '').trim()
+  return /^[A-Z][A-Za-zÀ-ÿāēīōū'’ -]{1,40}$/.test(name) && name.split(' ').length <= 4 ? name : null
+}
+
+export function learnLanguageName(code, name) {
+  if (code && name && !LEARNED_NAMES.has(code)) LEARNED_NAMES.set(code, name)
+}
+
 export function languageNameFallback(code) {
-  return LANGUAGE_NAMES[code] ?? code
+  return LANGUAGE_NAMES[code] ?? LEARNED_NAMES.get(code) ?? code
 }
 
 // Lookup key for a term. Diacritics and the reconstruction asterisk are ignored, because

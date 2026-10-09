@@ -46,3 +46,35 @@ export async function loadEntries(word: string): Promise<Word[]> {
 }
 
 export { letterOf }
+
+export interface OriginGroup {
+  id: string
+  label: string
+  family: string
+  /** How many words are listed in this section. */
+  words: number
+}
+
+export interface OriginsIndex {
+  groups: OriginGroup[]
+  /** counts[mode][scope][groupId]: mode is ultimate origin or the language it came through. */
+  counts: Record<'origin' | 'via', Record<'all' | 'common', Record<string, number>>>
+}
+
+let originsPromise: Promise<OriginsIndex> | null = null
+const sectionPromises = new Map<string, Promise<string[]>>()
+
+export function loadOrigins(): Promise<OriginsIndex> {
+  originsPromise ??= getJson<OriginsIndex>('origins/index.json')
+  return originsPromise
+}
+
+/** Every word in an origin section, most common first. */
+export function loadSection(id: string): Promise<string[]> {
+  let promise = sectionPromises.get(id)
+  if (!promise) {
+    promise = getJson<string[]>(`origins/${id}.json`).catch(() => [])
+    sectionPromises.set(id, promise)
+  }
+  return promise
+}

@@ -83,3 +83,25 @@ test('generated entries are marked as drafts; hand-checked entries are not', () 
     for (const w of reviewed) assert.notEqual(w.draft, true, `${c.word} is curated and must not be a draft`)
   }
 })
+
+test('every word is filed under a real origin section, and the sections add up', () => {
+  const origins = JSON.parse(readFileSync(join(DATA, 'origins', 'index.json'), 'utf8')) as {
+    groups: { id: string; words: number }[]
+    counts: Record<'origin' | 'via', Record<'all' | 'common', Record<string, number>>>
+  }
+  const ids = new Set([...origins.groups.map((g) => g.id), 'unknown'])
+  for (const w of all) {
+    assert.ok(w.origin && ids.has(w.origin), `${w.word} has origin ${w.origin}`)
+    assert.ok(w.via && ids.has(w.via), `${w.word} has via ${w.via}`)
+  }
+  for (const g of origins.groups) {
+    const words = JSON.parse(readFileSync(join(DATA, 'origins', `${g.id}.json`), 'utf8')) as string[]
+    assert.equal(words.length, g.words, `${g.id} count`)
+    assert.equal(new Set(words).size, words.length, `${g.id} has duplicates`)
+    for (const w of words) assert.ok(shardOfWord.has(w), `${g.id} lists missing word ${w}`)
+  }
+  for (const mode of ['origin', 'via'] as const) {
+    const total = Object.values(origins.counts[mode].all).reduce((a, b) => a + b, 0)
+    assert.equal(total, meta.count, `${mode} counts cover every headword once`)
+  }
+})

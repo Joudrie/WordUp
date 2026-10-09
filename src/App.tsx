@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { WordPage } from './components/WordPage.tsx'
+import { OriginsPage, SectionPage } from './components/Origins.tsx'
 import { Home } from './components/Home.tsx'
 
 // Hash routes keep the app working on any static host with no server rules:
 //   #/              search
 //   #/w/<word>      the word page (first sense)
 //   #/w/<word>/<n>  a specific sense of a homograph
+//   #/origins       where English words come from
+//   #/origins/<id>  every word from one origin, most common first
 function useHash(): string {
   const [hash, setHash] = useState(() => window.location.hash)
   useEffect(() => {
@@ -21,15 +24,20 @@ export default function App() {
   const [query, setQuery] = useState('')
 
   const match = /^#\/w\/([^/]+)(?:\/(\d+))?$/.exec(hash)
+  const section = /^#\/origins\/([a-z-]+)$/.exec(hash)
 
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-6 sm:py-10">
       <header className="mb-8 flex items-baseline justify-between">
         <a href="#/" className="headword text-2xl text-[var(--color-brand)]">WordUp</a>
-        <span className="text-sm text-[var(--color-muted)]">Working name</span>
+        <a href="#/origins" className="text-sm text-[var(--color-muted)] underline">Origins</a>
       </header>
 
-      {match ? (
+      {hash === '#/origins' ? (
+        <OriginsPage />
+      ) : section ? (
+        <SectionPage id={section[1]} />
+      ) : match ? (
         <WordPage word={decodeURIComponent(match[1])} sense={match[2] ? Number(match[2]) : null} />
       ) : (
         <Home query={query} onQuery={setQuery} />
