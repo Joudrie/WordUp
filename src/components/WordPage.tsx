@@ -1,6 +1,7 @@
 import type { Confidence, Word } from '../data/types.ts'
 import { useEntries } from '../lib/hooks.ts'
 import { FamilyLine } from './FamilyLine.tsx'
+import { OriginChips } from './Origins.tsx'
 
 // Quotation references are long; end them at a word boundary rather than mid-word.
 function shortSource(source: string, max = 110): string {
@@ -81,6 +82,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
           <span className="rounded-full bg-[var(--color-card)] px-3 py-1 ring-1 ring-[var(--color-rule)]">
             {CONFIDENCE_TEXT[entry.confidence]}
           </span>
+          <OriginChips origin={entry.origin} via={entry.via} />
           {entry.myth && (
             <span className="rounded-full bg-[var(--color-card)] px-3 py-1 font-medium text-[var(--color-latin)] ring-1 ring-[var(--color-rule)]">
               Myth: a popular origin that is false or oversimplified

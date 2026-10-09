@@ -74,6 +74,10 @@ export function Home({ query, onQuery }: { query: string; onQuery: (q: string) =
             <div className="mt-2 flex flex-wrap gap-2">
               {STARTERS.map((w) => <WordLink key={w} word={w} />)}
             </div>
+            <p className="mt-8">
+              <a href="#/origins" className="underline">Where English words come from</a>
+              <span className="text-[var(--color-muted)]">: Greek, French, Norse, Arabic, Native American and more.</span>
+            </p>
           </div>
         )}
 

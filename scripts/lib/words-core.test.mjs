@@ -151,3 +151,13 @@ test('partsHook explains the parts and where the base comes from', () => {
   assert.equal(partsHook(parts, chain), 'Made from un- + happy. happy goes back to Old Norse happ, meaning "luck".')
   assert.equal(partsHook([{ form: 'sun', affix: false }, { form: 'flower', affix: false }]), 'A compound of sun + flower.')
 })
+
+import { nameFromExpansion } from './words-core.mjs'
+
+test('nameFromExpansion keeps clean language names and rejects noise', () => {
+  assert.equal(nameFromExpansion('Classical Nahuatl āhuacatl', 'āhuacatl'), 'Classical Nahuatl')
+  assert.equal(nameFromExpansion('Romani posh', 'posh'), 'Romani')
+  assert.equal(nameFromExpansion('Anglo-Norman noun, non,', 'x'), null)
+  assert.equal(nameFromExpansion('Old Dutch *klokka', '*klokka'), 'Old Dutch')
+  assert.equal(nameFromExpansion('', 'x'), null)
+})

@@ -18,8 +18,9 @@ import { createInterface } from 'node:readline'
 import { parseArgs } from 'node:util'
 import {
   ancestorOf, baseOf, compactRecord, confidenceOf, draftHook, earliestQuote, isFormOnly, keyOf,
-  letterOf, partsHook, partsOf, resolveChain, shardOf,
+  learnLanguageName, letterOf, nameFromExpansion, partsHook, partsOf, resolveChain, shardOf,
 } from './lib/words-core.mjs'
+import { classify, ORIGIN_GROUPS } from './lib/origins.mjs'
 
 const { values } = parseArgs({
   options: {
@@ -63,6 +64,11 @@ for (const file of values.dump) {
     fileLines++
     const raw = JSON.parse(line)
     if (raw.lang_code === 'en') {
+      // Learn language names for codes whose dump we do not load ("nci" -> Classical Nahuatl).
+      for (const t of raw.etymology_templates ?? []) {
+        const code = t.args?.['2']
+        if (code && code !== 'en' && t.expansion) learnLanguageName(code, nameFromExpansion(t.expansion, t.args?.['3']))
+      }
       if (!isTarget(raw.word)) continue
       const gloss = (raw.senses?.[0]?.glosses?.[0] ?? '').trim()
       const list = sectionsByWord.get(raw.word) ?? []
@@ -214,6 +220,15 @@ for (const w of built) {
 const present = new Set(built.map((w) => w.word))
 for (const w of built) w.relatives = w.relatives.filter((r) => present.has(r.word))
 
+// 4c. Sort every word into origin sections (Greek, French, Native American ...) from
+//     its family line. Rebuilt on every run, so new words are always filed.
+for (const w of built) {
+  const { origin, via, groups } = classify(w.chain)
+  w.origin = origin
+  w.via = via
+  w._groups = groups
+}
+
 // 5. Write data shards, per-letter search files and the index.
 rmSync(values.out, { recursive: true, force: true })
 mkdirSync(`${values.out}/w`, { recursive: true })
@@ -226,6 +241,17 @@ for (const w of built) {
   const bucket = byShard.get(s) ?? Object.create(null)
   ;(bucket[w.word] ??= []).push(w)
   byShard.set(s, bucket)
+}
+// A word is filed under its main (first) sense only. Otherwise a rare homograph puts
+// "tell" in Arabic (an archaeological mound) or "fan" in Chinese.
+const groupsByWord = new Map() // word -> sections of its first sense
+const originByWord = new Map() // word -> { origin, via } of its first sense
+for (const w of built) {
+  if (!originByWord.has(w.word)) {
+    groupsByWord.set(w.word, new Set(w._groups))
+    originByWord.set(w.word, { origin: w.origin, via: w.via })
+  }
+  delete w._groups
 }
 for (const [shard, bucket] of byShard) {
   writeFileSync(`${values.out}/w/${shard}.json`, JSON.stringify(bucket))
@@ -242,6 +268,33 @@ for (const word of present) {
 for (const [letter, words] of byLetter) {
   writeFileSync(`${values.out}/i/${letter}.json`, JSON.stringify(words.sort(order)))
 }
+
+// Origin sections: one word list per section, most common first, plus the counts
+// behind the "where English words come from" page (all words and the 10,000 most common).
+mkdirSync(`${values.out}/origins`, { recursive: true })
+const sectionWords = new Map(ORIGIN_GROUPS.map((g) => [g.id, []]))
+for (const [word, set] of groupsByWord) for (const g of set) sectionWords.get(g)?.push(word)
+for (const [id, words] of sectionWords) {
+  writeFileSync(`${values.out}/origins/${id}.json`, JSON.stringify(words.sort(order)))
+}
+const common = new Set([...present].sort(order).slice(0, 10000))
+const tally = (key, only) => {
+  const counts = Object.fromEntries([...ORIGIN_GROUPS.map((g) => [g.id, 0]), ['unknown', 0]])
+  for (const [word, o] of originByWord) if (!only || only.has(word)) counts[o[key]]++
+  return counts
+}
+writeFileSync(
+  `${values.out}/origins/index.json`,
+  JSON.stringify({
+    groups: ORIGIN_GROUPS.map((g) => ({ id: g.id, label: g.label, family: g.family, words: sectionWords.get(g.id).length })),
+    counts: {
+      origin: { all: tally('origin'), common: tally('origin', common) },
+      via: { all: tally('via'), common: tally('via', common) },
+    },
+  }),
+)
+const top = Object.entries(tally('origin')).sort((a, b) => b[1] - a[1]).slice(0, 6)
+console.log(`origins (ultimate, all words): ${top.map(([k, n]) => `${k} ${n}`).join(', ')}`)
 
 writeFileSync(
   `${values.out}/index.json`,
