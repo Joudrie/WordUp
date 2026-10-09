@@ -562,5 +562,778 @@
       "Wiktionary: river",
       "Wiktionary: rīpāria"
     ]
+  },
+  {
+    "word": "sky",
+    "sense": "cloud, the upper air",
+    "hook": "English took 'sky' from Old Norse, where it meant 'cloud'.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "ský",
+        "gloss": "cloud"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "skye"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "sky"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: sky"
+    ]
+  },
+  {
+    "word": "skin",
+    "sense": "the outer covering of the body",
+    "hook": "Its Norse ancestor meant an animal's hide, which is still what English skin first meant.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "skinn",
+        "gloss": "animal hide"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "skin"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "skin"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: skin"
+    ]
+  },
+  {
+    "word": "skirt",
+    "sense": "outer garment hanging from the waist",
+    "hook": "The Norse word for a shirt; English narrowed it to the lower half.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "skyrta",
+        "gloss": "shirt"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "skirte"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "skirt"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: skirt"
+    ]
+  },
+  {
+    "word": "egg",
+    "sense": "the oval thing hens lay",
+    "hook": "Norse settlers' word for egg pushed out the older English form.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "egg"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "egg"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "egg"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: egg"
+    ]
+  },
+  {
+    "word": "window",
+    "sense": "an opening in a wall for light",
+    "hook": "Originally 'wind eye': a hole in a roof or wall that let in air and let out smoke.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "vindauga",
+        "gloss": "wind-eye"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "windowe"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "window"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: window"
+    ]
+  },
+  {
+    "word": "law",
+    "sense": "a rule that a society enforces",
+    "hook": "From a Norse word meaning 'that which is laid down'.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "lag",
+        "gloss": "that which is laid down"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "lawe"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "law"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: law"
+    ]
+  },
+  {
+    "word": "they",
+    "sense": "the plural pronoun for people or things",
+    "hook": "The pronoun 'they' is a Norse import; Old English used a different word, 'hie'.",
+    "chain": [
+      {
+        "family": "norse",
+        "language": "Old Norse",
+        "form": "þeir"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "they"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "they"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: they"
+    ]
+  },
+  {
+    "word": "pork",
+    "sense": "meat from a pig",
+    "hook": "The pig stayed a pig in English; the meat got a French name, from porc.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "porcus",
+        "gloss": "pig"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "porc",
+        "gloss": "pig, pork"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "pork"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "pork"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "beef",
+        "note": "same story: the animal kept its English name"
+      },
+      {
+        "word": "mutton",
+        "note": "same story"
+      }
+    ],
+    "sources": [
+      "Wiktionary: pork"
+    ]
+  },
+  {
+    "word": "mutton",
+    "sense": "meat from a sheep",
+    "hook": "The Latin word for a castrated ram gave English a word for its meat.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Late Latin",
+        "form": "multo",
+        "gloss": "wether, castrated ram"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "mouton",
+        "gloss": "sheep"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "motoun"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "mutton"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "beef",
+        "note": "same story: the animal kept its English name"
+      },
+      {
+        "word": "pork",
+        "note": "same story"
+      }
+    ],
+    "sources": [
+      "Wiktionary: mutton"
+    ]
+  },
+  {
+    "word": "animal",
+    "sense": "a living creature that is not a plant",
+    "hook": "Latin 'animal' meant a living being, from the word for breath.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "anima",
+        "gloss": "breath, soul"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "animal",
+        "gloss": "living being"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "animal"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: animal"
+    ]
+  },
+  {
+    "word": "justice",
+    "sense": "fairness; the law applied fairly",
+    "hook": "From Latin 'iustus', meaning right or lawful.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "iustitia",
+        "gloss": "justice, from iustus 'right'"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "justice"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "justice"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: justice"
+    ]
+  },
+  {
+    "word": "government",
+    "sense": "the body that runs a country",
+    "hook": "A word for governing that started as the word for steering a ship.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "kybernān",
+        "gloss": "to steer a ship"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "gubernāre",
+        "gloss": "to steer"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "governer"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "governen"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "government"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: government"
+    ]
+  },
+  {
+    "word": "nausea",
+    "sense": "the feeling of wanting to be sick",
+    "hook": "Greek for seasickness, from the word for ship.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "nausía",
+        "gloss": "seasickness"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "nausea"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "nausea"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: nausea"
+    ]
+  },
+  {
+    "word": "tragedy",
+    "sense": "a serious drama with a sad ending",
+    "hook": "Probably 'goat song'. Nobody is sure what the goat had to do with it.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "tragōidía",
+        "gloss": "goat song"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "tragedy"
+      }
+    ],
+    "confidence": "disputed",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: tragedy"
+    ]
+  },
+  {
+    "word": "hospital",
+    "sense": "a place where sick people are cared for",
+    "hook": "Originally a guesthouse. A hospital was a place for guests before it was for patients.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "hospes",
+        "gloss": "guest, host"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "hospitāle",
+        "gloss": "guesthouse"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "hospital"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "hospital"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "hospital"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: hospital"
+    ]
+  },
+  {
+    "word": "sugar",
+    "sense": "a sweet substance from cane or beet",
+    "hook": "From a Sanskrit word for grit, passed through Persian and Arabic.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Sanskrit",
+        "form": "śarkarā",
+        "gloss": "grit, sugar"
+      },
+      {
+        "family": "other",
+        "language": "Persian",
+        "form": "shakar"
+      },
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "sukkar"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "sugre"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "sugar"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: sugar"
+    ]
+  },
+  {
+    "word": "coffee",
+    "sense": "the drink made from roasted beans",
+    "hook": "Came into English through Turkish and Dutch from an Arabic word, qahwa.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "qahwa"
+      },
+      {
+        "family": "other",
+        "language": "Turkish",
+        "form": "kahve"
+      },
+      {
+        "family": "germanic",
+        "language": "Dutch",
+        "form": "koffie"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "coffee"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: coffee"
+    ]
+  },
+  {
+    "word": "magazine",
+    "sense": "a periodical with articles and pictures",
+    "hook": "Magazine was first a storehouse, from an Arabic word for storehouses.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "makhāzin",
+        "gloss": "storehouses"
+      },
+      {
+        "family": "latin",
+        "language": "Italian",
+        "form": "magazzino",
+        "gloss": "storehouse"
+      },
+      {
+        "family": "french",
+        "language": "French",
+        "form": "magasin",
+        "gloss": "store"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "magazine"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: magazine"
+    ]
+  },
+  {
+    "word": "sofa",
+    "sense": "a long seat with a back and arms",
+    "hook": "From an Arabic word for a bench with a raised platform.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "ṣuffa",
+        "gloss": "bench, raised platform"
+      },
+      {
+        "family": "other",
+        "language": "Turkish",
+        "form": "sofa"
+      },
+      {
+        "family": "french",
+        "language": "French",
+        "form": "sofa"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "sofa"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: sofa"
+    ]
+  },
+  {
+    "word": "tariff",
+    "sense": "a tax on imported goods, or a price list",
+    "hook": "From an Arabic word for notification, first used for official price lists.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "taʿrīf",
+        "gloss": "notification"
+      },
+      {
+        "family": "latin",
+        "language": "Italian",
+        "form": "tariffa"
+      },
+      {
+        "family": "french",
+        "language": "French",
+        "form": "tarif"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "tariff"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: tariff"
+    ]
+  },
+  {
+    "word": "democracy",
+    "sense": "government by the people",
+    "hook": "People power, from Greek 'dēmos' (people) and 'kratos' (power).",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "dēmokratía",
+        "gloss": "people power, from dēmos and kratos"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "democratie"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "democracy"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: democracy"
+    ]
+  },
+  {
+    "word": "philosophy",
+    "sense": "the study of big questions about knowledge and life",
+    "hook": "Greek for 'love of wisdom'.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "philosophía",
+        "gloss": "love of wisdom"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "philosophie"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "philosophy"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: philosophy"
+    ]
+  },
+  {
+    "word": "alphabet",
+    "sense": "a set of letters for writing a language",
+    "hook": "Named after the first two Greek letters, alpha and beta.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "alphábētos",
+        "gloss": "from alpha and beta"
+      },
+      {
+        "family": "latin",
+        "language": "Late Latin",
+        "form": "alphabetum"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "alphabet"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: alphabet"
+    ]
+  },
+  {
+    "word": "hippopotamus",
+    "sense": "a large African river mammal",
+    "hook": "Greek for 'river horse'.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "hippopotámos",
+        "gloss": "river horse, from hippos and potamos"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "hippopotamus"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "hippopotamus"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: hippopotamus"
+    ]
   }
 ]
