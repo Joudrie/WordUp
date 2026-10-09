@@ -1,20 +1,24 @@
-// Builds WordUp's word data from the kaikki.org English Wiktionary dump.
+// Builds WordUp's word data from the kaikki.org Wiktionary dumps.
 //
-//   node --max-old-space-size=8192 scripts/build-words.mjs \
+//   node --max-old-space-size=12288 scripts/build-words.mjs \
 //     --dump English.jsonl --dump Latin.jsonl --dump OldEnglish.jsonl ... \
-//     --freq en_50k.txt --count 20000 --out public/data
+//     --freq en_50k.txt --all --out public/data
 //
 // The English dump supplies the headwords. The other-language dumps supply the
 // ancestor stages (Latin furca, Old English forca, ...) that the chains walk through.
+// --all takes every plain English word; otherwise the top --count words by frequency.
 //
-// Output: <out>/index.json (every headword, sorted) and <out>/w/<letter>.json
-// (the Word entries for that letter, keyed by headword).
+// Output:
+//   <out>/index.json         word count, license, build date
+//   <out>/i/<letter>.json    every headword for a first letter, most common first
+//   <out>/w/<two>.json       Word entries for headwords starting with those two letters
 // Data is derived from Wiktionary and is licensed CC BY-SA 4.0.
-import { createReadStream, readFileSync, mkdirSync, writeFileSync } from 'node:fs'
+import { createReadStream, readFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { createInterface } from 'node:readline'
 import { parseArgs } from 'node:util'
 import {
-  ancestorOf, compactRecord, confidenceOf, draftHook, isFormOnly, keyOf, resolveChain, shardOf, sourceLinks,
+  ancestorOf, compactRecord, confidenceOf, draftHook, earliestQuote, isFormOnly, keyOf,
+  letterOf, resolveChain, shardOf,
 } from './lib/words-core.mjs'
 
 const { values } = parseArgs({
@@ -22,28 +26,33 @@ const { values } = parseArgs({
     dump: { type: 'string', multiple: true },
     freq: { type: 'string' },
     count: { type: 'string', default: '20000' },
+    all: { type: 'boolean', default: false },
     out: { type: 'string', default: 'public/data' },
   },
 })
 if (!values.dump?.length || !values.freq) {
-  console.error('usage: build-words.mjs --dump <jsonl> --freq <wordlist> [--count N] [--out dir]')
+  console.error('usage: build-words.mjs --dump <jsonl>... --freq <wordlist> [--all | --count N] [--out dir]')
   process.exit(1)
 }
 
-// 1. Target headwords: the most frequent plain-letter words in the list.
-const targets = new Set()
+const PLAIN = /^[a-z]+$/
+
+// 1. Frequency ranks, used to order search suggestions and (without --all) to pick words.
+const rank = new Map()
 for (const line of readFileSync(values.freq, 'utf8').split('\n')) {
   const word = line.trim().split(/\s+/)[0]?.toLowerCase()
-  if (!word || !/^[a-z]+$/.test(word)) continue
-  if (word.length < 2 && word !== 'a' && word !== 'i') continue
-  targets.add(word)
-  if (targets.size >= Number(values.count)) break
+  if (!word || !PLAIN.test(word) || rank.has(word)) continue
+  rank.set(word, rank.size)
 }
-console.log(`targets: ${targets.size}`)
+const topN = Number(values.count)
+const isTarget = values.all
+  ? (word) => PLAIN.test(word)
+  : (word) => (rank.get(word) ?? Infinity) < topN
+console.log(values.all ? 'targets: every plain English word' : `targets: top ${topN} by frequency`)
 
-// 2. One pass over the dump. Keep English sections for targets and a compact
-//    record of every non-English entry (the ancestors we may need to walk).
-const englishSections = new Map() // word -> raw English sections
+// 2. One pass over the dumps. English sections are compacted as they are read so the
+//    whole language fits in memory; other languages become ancestor records.
+const sectionsByWord = new Map() // word -> compact English sections
 const ancestors = new Map() // "lang:term" -> compact record
 let lines = 0
 for (const file of values.dump) {
@@ -54,10 +63,19 @@ for (const file of values.dump) {
     fileLines++
     const raw = JSON.parse(line)
     if (raw.lang_code === 'en') {
-      if (!targets.has(raw.word)) continue
-      const list = englishSections.get(raw.word) ?? []
-      list.push(raw)
-      englishSections.set(raw.word, list)
+      if (!isTarget(raw.word)) continue
+      const gloss = (raw.senses?.[0]?.glosses?.[0] ?? '').trim()
+      const list = sectionsByWord.get(raw.word) ?? []
+      list.push({
+        pos: raw.pos,
+        n: raw.etymology_number ?? '1',
+        gloss,
+        formOnly: isFormOnly(raw),
+        ancestor: ancestorOf(raw.etymology_templates),
+        hedge: confidenceOf(raw.etymology_text, true),
+        quote: earliestQuote(raw),
+      })
+      sectionsByWord.set(raw.word, list)
       continue
     }
     const key = keyOf(raw.lang_code, raw.word)
@@ -69,36 +87,41 @@ for (const file of values.dump) {
   lines += fileLines
   console.log(`read ${file}: ${fileLines} lines`)
 }
-console.log(`lines: ${lines}, English targets found: ${englishSections.size}, ancestors: ${ancestors.size}`)
+console.log(`lines: ${lines}, English headwords: ${sectionsByWord.size}, ancestors: ${ancestors.size}`)
 
 // 3. Group sections into Word entries. Homographs are separate etymology sections.
 const lookup = (key) => ancestors.get(key)
 const parentIndex = new Map() // immediate ancestor key -> headwords that share it
+const earliestByWord = new Map() // word -> earliest quotation across its sections
 let built = []
 
-for (const [word, sections] of englishSections) {
-  // Drop form-only senses when a real sense exists for the same spelling.
-  const real = sections.filter((s) => !isFormOnly(s))
+const earlier = (a, b) => (!a ? b : !b ? a : b.year < a.year ? b : a)
+
+for (const [word, sections] of sectionsByWord) {
+  // Words that are only plurals, inflections or spellings of other words get no page.
+  const real = sections.filter((s) => !s.formOnly)
+  if (!real.length) continue
+
   const byNumber = new Map()
-  for (const s of real.length ? real : sections) {
-    const n = s.etymology_number ?? '1'
-    const group = byNumber.get(n) ?? []
+  for (const s of real) {
+    const group = byNumber.get(s.n) ?? []
     group.push(s)
-    byNumber.set(n, group)
+    byNumber.set(s.n, group)
   }
   for (const [, group] of [...byNumber].sort((a, b) => a[0].localeCompare(b[0]))) {
     const first = group[0]
-    const ancestor = ancestorOf(first.etymology_templates)
-    const chain = ancestor
-      ? resolveChain(word, ancestor, lookup)
+    const chain = first.ancestor
+      ? resolveChain(word, first.ancestor, lookup)
       : [{ family: 'other', language: 'Modern English', form: word }]
-    const gloss = (first.senses?.[0]?.glosses?.[0] ?? '').trim()
+    const quote = group.reduce((acc, s) => earlier(acc, s.quote), null)
+    earliestByWord.set(word, earlier(earliestByWord.get(word), quote))
+    const gloss = first.gloss
     const sense = gloss ? `${first.pos}: ${gloss.length > 60 ? `${gloss.slice(0, 57).trimEnd()}…` : gloss}` : first.pos
-    if (ancestor) {
-      const pk = keyOf(ancestor.lang, ancestor.term)
-      const set = parentIndex.get(pk) ?? new Set()
+    const parent = first.ancestor ? keyOf(first.ancestor.lang, first.ancestor.term) : null
+    if (parent) {
+      const set = parentIndex.get(parent) ?? new Set()
       set.add(word)
-      parentIndex.set(pk, set)
+      parentIndex.set(parent, set)
     }
     built.push({
       word,
@@ -106,26 +129,35 @@ for (const [word, sections] of englishSections) {
       hook: draftHook(chain),
       draft: true,
       chain,
-      confidence: confidenceOf(first.etymology_text, chain.length > 1),
-      firstUse: null,
+      confidence: chain.length > 1 ? first.hedge : 'unknown',
+      firstUse: quote,
       relatives: [],
-      sources: sourceLinks(word),
-      _parent: ancestor ? keyOf(ancestor.lang, ancestor.term) : null,
+      sources: ['Wiktionary'],
+      _parent: parent,
     })
   }
 }
+sectionsByWord.clear()
+ancestors.clear()
 
 // 3b. Hand-checked entries (content/curated-words.json) replace the generated drafts
-//     for the same headword. They are not marked as drafts.
+//     for the same headword. They keep their own text but borrow the quotation date
+//     when they have none.
 const curated = JSON.parse(readFileSync('content/curated-words.json', 'utf8'))
 const curatedWords = new Set(curated.map((w) => w.word))
 built = [
   ...built.filter((w) => !curatedWords.has(w.word)),
-  ...curated.map((w) => ({ ...w, draft: undefined, _parent: null })),
+  ...curated.map((w) => ({
+    ...w,
+    firstUse: w.firstUse ?? earliestByWord.get(w.word) ?? null,
+    draft: undefined,
+    _parent: null,
+  })),
 ]
 console.log(`curated entries applied: ${curated.length}`)
 
-// 4. Relatives: other headwords in the set that share the same immediate ancestor.
+// 4. Relatives: other headwords that share the same immediate ancestor, then keep
+//    only links to words we publish.
 for (const w of built) {
   if (w._parent) {
     const others = [...(parentIndex.get(w._parent) ?? [])].filter((x) => x !== w.word).slice(0, 6)
@@ -133,33 +165,48 @@ for (const w of built) {
   }
   delete w._parent
 }
-
-// 4b. Relatives must point at words we publish. Drop the rest.
 const present = new Set(built.map((w) => w.word))
 for (const w of built) w.relatives = w.relatives.filter((r) => present.has(r.word))
 
-// 5. Write shards and the index.
+// 5. Write data shards, per-letter search files and the index.
+rmSync(values.out, { recursive: true, force: true })
+mkdirSync(`${values.out}/w`, { recursive: true })
+mkdirSync(`${values.out}/i`, { recursive: true })
+
 const byShard = new Map()
 for (const w of built) {
   const s = shardOf(w.word)
-  const bucket = byShard.get(s) ?? {}
-  bucket[w.word] = [...(bucket[w.word] ?? []), w]
+  // No prototype: headwords such as "constructor" must not collide with Object's own keys.
+  const bucket = byShard.get(s) ?? Object.create(null)
+  ;(bucket[w.word] ??= []).push(w)
   byShard.set(s, bucket)
 }
-mkdirSync(`${values.out}/w`, { recursive: true })
 for (const [shard, bucket] of byShard) {
   writeFileSync(`${values.out}/w/${shard}.json`, JSON.stringify(bucket))
 }
-const words = [...new Set(built.map((w) => w.word))].sort()
+
+// Most common words first, then shorter before longer, then alphabetical.
+const order = (a, b) =>
+  (rank.get(a) ?? Infinity) - (rank.get(b) ?? Infinity) || a.length - b.length || a.localeCompare(b)
+const byLetter = new Map()
+for (const word of present) {
+  const l = letterOf(word)
+  ;(byLetter.get(l) ?? byLetter.set(l, []).get(l)).push(word)
+}
+for (const [letter, words] of byLetter) {
+  writeFileSync(`${values.out}/i/${letter}.json`, JSON.stringify(words.sort(order)))
+}
+
 writeFileSync(
   `${values.out}/index.json`,
   JSON.stringify({
     generated: new Date().toISOString().slice(0, 10),
     license: 'Derived from Wiktionary, CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)',
-    count: words.length,
-    words,
+    count: present.size,
+    letters: [...byLetter.keys()].sort(),
   }),
 )
 
 const withChain = built.filter((w) => w.chain.length > 1).length
-console.log(`wrote ${built.length} entries for ${words.length} headwords (${withChain} with an ancestor chain)`)
+const withDate = built.filter((w) => w.firstUse).length
+console.log(`wrote ${built.length} entries for ${present.size} headwords (${withChain} with an ancestor chain, ${withDate} with a dated quotation) in ${byShard.size} shards`)

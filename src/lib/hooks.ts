@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react'
 import type { Word } from '../data/types.ts'
-import { loadEntries, loadIndex, type WordIndex } from './data.ts'
+import { loadEntries, loadLetter, type WordIndex } from './data.ts'
 
-export function useIndex(): WordIndex | null {
-  const [index, setIndex] = useState<WordIndex | null>(null)
+/** The search index for one first letter; null while it loads. */
+export function useLetterIndex(letter: string | null): WordIndex | null {
+  const [state, setState] = useState<{ letter: string; index: WordIndex } | null>(null)
   useEffect(() => {
+    if (!letter) return
     let live = true
-    loadIndex().then((i) => live && setIndex(i)).catch(() => live && setIndex(null))
+    loadLetter(letter).then((index) => live && setState({ letter, index }))
     return () => {
       live = false
     }
-  }, [])
-  return index
+  }, [letter])
+  if (!letter || !state || state.letter !== letter) return null
+  return state.index
 }
 
-export interface Entries {
-  /** null while loading. */
-  entries: Word[] | null
-}
-
-export function useEntries(word: string | null): Entries {
+/** All senses of a headword; null while they load. */
+export function useEntries(word: string | null): { entries: Word[] | null } {
   const [state, setState] = useState<{ word: string; entries: Word[] } | null>(null)
   useEffect(() => {
     if (!word) return

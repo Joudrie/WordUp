@@ -1,6 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
-import { liveSearch, type LiveView } from './lib/search.ts'
-import { useIndex } from './lib/hooks.ts'
+import { useEffect, useState } from 'react'
 import { WordPage } from './components/WordPage.tsx'
 import { Home } from './components/Home.tsx'
 
@@ -20,9 +18,7 @@ function useHash(): string {
 
 export default function App() {
   const hash = useHash()
-  const index = useIndex()
   const [query, setQuery] = useState('')
-  const view: LiveView = useMemo(() => (index ? liveSearch(index, query) : { kind: 'empty' }), [index, query])
 
   const match = /^#\/w\/([^/]+)(?:\/(\d+))?$/.exec(hash)
 
@@ -33,12 +29,10 @@ export default function App() {
         <span className="text-sm text-[var(--color-muted)]">Working name</span>
       </header>
 
-      {!index ? (
-        <p className="text-[var(--color-muted)]">Loading words…</p>
-      ) : match ? (
-        <WordPage index={index} word={decodeURIComponent(match[1])} sense={match[2] ? Number(match[2]) : null} />
+      {match ? (
+        <WordPage word={decodeURIComponent(match[1])} sense={match[2] ? Number(match[2]) : null} />
       ) : (
-        <Home index={index} query={query} onQuery={setQuery} view={view} />
+        <Home query={query} onQuery={setQuery} />
       )}
 
       <footer className="mt-16 space-y-2 border-t border-[var(--color-rule)] pt-4 text-sm text-[var(--color-muted)]">

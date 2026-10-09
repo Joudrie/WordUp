@@ -17,10 +17,15 @@ Done:
 - Homograph picker: a spelling with several unrelated origins shows the picker before any story.
 - Hash routing (`#/w/bear/1`), so the app works on any static host with no server rules.
 - Light and dark color tokens, reduced-motion support, phone-width layout.
-- Data pipeline: `scripts/build-words.mjs` builds about 21,700 entries for the 20,000 most common
-  English headwords from the kaikki.org Wiktionary dumps, with ancestor chains through Latin,
-  Old/Middle English, Old French, Old Norse, Ancient Greek, Arabic and the proto-languages.
-- Data is split into one file per first letter (`public/data/w/`) plus `public/data/index.json`.
+- Data pipeline: `scripts/build-words.mjs --all` builds an entry for every plain English word in
+  the kaikki.org Wiktionary dump, with ancestor chains through Latin, Old/Middle English, Old
+  French, Old Norse, Ancient Greek, Arabic and the proto-languages.
+- First recorded use: the earliest dated quotation Wiktionary has for the word, shown as "the
+  earliest example we know of" with the quote and its source.
+- Data layout: `public/data/i/<letter>.json` lists every headword for a first letter, most common
+  first (search loads one on the first keystroke); `public/data/w/<two letters>.json` holds the
+  entries; `public/data/index.json` has the count and license.
+- Hand-checked entries live in `content/curated-words.json` and replace the generated drafts.
 
 Not done yet:
 
@@ -28,7 +33,8 @@ Not done yet:
   the chain comes straight from Wiktionary, so some are wrong. Known examples: *algorithm* goes
   through Anglo-Norman and never reaches Arabic, and *fork* starts with a stray "la *furcō" stage.
   The brief requires review of the top ~1,000 most-visited words before shipping.
-- First recorded use. Left empty until verified against dated quotations.
+- First recorded use only covers words Wiktionary quotes with a date. Etymonline and the OED have
+  better dates, but their terms do not allow copying.
 - About 50 hand-written stories and the rabbit-hole pages.
 - Word of the Day pages and the phase 2 and 3 features.
 - Reddit feedback before public launch.
@@ -38,9 +44,9 @@ Not done yet:
 Rebuild the data:
 
     scripts/fetch-wiktionary.sh data        # about 3 GB of dumps, into ./data (git-ignored)
-    node --max-old-space-size=8192 scripts/build-words.mjs \
+    node --max-old-space-size=12288 scripts/build-words.mjs \
       --dump data/English.jsonl --dump data/Latin.jsonl ... \
-      --freq data/en_50k.txt --count 20000 --out public/data
+      --freq data/en_50k.txt --all --out public/data
 
 Headwords come from the English dump. Ancestor stages come from the other-language dumps.
 Frequency ranks come from hermitdave/FrequencyWords (2018, en_50k).

@@ -128,14 +128,44 @@ export function compactRecord(raw) {
   }
 }
 
-/** Shard file name for a headword: first letter, or "other". */
+/** Data shard for a headword: its first two letters ("fo"), or "f_" for one-letter words. */
 export function shardOf(word) {
-  const c = word[0]
-  return /[a-z]/.test(c) ? c : 'other'
+  if (/^[a-z]{2}/.test(word)) return word.slice(0, 2)
+  if (/^[a-z]/.test(word)) return `${word[0]}_`
+  return 'other'
 }
 
-export function sourceLinks(word) {
-  return [`Wiktionary: ${word} (https://en.wiktionary.org/wiki/${encodeURIComponent(word)})`]
+/** Search-index file for a headword: its first letter. */
+export function letterOf(word) {
+  return /^[a-z]/.test(word) ? word[0] : 'other'
+}
+
+// A quotation reference starts with its date: "1879, R. Jefferies, ...",
+// "c. 1606–1607 (date written), William Shakespeare, ...". Take the first year.
+const QUOTE_YEAR = /^(?:c\.\s*|a\.\s*|ante\s+|circa\s+)?(\d{3,4})\b/
+
+/**
+ * The earliest dated quotation in a raw section, as { year, quote, source }, or null.
+ * This is the earliest example Wiktionary quotes, not necessarily the first use ever.
+ */
+export function earliestQuote(raw) {
+  let best = null
+  for (const sense of raw.senses ?? []) {
+    for (const ex of sense.examples ?? []) {
+      if (ex.type !== 'quotation' || !ex.ref) continue
+      const m = QUOTE_YEAR.exec(ex.ref.trim())
+      if (!m) continue
+      const year = Number(m[1])
+      if (year > new Date().getFullYear()) continue
+      if (best && best.year <= year) continue
+      best = {
+        year,
+        ...(ex.text ? { quote: ex.text.replace(/\s+/g, ' ').trim().slice(0, 200) } : {}),
+        source: ex.ref.replace(/,?\s*→[A-Z]+:?/g, '').replace(/\s+/g, ' ').trim().slice(0, 160),
+      }
+    }
+  }
+  return best
 }
 
 /** A short, sourced sentence used as the hook until a human writes one. */

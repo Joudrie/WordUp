@@ -1,7 +1,13 @@
 import type { Confidence, Word } from '../data/types.ts'
-import type { WordIndex } from '../lib/data.ts'
 import { useEntries } from '../lib/hooks.ts'
 import { FamilyLine } from './FamilyLine.tsx'
+
+// Quotation references are long; end them at a word boundary rather than mid-word.
+function shortSource(source: string, max = 110): string {
+  if (source.length <= max) return source
+  const cut = source.slice(0, max)
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(', '), cut.lastIndexOf(' '))).replace(/[,;:\s]+$/, '')}…`
+}
 
 const CONFIDENCE_TEXT: Record<Confidence, string> = {
   known: 'Known origin',
@@ -27,7 +33,7 @@ function Picker({ word, entries }: { word: string; entries: Word[] }) {
   )
 }
 
-export function WordPage({ index, word, sense }: { index: WordIndex; word: string; sense: number | null }) {
+export function WordPage({ word, sense }: { word: string; sense: number | null }) {
   const { entries } = useEntries(word)
 
   if (entries === null) {
@@ -103,10 +109,17 @@ export function WordPage({ index, word, sense }: { index: WordIndex; word: strin
       <section aria-labelledby="first-use">
         <h2 id="first-use" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">First recorded use</h2>
         {entry.firstUse ? (
-          <p className="mt-2">
-            {entry.firstUse.year}, the earliest example we know of
-            {entry.firstUse.quote && <>: <q>{entry.firstUse.quote}</q></>}
-          </p>
+          <div className="mt-2 space-y-1">
+            <p>
+              <span className="headword text-2xl">{entry.firstUse.year}</span>{' '}
+              <span className="text-[var(--color-muted)]">is the earliest example we know of.</span>
+            </p>
+            {entry.firstUse.quote && <p className="italic">"{entry.firstUse.quote}"</p>}
+            {entry.firstUse.source && <p className="text-sm text-[var(--color-muted)]">{shortSource(entry.firstUse.source)}</p>}
+            <p className="text-sm">
+              <a className="underline" href={`https://en.wiktionary.org/wiki/${encodeURIComponent(entry.word)}`}>More quotations on Wiktionary</a>
+            </p>
+          </div>
         ) : (
           <p className="mt-2 text-[var(--color-muted)]">Not checked yet.</p>
         )}
@@ -125,11 +138,7 @@ export function WordPage({ index, word, sense }: { index: WordIndex; word: strin
           <ul className="mt-3 flex flex-wrap gap-2">
             {entry.relatives.map((r) => (
               <li key={r.word}>
-                {index.set.has(r.word) ? (
-                  <a href={`#/w/${r.word}`} className="inline-block rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">{r.word}</a>
-                ) : (
-                  <span className="inline-block rounded-full border border-[var(--color-rule)] px-3 py-1">{r.word}</span>
-                )}
+                <a href={`#/w/${r.word}`} className="inline-block rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">{r.word}</a>
                 {r.note && <span className="ml-1 text-sm text-[var(--color-muted)]">{r.note}</span>}
               </li>
             ))}
@@ -151,7 +160,15 @@ export function WordPage({ index, word, sense }: { index: WordIndex; word: strin
       <footer className="border-t border-[var(--color-rule)] pt-4 text-sm text-[var(--color-muted)]">
         <h2 className="font-semibold">Sources</h2>
         <ul className="mt-2 list-disc pl-5">
-          {entry.sources.map((s) => <li key={s}>{s}</li>)}
+          {entry.sources.map((s) => (
+            <li key={s}>
+              {s === 'Wiktionary' ? (
+                <a className="underline" href={`https://en.wiktionary.org/wiki/${encodeURIComponent(entry.word)}`}>Wiktionary: {entry.word}</a>
+              ) : (
+                s
+              )}
+            </li>
+          ))}
         </ul>
         <p className="mt-4">
           <a className="underline" href="#/">Search again</a>

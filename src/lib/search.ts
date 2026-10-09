@@ -11,7 +11,7 @@ export function normalizeQuery(raw: string): string {
   return raw.trim().toLowerCase().replace(/[^a-z'-]/g, '')
 }
 
-/** Every headword starting with `prefix`, excluding `prefix` itself. */
+/** Headwords starting with `prefix` (most common first), excluding `prefix` itself. */
 export function prefixMatches(index: WordIndex, prefix: string, limit = 8): string[] {
   if (!prefix) return []
   const out: string[] = []

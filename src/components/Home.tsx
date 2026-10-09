@@ -1,7 +1,8 @@
-import type { LiveView } from '../lib/search.ts'
-import type { WordIndex } from '../lib/data.ts'
+import { useMemo } from 'react'
+import { liveSearch, normalizeQuery, type LiveView } from '../lib/search.ts'
+import { letterOf } from '../lib/shard.ts'
 import type { Word } from '../data/types.ts'
-import { useEntries } from '../lib/hooks.ts'
+import { useEntries, useLetterIndex } from '../lib/hooks.ts'
 
 const STARTERS = ['fork', 'bear', 'algorithm', 'beef', 'posh']
 
@@ -41,7 +42,13 @@ function ExactCard({ word }: { word: string }) {
   )
 }
 
-export function Home({ query, onQuery, view }: { index: WordIndex; query: string; onQuery: (q: string) => void; view: LiveView }) {
+export function Home({ query, onQuery }: { query: string; onQuery: (q: string) => void }) {
+  const letters = normalizeQuery(query)
+  const letterIndex = useLetterIndex(letters ? letterOf(letters) : null)
+  const view: LiveView | null = useMemo(
+    () => (!letters ? { kind: 'empty' } : letterIndex ? liveSearch(letterIndex, letters) : null),
+    [letters, letterIndex],
+  )
   return (
     <section>
       <label htmlFor="word" className="sr-only">Type a word</label>
@@ -58,7 +65,9 @@ export function Home({ query, onQuery, view }: { index: WordIndex; query: string
       />
 
       <div className="mt-8 min-h-40" aria-live="polite">
-        {view.kind === 'empty' && (
+        {!view && <p className="text-[var(--color-muted)]">Loading…</p>}
+
+        {view?.kind === 'empty' && (
           <div>
             <p className="text-lg">Type any English word. Its story appears as you type.</p>
             <p className="mt-4 text-sm text-[var(--color-muted)]">Try:</p>
@@ -68,7 +77,7 @@ export function Home({ query, onQuery, view }: { index: WordIndex; query: string
           </div>
         )}
 
-        {view.kind === 'guess' && (
+        {view?.kind === 'guess' && (
           <div>
             <p className="headword text-3xl">{view.letters}</p>
             <p className="mt-2 italic text-[var(--color-muted)]">No complete word yet, so the best guess leads.</p>
@@ -80,9 +89,9 @@ export function Home({ query, onQuery, view }: { index: WordIndex; query: string
           </div>
         )}
 
-        {view.kind === 'exact' && <ExactCard word={view.letters} />}
+        {view?.kind === 'exact' && <ExactCard word={view.letters} />}
 
-        {(view.kind === 'exact' || view.kind === 'guess') && view.underneath.length > 0 && (
+        {(view?.kind === 'exact' || view?.kind === 'guess') && view.underneath.length > 0 && (
           <div className="mt-6">
             <p className="text-sm text-[var(--color-muted)]">Longer words that start the same way:</p>
             <div className="mt-2 flex flex-wrap gap-2">

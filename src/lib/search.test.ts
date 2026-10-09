@@ -6,7 +6,6 @@ const words = ['fork', 'for', 'forest', 'form', 'bear', 'beef', 'algorithm']
 const index = {
   sorted: [...words].sort((a, b) => a.length - b.length || a.localeCompare(b)),
   set: new Set(words),
-  license: 'test',
 }
 
 test('normalizeQuery lowercases and strips stray characters', () => {
