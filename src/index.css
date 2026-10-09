@@ -20,26 +20,7 @@
   --color-neutral: #5b6577;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-page: #12161d;
-    --color-ink: #e8ecf2;
-    --color-muted: #9aa5b8;
-    --color-rule: #2c3442;
-    --color-brand: #5fc4cc;
-    --color-brand-ink: #0b1116;
-    --color-card: #1a202b;
-
-    --color-latin: #f08a5d;
-    --color-french: #b899ff;
-    --color-germanic: #6fd08c;
-    --color-greek: #7fb0ff;
-    --color-arabic: #e6b85c;
-    --color-norse: #6fd0e6;
-    --color-neutral: #9aa5b8;
-  }
-}
-
+/* Light is the default for everyone. Dark only when chosen with the header button. */
 :root[data-theme="dark"] {
   --color-page: #12161d;
   --color-ink: #e8ecf2;

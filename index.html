@@ -8,6 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400..800&display=swap" rel="stylesheet" />
     <title>WordUp</title>
+    <script>
+      // Apply a saved dark-mode choice before the page draws, so there is no light flash.
+      try {
+        if (localStorage.getItem('wordup-theme') === 'dark') document.documentElement.dataset.theme = 'dark'
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

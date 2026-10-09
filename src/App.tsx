@@ -11,6 +11,7 @@ import { LabPage } from './components/Lab.tsx'
 import { OldEnglishPage } from './components/OldEnglish.tsx'
 import { StoriesPage, StoryPage } from './components/Stories.tsx'
 import { PlayPage } from './components/Play.tsx'
+import { ThemeToggle } from './components/ThemeToggle.tsx'
 
 // Hash routes keep the app working on any static host with no server rules.
 function useHash(): string {
@@ -63,6 +64,7 @@ export default function App() {
     <div className="mx-auto min-h-screen max-w-3xl px-4 pb-28 pt-6 sm:pb-10 sm:pt-8">
       <header className="mb-8 flex items-center justify-between gap-4">
         <a href="#/" className="headword text-2xl text-[var(--color-brand)]">WordUp</a>
+        <div className="flex items-center gap-4">
         <nav aria-label="Main" className="hidden gap-6 sm:flex">
           {TABS.map(({ href, label, match }) => (
             <a key={href} href={href} aria-current={match.test(hash) ? 'page' : undefined}
@@ -71,6 +73,8 @@ export default function App() {
             </a>
           ))}
         </nav>
+        <ThemeToggle />
+        </div>
       </header>
 
       <main>{route(hash, query, setQuery)}</main>
