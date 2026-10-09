@@ -114,14 +114,15 @@
     ],
     "confidence": "likely",
     "firstUse": null,
-    "relatives": [
-      {
-        "word": "arctic",
-        "note": "from Greek arktos, 'the Bear'"
-      }
-    ],
+    "relatives": [],
     "sources": [
       "Wiktionary: bear (noun)"
+    ],
+    "lookalikes": [
+      {
+        "word": "arctic",
+        "note": "from Greek arktos, the old Indo-European word for bear that English stopped using"
+      }
     ]
   },
   {
@@ -1128,7 +1129,7 @@
         "gloss": "storehouses"
       },
       {
-        "family": "latin",
+        "family": "other",
         "language": "Italian",
         "form": "magazzino",
         "gloss": "storehouse"
@@ -1198,7 +1199,7 @@
         "gloss": "notification"
       },
       {
-        "family": "latin",
+        "family": "other",
         "language": "Italian",
         "form": "tariffa"
       },
@@ -1334,6 +1335,864 @@
     "relatives": [],
     "sources": [
       "Wiktionary: hippopotamus"
+    ]
+  },
+  {
+    "word": "burden",
+    "sense": "a heavy load",
+    "hook": "A burden is literally 'something carried', from the same root as bear.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Proto-Indo-European",
+        "form": "bʰer-",
+        "gloss": "to carry",
+        "reconstructed": true
+      },
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "byrþen",
+        "gloss": "load, burden"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "burthen"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "burden"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "bear",
+        "note": "to carry, from the same root"
+      },
+      {
+        "word": "transfer",
+        "note": "from the same root, through Latin"
+      },
+      {
+        "word": "metaphor",
+        "note": "from the same root, through Greek"
+      }
+    ],
+    "sources": [
+      "Wiktionary: burden"
+    ]
+  },
+  {
+    "word": "transfer",
+    "sense": "to move from one place to another",
+    "hook": "Latin for 'carry across'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Proto-Indo-European",
+        "form": "bʰer-",
+        "gloss": "to carry",
+        "reconstructed": true
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "ferre",
+        "gloss": "to carry"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "trānsferre",
+        "gloss": "to carry across"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "transfer"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "bear",
+        "note": "to carry, from the same root"
+      },
+      {
+        "word": "burden",
+        "note": "from the same root"
+      },
+      {
+        "word": "metaphor",
+        "note": "the Greek version of the same idea"
+      }
+    ],
+    "sources": [
+      "Wiktionary: transfer"
+    ]
+  },
+  {
+    "word": "metaphor",
+    "sense": "a figure of speech comparing two things",
+    "hook": "Greek for 'carrying over': a metaphor carries a meaning from one thing to another.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Proto-Indo-European",
+        "form": "bʰer-",
+        "gloss": "to carry",
+        "reconstructed": true
+      },
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "phérein",
+        "gloss": "to carry"
+      },
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "metaphorá",
+        "gloss": "a carrying over"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "metaphora"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "metaphor"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "transfer",
+        "note": "the Latin version of the same idea"
+      },
+      {
+        "word": "bear",
+        "note": "to carry, from the same root"
+      },
+      {
+        "word": "burden",
+        "note": "from the same root"
+      }
+    ],
+    "sources": [
+      "Wiktionary: metaphor"
+    ]
+  },
+  {
+    "word": "arctic",
+    "sense": "the region around the North Pole",
+    "hook": "The Arctic is the land under the Bear, named after the constellation.",
+    "chain": [
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "árktos",
+        "gloss": "bear"
+      },
+      {
+        "family": "greek",
+        "language": "Ancient Greek",
+        "form": "arktikós",
+        "gloss": "of the Bear, northern"
+      },
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "arcticus"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "arctic"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: arctic"
+    ],
+    "lookalikes": [
+      {
+        "word": "bear",
+        "note": "the English animal word comes from a different root; arktos is the old word English stopped using"
+      }
+    ]
+  },
+  {
+    "word": "nadir",
+    "sense": "the lowest point",
+    "hook": "Arabic for 'opposite': the point directly below you, opposite the zenith.",
+    "chain": [
+      {
+        "family": "arabic",
+        "language": "Arabic",
+        "form": "naẓīr",
+        "gloss": "opposite"
+      },
+      {
+        "family": "latin",
+        "language": "Medieval Latin",
+        "form": "nadir"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "nadir"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "zenith",
+        "note": "the opposite point, also from Arabic"
+      }
+    ],
+    "sources": [
+      "Wiktionary: nadir"
+    ]
+  },
+  {
+    "word": "kindergarten",
+    "sense": "a school class for young children",
+    "hook": "German for 'children's garden', a name chosen by Friedrich Fröbel in 1840.",
+    "chain": [
+      {
+        "family": "germanic",
+        "language": "German",
+        "form": "Kindergarten",
+        "gloss": "children's garden"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "kindergarten"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: kindergarten"
+    ]
+  },
+  {
+    "word": "robot",
+    "sense": "a machine that works on its own",
+    "hook": "Coined for Karel Čapek's 1920 play R.U.R.; Czech robota meant forced labour.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Czech",
+        "form": "robota",
+        "gloss": "forced labour"
+      },
+      {
+        "family": "other",
+        "language": "Czech",
+        "form": "robot",
+        "gloss": "coined for the play R.U.R."
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "robot"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: robot"
+    ]
+  },
+  {
+    "word": "avocado",
+    "sense": "a green fruit with a large stone",
+    "hook": "From Nahuatl āhuacatl. Spanish speakers reshaped it to look like a word they knew, avocado, 'lawyer'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Nahuatl",
+        "form": "āhuacatl"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "aguacate"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "avocado",
+        "gloss": "reshaped to match 'advocate'"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "avocado"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: avocado"
+    ]
+  },
+  {
+    "word": "tomato",
+    "sense": "a red fruit eaten as a vegetable",
+    "hook": "From Nahuatl tomatl. The English -o ending was probably copied from potato.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Nahuatl",
+        "form": "tomatl"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "tomate"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "tomato"
+      }
+    ],
+    "confidence": "likely",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "potato",
+        "note": "probably lent tomato its ending"
+      }
+    ],
+    "sources": [
+      "Wiktionary: tomato"
+    ]
+  },
+  {
+    "word": "potato",
+    "sense": "a starchy tuber",
+    "hook": "Originally the name of the sweet potato in Taíno, a Caribbean language.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Taíno",
+        "form": "batata",
+        "gloss": "sweet potato"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "patata"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "potato"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "tomato",
+        "note": "probably copied potato's ending"
+      }
+    ],
+    "sources": [
+      "Wiktionary: potato"
+    ]
+  },
+  {
+    "word": "shampoo",
+    "sense": "soap for washing hair",
+    "hook": "From a Hindi word meaning 'press!'. It first meant a head massage.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Hindi",
+        "form": "cāmpo",
+        "gloss": "press!, from cāmpnā 'to press, knead'"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "shampoo"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: shampoo"
+    ]
+  },
+  {
+    "word": "pajamas",
+    "sense": "loose clothes for sleeping",
+    "hook": "From Persian for 'leg garment'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Persian",
+        "form": "pāy-jāma",
+        "gloss": "leg garment"
+      },
+      {
+        "family": "other",
+        "language": "Hindi",
+        "form": "pāyjāmā"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "pajamas"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: pajamas"
+    ]
+  },
+  {
+    "word": "bungalow",
+    "sense": "a one-storey house",
+    "hook": "From Hindi for 'in the Bengal style'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Hindi",
+        "form": "baṅglā",
+        "gloss": "of Bengal, in the Bengal style"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "bungalow"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: bungalow"
+    ]
+  },
+  {
+    "word": "jungle",
+    "sense": "a dense tropical forest",
+    "hook": "Its Sanskrit ancestor meant dry, sparse land, nearly the opposite of a jungle.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Sanskrit",
+        "form": "jaṅgala",
+        "gloss": "arid, sparse"
+      },
+      {
+        "family": "other",
+        "language": "Hindi",
+        "form": "jaṅgal",
+        "gloss": "forest, wasteland"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "jungle"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: jungle"
+    ]
+  },
+  {
+    "word": "loot",
+    "sense": "goods taken by force",
+    "hook": "Borrowed from Hindi lūṭ, 'plunder'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Hindi",
+        "form": "lūṭ",
+        "gloss": "plunder"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "loot"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: loot"
+    ]
+  },
+  {
+    "word": "thug",
+    "sense": "a violent criminal",
+    "hook": "The Thugs were robber gangs in India. The word is Hindi ṭhag, 'swindler'.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Sanskrit",
+        "form": "sthaga",
+        "gloss": "cunning, fraudulent"
+      },
+      {
+        "family": "other",
+        "language": "Hindi",
+        "form": "ṭhag",
+        "gloss": "swindler"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "thug"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: thug"
+    ]
+  },
+  {
+    "word": "tycoon",
+    "sense": "a wealthy, powerful businessperson",
+    "hook": "Japanese for 'great lord', a title used for the shogun when speaking to foreigners.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Japanese",
+        "form": "taikun",
+        "gloss": "great lord"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "tycoon"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: tycoon"
+    ]
+  },
+  {
+    "word": "canyon",
+    "sense": "a deep valley with steep sides",
+    "hook": "Spanish for a tube or pipe, borrowed in the American West.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "cañón",
+        "gloss": "tube, pipe, canyon"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "canyon"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: canyon"
+    ]
+  },
+  {
+    "word": "mosquito",
+    "sense": "a small biting insect",
+    "hook": "Spanish for 'little fly'.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "musca",
+        "gloss": "fly"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "mosca",
+        "gloss": "fly"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "mosquito",
+        "gloss": "little fly"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "mosquito"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: mosquito"
+    ]
+  },
+  {
+    "word": "alligator",
+    "sense": "a large reptile with a broad snout",
+    "hook": "Spanish 'el lagarto', 'the lizard', run together into one word.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "lacertus",
+        "gloss": "lizard"
+      },
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "el lagarto",
+        "gloss": "the lizard"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "alligator"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: alligator"
+    ]
+  },
+  {
+    "word": "cockroach",
+    "sense": "a scuttling household insect",
+    "hook": "English speakers heard Spanish cucaracha and reshaped it into two English words, cock and roach.",
+    "chain": [
+      {
+        "family": "other",
+        "language": "Spanish",
+        "form": "cucaracha"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "cockroach"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: cockroach"
+    ]
+  },
+  {
+    "word": "quarantine",
+    "sense": "a period of isolation to stop disease",
+    "hook": "Venice made ships wait forty days, quaranta giorni, before landing during plague outbreaks.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "quadrāgintā",
+        "gloss": "forty"
+      },
+      {
+        "family": "other",
+        "language": "Venetian",
+        "form": "quaranta giorni",
+        "gloss": "forty days"
+      },
+      {
+        "family": "other",
+        "language": "Italian",
+        "form": "quarantena"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "quarantine"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: quarantine"
+    ]
+  },
+  {
+    "word": "disaster",
+    "sense": "a sudden event causing great damage",
+    "hook": "An 'ill-starred' event, once blamed on a bad position of the stars.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "astrum",
+        "gloss": "star"
+      },
+      {
+        "family": "other",
+        "language": "Italian",
+        "form": "disastro",
+        "gloss": "ill-starred event"
+      },
+      {
+        "family": "french",
+        "language": "Middle French",
+        "form": "désastre"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "disaster"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: disaster"
+    ]
+  },
+  {
+    "word": "nice",
+    "sense": "pleasant, kind",
+    "hook": "Nice once meant foolish, from Latin for 'not knowing'.",
+    "chain": [
+      {
+        "family": "latin",
+        "language": "Latin",
+        "form": "nescius",
+        "gloss": "ignorant, not knowing"
+      },
+      {
+        "family": "french",
+        "language": "Old French",
+        "form": "nice",
+        "gloss": "silly, simple"
+      },
+      {
+        "family": "french",
+        "language": "Middle English",
+        "form": "nice",
+        "gloss": "foolish"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "nice"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "silly",
+        "note": "another word whose meaning flipped"
+      }
+    ],
+    "sources": [
+      "Wiktionary: nice"
+    ]
+  },
+  {
+    "word": "silly",
+    "sense": "foolish, not serious",
+    "hook": "Silly once meant blessed or happy.",
+    "chain": [
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "sǣlig",
+        "gloss": "happy, blessed"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "sely",
+        "gloss": "innocent, pitiable"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "silly"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [
+      {
+        "word": "nice",
+        "note": "another word whose meaning flipped"
+      }
+    ],
+    "sources": [
+      "Wiktionary: silly"
+    ]
+  },
+  {
+    "word": "clue",
+    "sense": "a piece of evidence that helps solve a problem",
+    "hook": "A clue was a ball of thread, like the one Theseus followed out of the labyrinth.",
+    "chain": [
+      {
+        "family": "germanic",
+        "language": "Old English",
+        "form": "cliwen",
+        "gloss": "ball of thread"
+      },
+      {
+        "family": "germanic",
+        "language": "Middle English",
+        "form": "clewe",
+        "gloss": "ball of thread"
+      },
+      {
+        "family": "other",
+        "language": "Modern English",
+        "form": "clue"
+      }
+    ],
+    "confidence": "known",
+    "firstUse": null,
+    "relatives": [],
+    "sources": [
+      "Wiktionary: clue"
     ]
   }
 ]
