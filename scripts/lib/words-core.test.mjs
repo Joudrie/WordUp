@@ -197,3 +197,29 @@ test('tree-style ety templates give an ancestor link', () => {
 test('confix parts read as prefix + suffix', () => {
   assert.deepEqual(partsOf([{ name: 'confix', args: { 1: 'en', 2: 'bio', 3: 'logy' } }]).map((p) => p.form), ['bio-', '-logy'])
 })
+
+import { ancestorsOf } from './words-core.mjs'
+
+test('the full chain a word names is used, nearest first, one link per language', () => {
+  const links = ancestorsOf([
+    { name: 'inh', args: { 1: 'en', 2: 'enm', 3: 'logike' } },
+    { name: 'inh', args: { 1: 'en', 2: 'enm', 3: 'logyk' } },
+    { name: 'der', args: { 1: 'en', 2: 'fro', 3: 'logique' } },
+    { name: 'der', args: { 1: 'en', 2: 'xno', 3: '-' } },
+    { name: 'der', args: { 1: 'en', 2: 'la', 3: 'logica' } },
+    { name: 'cog', args: { 1: 'de', 2: 'Logik' } },
+    { name: 'der', args: { 1: 'en', 2: 'grc', 3: 'λογική', tr: 'logikḗ' } },
+  ])
+  assert.deepEqual(links.map((l) => l.lang), ['enm', 'fro', 'la', 'grc'])
+  const chain = resolveChain('logic', links, () => undefined)
+  assert.deepEqual(chain.map((s) => s.form), ['logikḗ', 'logica', 'logique', 'logike', 'logic'])
+  assert.equal(chain[0].native, 'λογική')
+})
+
+import { labelsOf } from './words-core.mjs'
+
+test('slang labels come from the main sense, and offensive senses keep a word out', () => {
+  assert.deepEqual(labelsOf({ senses: [{ tags: ['Internet'] }] }), ['internet'])
+  assert.deepEqual(labelsOf({ senses: [{ glosses: ['an aircraft'] }, { tags: ['slang'] }] }), [])
+  assert.deepEqual(labelsOf({ senses: [{ tags: ['slang'] }, { tags: ['offensive'] }] }), [])
+})

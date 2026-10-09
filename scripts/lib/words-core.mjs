@@ -31,7 +31,7 @@ export function parseTreeArg(arg) {
   return { lang: m[1], term, gloss: mods.t || mods.gloss || null, ...(mods.tr ? { tr: mods.tr } : {}) }
 }
 
-export const MAX_DEPTH = 6
+export const MAX_DEPTH = 8
 
 export function familyOf(code) {
   return FAMILY_BY_CODE[code] ?? 'other'
@@ -140,14 +140,39 @@ export function confidenceOf(etymologyText = '', hasChain) {
 }
 
 /**
- * Walks the ancestor links from an English section up to MAX_DEPTH.
+ * Every ancestor link a section names, nearest first: Wiktionary writes
+ * "From Middle English logike, from Old French logique, from Latin logica, from
+ * Ancient Greek logikḗ" as one template per step. One link per language.
+ */
+export function ancestorsOf(templates = []) {
+  const out = []
+  const langs = new Set()
+  for (const t of templates) {
+    let link = null
+    if (TREE_TEMPLATES.has(t.name) && TREE_LINK.test(t.args?.['2'] ?? '')) link = parseTreeArg(t.args?.['3'])
+    else if (ANCESTOR_TEMPLATES.has(t.name)) {
+      const lang = t.args?.['2']
+      const term = t.args?.['3']
+      if (lang && term) link = { lang, term, gloss: t.args?.t || t.args?.gloss || null, ...(t.args?.tr ? { tr: t.args.tr } : {}) }
+    }
+    if (!link || link.lang === 'en' || !link.term || link.term === '-' || langs.has(link.lang)) continue
+    langs.add(link.lang)
+    out.push(link)
+  }
+  return out
+}
+
+/**
+ * Builds the family line. Takes one link or the list from ancestorsOf: the named
+ * links come first, then the walk continues through ancestor records, up to MAX_DEPTH.
  * `lookup(key)` returns a compact non-English record { lang, gloss, ancestor }.
  * Returns stages earliest-first, ending with the English form itself.
  */
-export function resolveChain(word, firstAncestor, lookup) {
+export function resolveChain(word, linkOrLinks, lookup) {
+  const queue = (Array.isArray(linkOrLinks) ? linkOrLinks : [linkOrLinks]).filter(Boolean)
   const stages = []
   const seen = new Set()
-  let link = firstAncestor
+  let link = queue.shift()
   while (link && stages.length < MAX_DEPTH) {
     const key = keyOf(link.lang, link.term)
     if (seen.has(key)) break
@@ -160,7 +185,7 @@ export function resolveChain(word, firstAncestor, lookup) {
       language: record?.lang ?? languageNameFallback(link.lang),
       gloss: cleanGloss(link.gloss) ?? cleanGloss(record?.gloss),
     })
-    link = record?.ancestor ?? null
+    link = queue.length ? queue.shift() : record?.ancestor ?? null
   }
   return stages.map((s) => {
     const reconstructed = isReconstructed(s.term)
@@ -297,4 +322,46 @@ export function partsHook(parts, baseChain) {
   const origin = baseChain[0]
   const gloss = origin.gloss ? `, meaning "${origin.gloss}"` : ''
   return `Made from ${built}. ${bases[0].form} goes back to ${origin.language} ${origin.reconstructed ? '*' : ''}${origin.form}${gloss}.`
+}
+
+// Senses that should never put a word in a browsable section.
+const UNSAFE_TAGS = new Set(['offensive', 'derogatory', 'vulgar', 'slur', 'ethnic'])
+const UNSAFE_CATEGORY = /offensive|derogatory|vulgar|slur|sexual|profanit/i
+
+/**
+ * Section labels for a raw entry: "internet", "slang", "new" (neologism). Only the main
+ * (first) sense counts, so helicopter is not slang because of a minor slang use.
+ * Any offensive or vulgar sense keeps the whole word out of every section.
+ */
+export function labelsOf(raw) {
+  const senses = raw.senses ?? []
+  const catsOf = (s) => (s.categories ?? []).map((c) => (typeof c === 'string' ? c : c?.name ?? ''))
+  for (const s of senses) {
+    if ((s.tags ?? []).some((t) => UNSAFE_TAGS.has(t)) || catsOf(s).some((c) => UNSAFE_CATEGORY.test(c))) return []
+  }
+  const main = senses[0]
+  if (!main) return []
+  const tags = main.tags ?? []
+  const cats = catsOf(main)
+  const out = []
+  if (tags.includes('Internet') || cats.some((c) => /Internet slang|Internet memes/.test(c))) out.push('internet')
+  else if (tags.includes('slang') || cats.includes('English slang')) out.push('slang')
+  if (tags.includes('neologism') || cats.includes('English neologisms')) out.push('new')
+  return out
+}
+
+/** Proto-Indo-European roots named by Wiktionary's {{root}} template. */
+export function rootsOf(templates = []) {
+  const out = []
+  for (const t of templates) {
+    if (t.name !== 'root' || t.args?.['2'] !== 'ine-pro') continue
+    for (let i = 3; t.args[String(i)]; i++) out.push(cleanTerm(String(t.args[String(i)])))
+  }
+  return out
+}
+
+/** "Combining form of life." -> "life" */
+export function affixGloss(gloss) {
+  const g = cleanGloss(gloss)
+  return g ? g.replace(/^(combining form of|used to form [^,]*,?|forming)\s+/i, '').trim() || undefined : undefined
 }

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ch",
+    "letters": "ch",
+    "position": "start",
+    "title": "ch- at the start",
+    "text": "The same two letters make three sounds, and the sound tells you the route a word took. Greek words say k (chorus, chaos, character). French words borrowed in the Middle Ages say ch (change, chief, chair), while later French loans say sh (chef, chic, champagne). Native words say ch too (child, choose).",
+    "basis": "via"
+  },
+  {
+    "id": "ph",
+    "letters": "ph",
+    "position": "contains",
+    "title": "ph anywhere",
+    "text": "Latin writers spelled the Greek letter phi as ph, and English kept the habit. A ph almost always means the word is Greek underneath: phone, photo, philosophy, alphabet.",
+    "basis": "origin"
+  },
+  {
+    "id": "eau",
+    "letters": "eau",
+    "position": "contains",
+    "title": "eau anywhere",
+    "text": "Three vowels, one sound. eau is French spelling for an o sound: beau, bureau, plateau. Beautiful hides it in plain sight.",
+    "basis": "via"
+  },
+  {
+    "id": "ps",
+    "letters": "ps",
+    "position": "start",
+    "title": "ps- at the start",
+    "text": "Greek allowed words to begin with ps; English does not pronounce it, so the p goes silent: psychology, psalm, pseudonym.",
+    "basis": "origin"
+  },
+  {
+    "id": "pt",
+    "letters": "pt",
+    "position": "start",
+    "title": "pt- at the start",
+    "text": "Another Greek opening English cannot say. pteron means wing, so pterodactyl is a wing-finger and the -pter in helicopter is the same wing.",
+    "basis": "origin"
+  },
+  {
+    "id": "rh",
+    "letters": "rh",
+    "position": "start",
+    "title": "rh- at the start",
+    "text": "Greek marked a breathy r at the start of words, which Latin wrote as rh: rhythm, rhyme, rhinoceros, rhetoric.",
+    "basis": "origin"
+  },
+  {
+    "id": "sk",
+    "letters": "sk",
+    "position": "start",
+    "title": "sk- at the start",
+    "text": "Old English turned sk into sh, so its own words say ship and shirt. Words that kept a hard sk were often borrowed from Old Norse: sky, skin, skirt, skull.",
+    "basis": "origin"
+  },
+  {
+    "id": "kn",
+    "letters": "kn",
+    "position": "start",
+    "title": "kn- at the start",
+    "text": "The k used to be pronounced. Old English said knight with a k, and the spelling stayed after the sound dropped out around the 1600s: knee, knife, knock.",
+    "basis": "origin"
+  },
+  {
+    "id": "gh",
+    "letters": "gh",
+    "position": "contains",
+    "title": "gh anywhere",
+    "text": "gh stands for a throaty sound Old English had and modern English lost, like the ch in Scottish loch. That is why night, though and daughter carry letters nobody says.",
+    "basis": "origin"
+  },
+  {
+    "id": "tion",
+    "letters": "tion",
+    "position": "end",
+    "title": "-tion at the end",
+    "text": "Latin made nouns from verbs with -tio, and French passed them on as -tion: nation, action, education. Tens of thousands of English words end this way.",
+    "basis": "via"
+  },
+  {
+    "id": "ology",
+    "letters": "ology",
+    "position": "end",
+    "title": "-ology at the end",
+    "text": "From Greek logia, the study of something. Biology is the study of life, geology of the earth, and almost every word ending -ology is built from Greek parts.",
+    "basis": "origin"
+  },
+  {
+    "id": "ette",
+    "letters": "ette",
+    "position": "end",
+    "title": "-ette at the end",
+    "text": "A French ending that makes things small: kitchenette, cigarette, statuette. It is still productive, which is why English keeps inventing new ones.",
+    "basis": "via"
+  },
+  {
+    "id": "que",
+    "letters": "que",
+    "position": "end",
+    "title": "-que at the end",
+    "text": "A French spelling for a k sound at the end of a word: unique, antique, technique, boutique.",
+    "basis": "via"
+  },
+  {
+    "id": "o",
+    "letters": "o",
+    "position": "end",
+    "title": "-o at the end",
+    "text": "Native English words rarely end in o. Many that do came from Italian or Spanish: piano, tornado, potato, mosquito, volcano.",
+    "basis": "via"
+  }
+]

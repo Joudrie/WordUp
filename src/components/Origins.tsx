@@ -1,6 +1,24 @@
 import { useState } from 'react'
 import type { OriginGroup } from '../lib/data.ts'
 import { useOrigins, useSection } from '../lib/hooks.ts'
+import { Flag } from './ui.tsx'
+
+// Flags only where a section maps to modern countries. Ancient and multi-country
+// sections (Latin, Arabic, Native American ...) have none.
+export const ORIGIN_FLAGS: Record<string, string[]> = {
+  french: ['fr'], greek: ['gr'], italian: ['it'], 'spanish-portuguese': ['es', 'pt'], 'dutch-german': ['nl', 'de'],
+  norse: ['is'], celtic: ['ie'], chinese: ['cn'], japanese: ['jp'], india: ['in'], persian: ['ir'], turkic: ['tr'],
+}
+
+export function OriginFlags({ id }: { id: string }) {
+  const codes = ORIGIN_FLAGS[id]
+  if (!codes) return null
+  return (
+    <span className="inline-flex gap-1 align-middle">
+      {codes.map((c) => <Flag key={c} code={c} />)}
+    </span>
+  )
+}
 
 const FAMILY_COLOR: Record<string, string> = {
   latin: 'var(--color-latin)',
@@ -65,7 +83,7 @@ export function OriginsPage() {
             <li key={g.id}>
               <a href={`#/origins/${g.id}`} className="group block">
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="group-hover:underline">{g.label}</span>
+                  <span className="flex items-center gap-2 group-hover:underline"><OriginFlags id={g.id} />{g.label}</span>
                   <span className="text-sm tabular-nums text-[var(--color-muted)]">
                     {pct < 0.1 ? '<0.1' : pct < 1 ? pct.toFixed(1) : Math.round(pct)}% · {g.n.toLocaleString()}
                   </span>
