@@ -44,13 +44,63 @@ export function ExploreList({ places = PLACES }: { places?: Place[] }) {
 export function ExplorePage() {
   return (
     <section>
-      <PageTitle kicker="Explore" title="Every way into a word">
-        Pick a door. Every page leads somewhere else.
-      </PageTitle>
-      <ExploreList />
-      <p className="mt-6 flex items-center gap-2 text-sm text-[var(--color-muted)]">
-        <BookOpen size={16} aria-hidden /> Built from Wiktionary, with the most-looked-up words checked by hand.
-      </p>
+      <div className="mb-4 flex items-baseline justify-between">
+        <h1 className="headword text-2xl sm:text-3xl">Explore</h1>
+        <span className="text-sm font-semibold">9 places to dig</span>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <a href="#/origins" className="sticker bg-blue col-span-2 flex flex-col gap-2 p-4">
+          <span className="headword text-2xl leading-none">Where words come from</span>
+          <span className="flex items-center gap-1.5 text-sm font-semibold">
+            {['--sticker-yellow', '--sticker-coral', '--sticker-green', '--sticker-pink'].map((c) => (
+              <span key={c} className="h-3.5 w-3.5 rounded-full border-2 border-[#16161d]" style={{ background: `var(${c})` }} />
+            ))}
+            <span className="ml-1">21 languages and families</span>
+          </span>
+        </a>
+        <a href="#/roots" className="sticker bg-green row-span-2 flex flex-col gap-1 p-3.5">
+          <span className="text-sm font-semibold">Roots</span>
+          <span className="headword text-3xl leading-none">*bʰer-</span>
+          <span className="text-sm">to carry</span>
+          <span className="mt-auto text-sm leading-snug">born · offer · prefer · birth · fortune · transfer</span>
+          <span className="headword text-base">One root, hundreds of words</span>
+        </a>
+        <a href="#/affixes" className="sticker bg-yellow flex flex-col gap-0.5 p-3">
+          <span className="text-sm font-semibold">Prefixes &amp; suffixes</span>
+          <span className="headword text-2xl leading-tight">-pter</span>
+          <span className="text-sm">wing, as in helicopter</span>
+        </a>
+        <a href="#/patterns" className="sticker bg-pink flex flex-col gap-0.5 p-3">
+          <span className="text-sm font-semibold">Spelling patterns</span>
+          <span className="headword text-2xl leading-tight">ph = Greek</span>
+          <span className="text-sm">phone, photo, alphabet</span>
+        </a>
+        <a href="#/slang" className="sticker bg-coral flex flex-col gap-0.5 p-3">
+          <span className="text-sm font-semibold">Slang</span>
+          <span className="headword text-xl leading-tight">rizz, skibidi, ragebait</span>
+        </a>
+        <a href="#/old-english" className="sticker bg-purple flex flex-col gap-0.5 p-3">
+          <span className="text-sm font-semibold">Old English</span>
+          <span className="headword text-lg leading-tight">Fæder ūre þū þe eart</span>
+        </a>
+        <a href="#/lab" className="sticker col-span-2 flex flex-col gap-1 bg-[var(--color-card)] p-3.5">
+          <span className="text-sm font-semibold">Sentence lab</span>
+          <span className="headword text-lg leading-snug">
+            The <mark className="rounded bg-[#e9deff] px-1 text-[#16161d]">elegant</mark>{' '}
+            <mark className="rounded bg-[#e9deff] px-1 text-[#16161d]">chef</mark> served a{' '}
+            <mark className="rounded bg-[#e9deff] px-1 text-[#16161d]">dessert</mark> to the{' '}
+            <mark className="rounded bg-[#cdede4] px-1 text-[#16161d]">guests</mark>
+          </span>
+        </a>
+        <a href="#/stories" className="sticker col-span-2 flex items-center justify-between bg-[#16161d] p-3.5 text-white">
+          <span className="headword text-lg">Word stories</span>
+          <span className="text-sm">OK started as a joke →</span>
+        </a>
+        <a href="#/play" className="sticker col-span-2 flex items-center justify-between bg-yellow p-3.5">
+          <span className="headword text-lg">Daily word game</span>
+          <span className="text-sm font-semibold">No length given →</span>
+        </a>
+      </div>
     </section>
   )
 }

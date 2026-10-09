@@ -4,7 +4,6 @@ import answers from '../../content/game.json'
 import { loadLetter } from '../lib/data.ts'
 import { letterOf } from '../lib/shard.ts'
 import { dayNumber } from '../lib/today.ts'
-import { PageTitle, SectionHeading } from './ui.tsx'
 
 interface Answer {
   word: string
@@ -108,15 +107,36 @@ export function PlayPage() {
     }
   }
 
+  const HINT_COLORS = ['bg-blue', 'bg-green', 'bg-yellow', 'bg-coral']
+  const tile = 'flex h-10 w-10 items-center justify-center rounded-xl border-2 text-lg font-extrabold'
+
   return (
     <section>
-      <PageTitle kicker={state.key.startsWith('day-') ? "Today's word" : 'Practice round'} title="Guess the word">
-        Type any word. We tell you which of its letters are in the hidden word, and whether you have the first or last letter.
-        We never tell you how long it is, unless you ask for that hint.
-      </PageTitle>
+      <div className="mb-3 flex items-baseline justify-between">
+        <h1 className="headword text-2xl sm:text-3xl">{state.key.startsWith('day-') ? `Puzzle #${dayNumber()}` : 'Practice round'}</h1>
+        <span className="text-sm font-semibold">
+          {state.guesses.length} {state.guesses.length === 1 ? 'guess' : 'guesses'} · {state.hints} {state.hints === 1 ? 'hint' : 'hints'}
+        </span>
+      </div>
+
+      {/* The hidden word: first and last letters once found, a squiggle for the secret length. */}
+      <div className="sticker bg-purple flex items-center gap-3 p-3.5">
+        <span className={`flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-[#16161d] text-3xl font-extrabold ${known.first || state.solved ? 'bg-[var(--sticker-yellow)] text-[#16161d]' : 'border-dashed border-white'}`}>
+          {(state.solved ? target[0] : known.first ?? '?').toUpperCase()}
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col items-center text-center text-sm font-semibold">
+          <svg width="120" height="16" viewBox="0 0 120 16" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
+            <path d="M2 8c8-8 12 8 20 0s12 8 20 0 12 8 20 0 12 8 20 0 12 8 20 0 12 8 16 0" />
+          </svg>
+          {state.solved ? target : 'how long? that is the secret'}
+        </span>
+        <span className={`flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl border-[2.5px] text-3xl font-extrabold ${known.last || state.solved ? 'border-[#16161d] bg-[var(--sticker-yellow)] text-[#16161d]' : 'border-dashed border-white'}`}>
+          {(state.solved ? target.at(-1) ?? '' : known.last ?? '?').toUpperCase()}
+        </span>
+      </div>
 
       {!state.solved && (
-        <form onSubmit={submit} className="flex gap-2">
+        <form onSubmit={submit} className="mt-4 flex gap-2">
           <label htmlFor="guess" className="sr-only">Your guess</label>
           <input
             id="guess"
@@ -125,77 +145,88 @@ export function PlayPage() {
             autoComplete="off"
             autoCapitalize="none"
             spellCheck={false}
-            placeholder="Type a word"
-            className="headword min-w-0 flex-1 border-b-2 border-[var(--color-rule)] bg-transparent py-2 text-3xl outline-none focus:border-[var(--color-brand)]"
+            placeholder="Type any word"
+            className="sticker h-13 min-w-0 flex-1 bg-[var(--color-card)] px-4 text-lg font-semibold outline-none"
           />
-          <button type="submit" className="rounded-full bg-[var(--color-brand)] px-5 text-[var(--color-brand-ink)]">Guess</button>
+          <button type="submit" className="sticker bg-yellow h-13 px-5 font-extrabold">Guess</button>
         </form>
       )}
-      {message && <p className="mt-3 text-[var(--color-muted)]" role="status">{message}</p>}
+      {message && <p className="mt-3 font-semibold" role="status">{message}</p>}
 
       {state.solved && (
-        <div className="rounded-xl border-2 border-[var(--color-brand)] p-5">
-          <p className="text-sm uppercase tracking-wide text-[var(--color-muted)]">
-            {state.gaveUp ? 'The word was' : `Solved in ${state.guesses.length} guesses`}
-          </p>
-          <p className="headword mt-1 text-5xl">{target}</p>
-          <p className="mt-3 text-lg">From {answer.language}: {answer.parts}.</p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <a href={`#/w/${target}`} className="rounded-full bg-[var(--color-brand)] px-4 py-2 text-[var(--color-brand-ink)]">Read its story</a>
+        <div className="sticker bg-yellow mt-4 p-4">
+          <p className="text-sm font-semibold">{state.gaveUp ? 'The word was' : `Solved in ${state.guesses.length} guesses`}</p>
+          <p className="headword text-5xl leading-none">{target}</p>
+          <p className="mt-2 text-lg">From {answer.language}: {answer.parts}.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a href={`#/w/${target}`} className="sticker bg-purple px-4 py-2 font-bold">Read its story</a>
             {!state.gaveUp && (
-              <button type="button" onClick={share} className="inline-flex items-center gap-2 rounded-full border border-[var(--color-rule)] px-4 py-2">
+              <button type="button" onClick={share} className="sticker inline-flex items-center gap-2 bg-[var(--color-card)] px-4 py-2 font-bold text-[var(--color-ink)]">
                 <Share2 size={16} aria-hidden /> {copied ? 'Copied' : 'Share'}
               </button>
             )}
-            <button type="button" onClick={another} className="inline-flex items-center gap-2 rounded-full border border-[var(--color-rule)] px-4 py-2">
+            <button type="button" onClick={another} className="sticker inline-flex items-center gap-2 bg-[var(--color-card)] px-4 py-2 font-bold text-[var(--color-ink)]">
               <RotateCcw size={16} aria-hidden /> Another word
             </button>
           </div>
         </div>
       )}
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        <div>
-          <SectionHeading>What you know</SectionHeading>
-          <ul className="mt-3 space-y-2">
-            <li>Starts with: <strong className="headword text-xl">{known.first ? known.first.toUpperCase() : '?'}</strong></li>
-            <li>Ends with: <strong className="headword text-xl">{known.last ? known.last.toUpperCase() : '?'}</strong></li>
-            <li>
-              In the word:{' '}
-              <span className="headword text-xl tracking-widest text-[var(--color-brand)]">{known.inWord.join(' ').toUpperCase() || '?'}</span>
-            </li>
-            <li>
-              Not in the word:{' '}
-              <span className="headword text-xl tracking-widest text-[var(--color-muted)] line-through">{known.notIn.join(' ').toUpperCase() || '-'}</span>
-            </li>
-          </ul>
+      {/* Letters the guesses have proved, as stickers. Your own keyboard does the typing. */}
+      <div className="mt-5 flex flex-wrap items-center gap-1.5">
+        <span className="mr-1 text-sm font-semibold">In the word</span>
+        {known.inWord.length ? known.inWord.map((ch) => (
+          <span key={ch} className={`${tile} border-[#16161d] bg-[var(--sticker-yellow)] text-[#16161d]`}>{ch.toUpperCase()}</span>
+        )) : <span className="text-sm text-[var(--color-muted)]">none yet</span>}
+      </div>
+      {known.notIn.length > 0 && (
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          <span className="mr-1 text-sm font-semibold">Not in it</span>
+          {known.notIn.map((ch) => (
+            <span key={ch} className={`${tile} border-transparent bg-[var(--color-soft)] text-[var(--color-muted)] line-through`}>{ch.toUpperCase()}</span>
+          ))}
         </div>
-        <div>
-          <SectionHeading>Hints</SectionHeading>
-          <ol className="mt-3 space-y-2">
-            {Array.from({ length: state.solved ? HINTS : state.hints }, (_, i) => <li key={i}>{hintText(answer, i)}</li>)}
-          </ol>
-          {!state.solved && state.hints < HINTS && (
-            <button type="button" onClick={() => setState((s) => ({ ...s, hints: s.hints + 1 }))}
-              className="mt-3 inline-flex items-center gap-2 rounded-full border border-[var(--color-rule)] px-4 py-2 hover:border-[var(--color-brand)]">
-              <Lightbulb size={16} aria-hidden /> {state.hints === 0 ? 'Give me a hint' : 'Another hint'}
+      )}
+
+      <h2 className="headword mt-6 text-lg">Hint stickers</h2>
+      <div className="mt-2 grid grid-cols-2 gap-3">
+        {Array.from({ length: HINTS }, (_, i) => {
+          const shown = state.solved || i < state.hints
+          const next = !state.solved && i === state.hints
+          const label = ['Language', 'Its parts', 'Letter count', 'Meaning'][i]
+          if (shown) {
+            return (
+              <div key={i} className={`sticker-flat ${HINT_COLORS[i]} p-3 ${i % 2 ? 'rotate-1' : '-rotate-1'}`}>
+                <span className="text-xs font-semibold">{i + 1} · {label}</span>
+                <p className="font-extrabold leading-snug">{hintText(answer, i)}</p>
+              </div>
+            )
+          }
+          return next ? (
+            <button key={i} type="button" onClick={() => setState((s) => ({ ...s, hints: s.hints + 1 }))}
+              className="sticker bg-pink flex min-h-16 flex-col justify-center border-dashed p-3 text-left">
+              <span className="text-xs font-semibold">{i + 1} · {label}</span>
+              <span className="inline-flex items-center gap-1 font-extrabold"><Lightbulb size={16} aria-hidden /> Peel to reveal</span>
             </button>
-          )}
-        </div>
+          ) : (
+            <div key={i} className="flex min-h-14 items-center rounded-[18px] border-[2.5px] border-dashed border-[var(--color-muted)] p-3 text-xs font-semibold text-[var(--color-muted)]">
+              {i + 1} · {label}
+            </div>
+          )
+        })}
       </div>
 
       {state.guesses.length > 0 && (
-        <div className="mt-8">
-          <SectionHeading>Your guesses</SectionHeading>
-          <ol className="mt-3 space-y-2">
+        <div className="mt-6">
+          <h2 className="headword text-lg">Your guesses</h2>
+          <ol className="mt-2 space-y-2">
             {[...state.guesses].reverse().map((g) => (
-              <li key={g} className="headword flex flex-wrap gap-1 text-2xl">
+              <li key={g} className="flex flex-wrap gap-1">
                 {[...g].map((ch, i) => {
                   const hit = target.includes(ch)
                   const edge = (i === 0 && ch === target[0]) || (i === g.length - 1 && ch === target.at(-1))
                   return (
-                    <span key={i}
-                      className={`inline-flex h-10 w-9 items-center justify-center rounded-md ${edge ? 'bg-[var(--color-brand)] text-[var(--color-brand-ink)]' : hit ? 'ring-2 ring-[var(--color-brand)]' : 'text-[var(--color-muted)]'}`}>
+                    <span key={i} className={`${tile} ${edge ? 'border-[#16161d] bg-[var(--sticker-purple)] text-white' : hit ? 'border-[#16161d] bg-[var(--sticker-yellow)] text-[#16161d]' : 'border-transparent bg-[var(--color-soft)] text-[var(--color-muted)]'}`}>
                       {ch.toUpperCase()}
                     </span>
                   )
@@ -203,15 +234,13 @@ export function PlayPage() {
               </li>
             ))}
           </ol>
-          <p className="mt-3 text-sm text-[var(--color-muted)]">
-            Outlined: the letter is somewhere in the word. Filled: it is the word's first or last letter.
-          </p>
+          <p className="mt-2 text-sm text-[var(--color-muted)]">Yellow: somewhere in the word. Purple: the first or last letter.</p>
         </div>
       )}
 
       {!state.solved && state.guesses.length >= 3 && (
         <button type="button" onClick={() => setState((s) => ({ ...s, solved: true, gaveUp: true, hints: HINTS }))}
-          className="mt-8 text-sm text-[var(--color-muted)] underline">
+          className="mt-6 text-sm font-semibold text-[var(--color-muted)] underline">
           Give up and show the word
         </button>
       )}

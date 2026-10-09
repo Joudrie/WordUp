@@ -58,7 +58,7 @@ export interface OriginGroup {
 export interface OriginsIndex {
   groups: OriginGroup[]
   /** counts[mode][scope][groupId]: mode is ultimate origin or the language it came through. */
-  counts: Record<'origin' | 'via', Record<'all' | 'common', Record<string, number>>>
+  counts: Record<'origin' | 'via', Record<'all' | 'common' | 'top1000', Record<string, number>>>
 }
 
 let originsPromise: Promise<OriginsIndex> | null = null

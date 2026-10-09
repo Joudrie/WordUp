@@ -24,7 +24,7 @@ function Picker({ word, entries }: { word: string; entries: Word[] }) {
         "{word}" is two unrelated words. The two stories are completely different:
       </p>
       {entries.map((e, i) => (
-        <a key={i} href={`#/w/${word}/${i}`} className="block rounded-xl border border-[var(--color-rule)] bg-[var(--color-card)] p-4 hover:border-[var(--color-brand)]">
+        <a key={i} href={`#/w/${word}/${i}`} className="sticker block bg-[var(--color-card)] p-4">
           <span className="headword text-2xl">{e.word}</span>{' '}
           <span className="text-[var(--color-muted)]">({e.sense})</span>
           <p className="mt-1">{e.hook}</p>
@@ -55,7 +55,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
   if (entries.length > 1 && sense === null) {
     return (
       <section>
-        <h1 className="headword text-6xl sm:text-7xl">{word}</h1>
+        <h1 className="headword text-5xl sm:text-6xl">{word}</h1>
         <div className="mt-8"><Picker word={word} entries={entries} /></div>
       </section>
     )
@@ -74,22 +74,22 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
   const hasReconstructed = entry.chain.some((s) => s.reconstructed)
 
   return (
-    <article className="space-y-10">
+    <article className="space-y-8">
       <header>
-        <h1 className="headword text-6xl sm:text-8xl">{entry.word}</h1>
+        <h1 className="headword text-5xl sm:text-6xl">{entry.word}</h1>
         <p className="mt-2 text-[var(--color-muted)]">{entry.sense}</p>
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
-          <span className="rounded-full bg-[var(--color-card)] px-3 py-1 ring-1 ring-[var(--color-rule)]">
+          <span className="rounded-full border-2 border-[var(--color-ink)] px-3 py-1 font-bold">
             {CONFIDENCE_TEXT[entry.confidence]}
           </span>
           <OriginChips origin={entry.origin} via={entry.via} />
           {entry.labels?.map((l) => (
-            <a key={l} href="#/slang" className="rounded-full bg-[var(--color-card)] px-3 py-1 ring-1 ring-[var(--color-rule)] hover:ring-[var(--color-brand)]">
+            <a key={l} href="#/slang" className="bg-pink rounded-full border-2 border-[#16161d] px-3 py-1 font-bold">
               {l === 'internet' ? 'Internet word' : l === 'slang' ? 'Slang' : 'New word'}
             </a>
           ))}
           {entry.myth && (
-            <span className="rounded-full bg-[var(--color-card)] px-3 py-1 font-medium text-[var(--color-latin)] ring-1 ring-[var(--color-rule)]">
+            <span className="bg-coral rounded-full border-2 border-[#16161d] px-3 py-1 font-bold">
               Myth: a popular origin that is false or oversimplified
             </span>
           )}
@@ -97,7 +97,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
       </header>
 
       <div>
-        <p className="text-xl leading-relaxed">{entry.hook}</p>
+        <p className="sticker bg-yellow p-4 text-lg leading-snug">{entry.hook}</p>
         {entry.draft && (
           <p className="mt-2 text-sm text-[var(--color-muted)]">Drafted from Wiktionary; not yet checked by a person.</p>
         )}
@@ -105,7 +105,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
 
       {entry.parts && entry.parts.length > 0 && (
         <section aria-labelledby="parts">
-          <h2 id="parts" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Built from</h2>
+          <h2 id="parts" className="headword text-lg">Built from</h2>
           <p className="mt-3 flex flex-wrap items-center gap-2 text-lg">
             {entry.parts.map((p, i) => (
               <span key={`${p.form}-${i}`} className="flex items-center gap-2">
@@ -123,7 +123,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
 
       {entry.roots && entry.roots.length > 0 && (
         <section aria-labelledby="roots">
-          <h2 id="roots" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Ancient root</h2>
+          <h2 id="roots" className="headword text-lg">Ancient root</h2>
           <p className="mt-3 flex flex-wrap gap-2">
             {entry.roots.map((r) => (
               <a key={r.id} href={`#/roots/${r.id}`} className="headword rounded-full border border-[var(--color-rule)] px-3 py-1 text-lg hover:border-[var(--color-brand)]">
@@ -136,7 +136,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
       )}
 
       <section aria-labelledby="family-line">
-        <h2 id="family-line" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">The family line</h2>
+        <h2 id="family-line" className="headword text-lg">The family line</h2>
         <div className="mt-4"><FamilyLine chain={entry.chain} /></div>
         {hasReconstructed && (
           <p className="mt-4 text-sm text-[var(--color-muted)]">
@@ -146,7 +146,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
       </section>
 
       <section aria-labelledby="first-use">
-        <h2 id="first-use" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">First recorded use</h2>
+        <h2 id="first-use" className="headword text-lg">First recorded use</h2>
         {entry.firstUse ? (
           <div className="mt-2 space-y-1">
             <p>
@@ -173,7 +173,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
 
       {entry.relatives.length > 0 && (
         <section aria-labelledby="relatives">
-          <h2 id="relatives" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Relatives</h2>
+          <h2 id="relatives" className="headword text-lg">Relatives</h2>
           <ul className="mt-3 flex flex-wrap gap-2">
             {entry.relatives.map((r) => (
               <li key={r.word}>
@@ -187,7 +187,7 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
 
       {entry.lookalikes && entry.lookalikes.length > 0 && (
         <section aria-labelledby="lookalikes">
-          <h2 id="lookalikes" className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Look alike, not related</h2>
+          <h2 id="lookalikes" className="headword text-lg">Look alike, not related</h2>
           <ul className="mt-3 space-y-2">
             {entry.lookalikes.map((l) => (
               <li key={l.word}><span className="headword">{l.word}</span>: {l.note}</li>

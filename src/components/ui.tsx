@@ -3,14 +3,16 @@ import { ChevronLeft } from 'lucide-react'
 
 const BASE = import.meta.env.BASE_URL
 
-/** A small national flag. Only used where a language maps to one modern country. */
-export function Flag({ code, title }: { code: string; title?: string }) {
+/** A small national flag as a sticker: thick black border. Only used where a language maps
+ *  to one modern country. */
+export function Flag({ code, title, size = 'sm' }: { code: string; title?: string; size?: 'sm' | 'lg' }) {
+  const box = size === 'lg' ? 'h-6 w-9 rounded-md border-[2.5px]' : 'h-4 w-6 rounded-[4px] border-2'
   return (
     <img
       src={`${BASE}flags/${code}.svg`}
       alt={title ?? ''}
       aria-hidden={title ? undefined : true}
-      className="inline-block h-3 w-[18px] rounded-[2px] object-cover ring-1 ring-[var(--color-rule)]"
+      className={`inline-block shrink-0 border-[#16161d] object-cover ${box}`}
       loading="lazy"
     />
   )
@@ -27,17 +29,17 @@ export function BackLink({ href, children }: { href: string; children: ReactNode
 
 export function PageTitle({ kicker, title, children, color }: { kicker?: string; title: ReactNode; children?: ReactNode; color?: string }) {
   return (
-    <header className="mb-8">
-      {kicker && <p className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">{kicker}</p>}
-      <h1 className="headword mt-1 text-4xl sm:text-6xl" style={color ? { color } : undefined}>{title}</h1>
-      {children && <div className="mt-3 max-w-prose text-lg">{children}</div>}
+    <header className="mb-5">
+      {kicker && <p className="text-sm font-semibold text-[var(--color-muted)]">{kicker}</p>}
+      <h1 className="headword text-2xl leading-tight sm:text-3xl" style={color ? { color } : undefined}>{title}</h1>
+      {children && <div className="mt-2 max-w-prose text-base">{children}</div>}
     </header>
   )
 }
 
 export function WordChip({ word }: { word: string }) {
   return (
-    <a href={`#/w/${encodeURIComponent(word)}`} className="inline-block rounded-full border border-[var(--color-rule)] px-3 py-1 hover:border-[var(--color-brand)]">
+    <a href={`#/w/${encodeURIComponent(word)}`} className="inline-block rounded-full border-2 border-[var(--color-ink)] px-3 py-1 font-semibold hover:bg-[var(--sticker-yellow)] hover:text-[#16161d]">
       {word}
     </a>
   )
@@ -54,7 +56,7 @@ export function WordList({ words, page = 120 }: { words: string[]; page?: number
         ))}
       </ul>
       {shown < words.length && (
-        <button type="button" onClick={() => setShown((n) => n + page * 2)} className="mt-6 rounded-full border border-[var(--color-rule)] px-4 py-2 hover:border-[var(--color-brand)]">
+        <button type="button" onClick={() => setShown((n) => n + page * 2)} className="sticker bg-yellow mt-6 px-4 py-2 font-bold">
           Show more ({(words.length - shown).toLocaleString()} left)
         </button>
       )}
@@ -67,5 +69,5 @@ export function Loading() {
 }
 
 export function SectionHeading({ children }: { children: ReactNode }) {
-  return <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">{children}</h2>
+  return <h2 className="text-base font-extrabold">{children}</h2>
 }
