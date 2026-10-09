@@ -64,8 +64,9 @@ test('compactRecord keeps only what the chain walk needs', () => {
   assert.deepEqual(Object.keys(rec).sort(), ['ancestor', 'gloss', 'lang'])
 })
 
-test('shardOf groups by first letter and sends the rest to other', () => {
-  assert.equal(shardOf('fork'), 'f')
+test('shardOf groups by first two letters', () => {
+  assert.equal(shardOf('fork'), 'fo')
+  assert.equal(shardOf('a'), 'a_')
   assert.equal(shardOf('2nd'), 'other')
 })
 
@@ -103,4 +104,26 @@ test('form-only senses are recognised', () => {
 test('a code with no loaded dump gets a readable language name', () => {
   assert.equal(languageNameFallback('itc-pro'), 'Proto-Italic')
   assert.equal(languageNameFallback('xyz'), 'xyz')
+})
+
+import { earliestQuote } from './words-core.mjs'
+
+test('earliestQuote picks the oldest dated quotation across senses', () => {
+  const q = earliestQuote({
+    senses: [
+      { examples: [{ type: 'quotation', ref: '1879, R. Jefferies, The Amateur Poacher, →OCLC:', text: 'later text' }] },
+      { examples: [
+        { type: 'example', ref: '', text: 'made-up usage example' },
+        { type: 'quotation', ref: 'c. 1606–1607 (date written), William Shakespeare, Antony and Cleopatra', text: 'Wouldst thou be windowed' },
+      ] },
+    ],
+  })
+  assert.equal(q.year, 1606)
+  assert.equal(q.quote, 'Wouldst thou be windowed')
+  assert.match(q.source, /Shakespeare/)
+})
+
+test('earliestQuote ignores examples without a dated reference', () => {
+  assert.equal(earliestQuote({ senses: [{ examples: [{ type: 'example', text: 'x' }] }] }), null)
+  assert.equal(earliestQuote({}), null)
 })
