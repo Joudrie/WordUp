@@ -229,6 +229,30 @@ for (const w of built) {
   w._groups = groups
 }
 
+// 4d. Compounds have no single ancestor (bookshelf = book + shelf), so file them by
+//     their parts: the head (last part) decides where the word comes from, and the
+//     word appears in every section its parts belong to. Two passes so a compound of
+//     compounds is filed too.
+const classOf = new Map()
+for (const w of built) if (!classOf.has(w.word)) classOf.set(w.word, w)
+let filedByParts = 0
+for (let pass = 0; pass < 2; pass++) {
+  for (const w of built) {
+    if (w.origin !== 'unknown' || !w.parts) continue
+    const known = w.parts
+      .filter((p) => !p.affix && p.form !== w.word)
+      .map((p) => classOf.get(p.form))
+      .filter((c) => c && c.origin !== 'unknown')
+    if (!known.length) continue
+    const head = known[known.length - 1]
+    w.origin = head.origin
+    w.via = head.via
+    w._groups = [...new Set(known.flatMap((c) => c._groups))]
+    filedByParts++
+  }
+}
+console.log(`compounds filed by their parts: ${filedByParts}`)
+
 // 5. Write data shards, per-letter search files and the index.
 rmSync(values.out, { recursive: true, force: true })
 mkdirSync(`${values.out}/w`, { recursive: true })
