@@ -61,25 +61,27 @@ export default function App() {
   const [query, setQuery] = useState('')
 
   return (
-    <div className="mx-auto min-h-screen max-w-3xl px-4 pb-28 pt-6 sm:pb-10 sm:pt-8">
-      <header className="mb-8 flex items-center justify-between gap-4">
-        <a href="#/" className="headword text-2xl text-[var(--color-brand)]">WordUp</a>
-        <div className="flex items-center gap-4">
-        <nav aria-label="Main" className="hidden gap-6 sm:flex">
-          {TABS.map(({ href, label, match }) => (
-            <a key={href} href={href} aria-current={match.test(hash) ? 'page' : undefined}
-              className={`text-sm ${match.test(hash) ? 'font-semibold text-[var(--color-ink)]' : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'}`}>
-              {label}
-            </a>
-          ))}
-        </nav>
-        <ThemeToggle />
+    <div className="mx-auto min-h-screen max-w-3xl px-4 pb-28 pt-4 sm:pb-10 sm:pt-6">
+      <header className="mb-5 flex items-center justify-between gap-4">
+        <a href="#/" className="headword text-2xl" aria-label="WordUp home">
+          Word<span className="ml-0.5 rounded-md bg-[var(--sticker-yellow)] px-1 text-[#16161d]">Up</span>
+        </a>
+        <div className="flex items-center gap-2">
+          <nav aria-label="Main" className="hidden gap-2 sm:flex">
+            {TABS.map(({ href, label, match }) => (
+              <a key={href} href={href} aria-current={match.test(hash) ? 'page' : undefined}
+                className={`rounded-full px-3 py-1.5 text-sm font-bold ${match.test(hash) ? 'bg-[var(--color-ink)] text-[var(--color-page)]' : 'border-2 border-[var(--color-ink)]'}`}>
+                {label}
+              </a>
+            ))}
+          </nav>
+          <ThemeToggle />
         </div>
       </header>
 
       <main>{route(hash, query, setQuery)}</main>
 
-      <footer className="mt-16 space-y-2 border-t border-[var(--color-rule)] pt-4 text-sm text-[var(--color-muted)]">
+      <footer className="mt-12 space-y-2 border-t-2 border-[var(--color-ink)] pt-4 text-sm text-[var(--color-muted)]">
         <p>
           Every origin has a confidence label. Found a mistake?{' '}
           <a className="underline" href="mailto:sjoudrie@gmail.com?subject=WordUp%20correction">Suggest a correction</a>.
@@ -90,14 +92,14 @@ export default function App() {
         </p>
       </footer>
 
-      <nav aria-label="Tabs" className="fixed inset-x-0 bottom-0 z-10 border-t border-[var(--color-rule)] bg-[var(--color-page)] sm:hidden">
-        <ul className="mx-auto flex max-w-3xl justify-around">
+      <nav aria-label="Tabs" className="fixed inset-x-3 bottom-3 z-10 rounded-[22px] bg-[#16161d] sm:hidden">
+        <ul className="grid grid-cols-4">
           {TABS.map(({ href, label, Icon, match }) => {
             const active = match.test(hash)
             return (
               <li key={href}>
                 <a href={href} aria-current={active ? 'page' : undefined}
-                  className={`flex flex-col items-center gap-1 px-4 py-2 text-xs ${active ? 'text-[var(--color-brand)]' : 'text-[var(--color-muted)]'}`}>
+                  className={`m-1.5 flex flex-col items-center gap-0.5 rounded-2xl py-2 text-xs font-bold ${active ? 'bg-[var(--sticker-yellow)] text-[#16161d]' : 'text-white'}`}>
                   <Icon size={22} aria-hidden />
                   {label}
                 </a>

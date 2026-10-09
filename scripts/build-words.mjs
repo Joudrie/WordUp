@@ -381,7 +381,9 @@ for (const [word, set] of groupsByWord) for (const g of set) sectionWords.get(g)
 for (const [id, words] of sectionWords) {
   writeFileSync(`${values.out}/origins/${id}.json`, JSON.stringify(words.sort(order)))
 }
-const common = new Set([...present].sort(order).slice(0, 10000))
+const byRank = [...present].sort(order)
+const common = new Set(byRank.slice(0, 10000))
+const top1000 = new Set(byRank.slice(0, 1000))
 const tally = (key, only) => {
   const counts = Object.fromEntries([...ORIGIN_GROUPS.map((g) => [g.id, 0]), ['unknown', 0]])
   for (const [word, o] of originByWord) if (!only || only.has(word)) counts[o[key]]++
@@ -392,8 +394,8 @@ writeFileSync(
   JSON.stringify({
     groups: ORIGIN_GROUPS.map((g) => ({ id: g.id, label: g.label, family: g.family, words: sectionWords.get(g.id).length })),
     counts: {
-      origin: { all: tally('origin'), common: tally('origin', common) },
-      via: { all: tally('via'), common: tally('via', common) },
+      origin: { all: tally('origin'), common: tally('origin', common), top1000: tally('origin', top1000) },
+      via: { all: tally('via'), common: tally('via', common), top1000: tally('via', top1000) },
     },
   }),
 )

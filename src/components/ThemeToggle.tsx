@@ -25,7 +25,7 @@ export function ThemeToggle() {
       aria-pressed={dark}
       aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={dark ? 'Light mode' : 'Dark mode'}
-      className="rounded-full p-2 text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+      className="flex h-10 w-10 items-center justify-center rounded-full border-[2.5px] border-[var(--color-ink)] hover:bg-[var(--sticker-yellow)] hover:text-[#16161d]"
     >
       {dark ? <Sun size={18} aria-hidden /> : <Moon size={18} aria-hidden />}
     </button>
