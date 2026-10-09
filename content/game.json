@@ -1,37 +1,320 @@
 [
-  { "word": "pterodactyl", "language": "Greek", "parts": "pteron means wing, daktylos means finger", "meaning": "a flying reptile from the age of dinosaurs" },
-  { "word": "helicopter", "language": "Greek, by way of French", "parts": "helix means spiral, pteron means wing", "meaning": "an aircraft lifted by spinning blades" },
-  { "word": "quarantine", "language": "Italian", "parts": "quaranta giorni means forty days", "meaning": "a period of isolation to stop a disease spreading" },
-  { "word": "hippopotamus", "language": "Greek", "parts": "hippos means horse, potamos means river", "meaning": "a huge African animal that lives in rivers" },
-  { "word": "disaster", "language": "Italian, from Latin", "parts": "dis- means bad, astro means star", "meaning": "a sudden event that causes great damage" },
-  { "word": "muscle", "language": "Latin", "parts": "musculus means little mouse", "meaning": "body tissue that contracts to move you" },
-  { "word": "salary", "language": "Latin", "parts": "sal means salt", "meaning": "a fixed regular payment for work" },
-  { "word": "mortgage", "language": "Old French", "parts": "mort means dead, gage means pledge", "meaning": "a loan to buy a house" },
-  { "word": "window", "language": "Old Norse", "parts": "vindr means wind, auga means eye", "meaning": "an opening in a wall that lets in light" },
-  { "word": "berserk", "language": "Old Norse", "parts": "probably bear plus shirt", "meaning": "out of control with rage" },
-  { "word": "alphabet", "language": "Greek", "parts": "the names of the first two letters", "meaning": "the set of letters used to write a language" },
-  { "word": "nausea", "language": "Greek", "parts": "naus means ship", "meaning": "the feeling that you are about to be sick" },
-  { "word": "robot", "language": "Czech", "parts": "robota means forced labour", "meaning": "a machine that does work on its own" },
-  { "word": "jungle", "language": "Hindi, from Sanskrit", "parts": "jangala means dry, sparse land", "meaning": "a thick tropical forest" },
-  { "word": "shampoo", "language": "Hindi", "parts": "champo means press or knead", "meaning": "liquid soap for washing hair" },
-  { "word": "pajamas", "language": "Persian", "parts": "pay means leg, jama means garment", "meaning": "loose clothes for sleeping in" },
-  { "word": "tycoon", "language": "Japanese", "parts": "taikun means great lord", "meaning": "a rich and powerful businessperson" },
-  { "word": "kindergarten", "language": "German", "parts": "Kinder means children, Garten means garden", "meaning": "a class for children before first grade" },
-  { "word": "democracy", "language": "Greek", "parts": "demos means people, kratos means power", "meaning": "government by the people" },
-  { "word": "philosophy", "language": "Greek", "parts": "philos means loving, sophia means wisdom", "meaning": "the study of knowledge, truth and how to live" },
-  { "word": "government", "language": "Greek, through Latin and French", "parts": "kybernan means to steer a ship", "meaning": "the group of people who run a country" },
-  { "word": "hospital", "language": "Latin", "parts": "hospes means guest", "meaning": "a place where sick people are cared for" },
-  { "word": "tragedy", "language": "Greek", "parts": "probably tragos means goat, oide means song", "meaning": "a sad story or a terrible event" },
-  { "word": "arctic", "language": "Greek", "parts": "arktos means bear, after the Great Bear in the sky", "meaning": "the region around the North Pole" },
-  { "word": "alcohol", "language": "Arabic", "parts": "al-kuhl means the fine powder used as eyeliner", "meaning": "the intoxicating part of wine and beer" },
-  { "word": "algebra", "language": "Arabic", "parts": "al-jabr means the reunion of broken parts", "meaning": "maths that uses letters for numbers" },
-  { "word": "magazine", "language": "Arabic, through Italian and French", "parts": "makhazin means storehouses", "meaning": "a regular publication with articles and pictures" },
-  { "word": "canyon", "language": "Spanish", "parts": "canon means tube or pipe", "meaning": "a deep valley with steep rock walls" },
-  { "word": "alligator", "language": "Spanish", "parts": "el lagarto means the lizard", "meaning": "a large reptile with a broad snout" },
-  { "word": "mosquito", "language": "Spanish", "parts": "mosca means fly, -ito means little", "meaning": "a small insect that bites and sucks blood" },
-  { "word": "avocado", "language": "Nahuatl, through Spanish", "parts": "ahuacatl was the Nahuatl name for the fruit", "meaning": "a green fruit with a large stone" },
-  { "word": "chocolate", "language": "Nahuatl, through Spanish", "parts": "a Nahuatl word for a drink made from cacao", "meaning": "a sweet food made from roasted cacao seeds" },
-  { "word": "clue", "language": "Old English", "parts": "cliwen means a ball of thread", "meaning": "a piece of evidence that helps solve a mystery" },
-  { "word": "bedlam", "language": "English, from a place name", "parts": "a London hospital called St Mary of Bethlehem", "meaning": "a scene of noise and chaos" },
-  { "word": "sandwich", "language": "English, from a title", "parts": "John Montagu, the 4th Earl of Sandwich", "meaning": "food between two slices of bread" }
+  {
+    "word": "pterodactyl",
+    "language": "Greek",
+    "parts": "pteron means wing, daktylos means finger",
+    "meaning": "a flying reptile from the age of dinosaurs"
+  },
+  {
+    "word": "helicopter",
+    "language": "Greek, by way of French",
+    "parts": "helix means spiral, pteron means wing",
+    "meaning": "an aircraft lifted by spinning blades"
+  },
+  {
+    "word": "quarantine",
+    "language": "Italian",
+    "parts": "quaranta giorni means forty days",
+    "meaning": "a period of isolation to stop a disease spreading"
+  },
+  {
+    "word": "hippopotamus",
+    "language": "Greek",
+    "parts": "hippos means horse, potamos means river",
+    "meaning": "a huge African animal that lives in rivers"
+  },
+  {
+    "word": "disaster",
+    "language": "Italian, from Latin",
+    "parts": "dis- means bad, astro means star",
+    "meaning": "a sudden event that causes great damage"
+  },
+  {
+    "word": "muscle",
+    "language": "Latin",
+    "parts": "musculus means little mouse",
+    "meaning": "body tissue that contracts to move you"
+  },
+  {
+    "word": "salary",
+    "language": "Latin",
+    "parts": "sal means salt",
+    "meaning": "a fixed regular payment for work"
+  },
+  {
+    "word": "mortgage",
+    "language": "Old French",
+    "parts": "mort means dead, gage means pledge",
+    "meaning": "a loan to buy a house"
+  },
+  {
+    "word": "window",
+    "language": "Old Norse",
+    "parts": "vindr means wind, auga means eye",
+    "meaning": "an opening in a wall that lets in light"
+  },
+  {
+    "word": "berserk",
+    "language": "Old Norse",
+    "parts": "probably bear plus shirt",
+    "meaning": "out of control with rage"
+  },
+  {
+    "word": "alphabet",
+    "language": "Greek",
+    "parts": "the names of the first two letters",
+    "meaning": "the set of letters used to write a language"
+  },
+  {
+    "word": "nausea",
+    "language": "Greek",
+    "parts": "naus means ship",
+    "meaning": "the feeling that you are about to be sick"
+  },
+  {
+    "word": "robot",
+    "language": "Czech",
+    "parts": "robota means forced labour",
+    "meaning": "a machine that does work on its own"
+  },
+  {
+    "word": "jungle",
+    "language": "Hindi, from Sanskrit",
+    "parts": "jangala means dry, sparse land",
+    "meaning": "a thick tropical forest"
+  },
+  {
+    "word": "shampoo",
+    "language": "Hindi",
+    "parts": "champo means press or knead",
+    "meaning": "liquid soap for washing hair"
+  },
+  {
+    "word": "pajamas",
+    "language": "Persian",
+    "parts": "pay means leg, jama means garment",
+    "meaning": "loose clothes for sleeping in"
+  },
+  {
+    "word": "tycoon",
+    "language": "Japanese",
+    "parts": "taikun means great lord",
+    "meaning": "a rich and powerful businessperson"
+  },
+  {
+    "word": "kindergarten",
+    "language": "German",
+    "parts": "Kinder means children, Garten means garden",
+    "meaning": "a class for children before first grade"
+  },
+  {
+    "word": "democracy",
+    "language": "Greek",
+    "parts": "demos means people, kratos means power",
+    "meaning": "government by the people"
+  },
+  {
+    "word": "philosophy",
+    "language": "Greek",
+    "parts": "philos means loving, sophia means wisdom",
+    "meaning": "the study of knowledge, truth and how to live"
+  },
+  {
+    "word": "government",
+    "language": "Greek, through Latin and French",
+    "parts": "kybernan means to steer a ship",
+    "meaning": "the group of people who run a country"
+  },
+  {
+    "word": "hospital",
+    "language": "Latin",
+    "parts": "hospes means guest",
+    "meaning": "a place where sick people are cared for"
+  },
+  {
+    "word": "tragedy",
+    "language": "Greek",
+    "parts": "probably tragos means goat, oide means song",
+    "meaning": "a sad story or a terrible event"
+  },
+  {
+    "word": "arctic",
+    "language": "Greek",
+    "parts": "arktos means bear, after the Great Bear in the sky",
+    "meaning": "the region around the North Pole"
+  },
+  {
+    "word": "alcohol",
+    "language": "Arabic",
+    "parts": "al-kuhl means the fine powder used as eyeliner",
+    "meaning": "the intoxicating part of wine and beer"
+  },
+  {
+    "word": "algebra",
+    "language": "Arabic",
+    "parts": "al-jabr means the reunion of broken parts",
+    "meaning": "maths that uses letters for numbers"
+  },
+  {
+    "word": "magazine",
+    "language": "Arabic, through Italian and French",
+    "parts": "makhazin means storehouses",
+    "meaning": "a regular publication with articles and pictures"
+  },
+  {
+    "word": "canyon",
+    "language": "Spanish",
+    "parts": "canon means tube or pipe",
+    "meaning": "a deep valley with steep rock walls"
+  },
+  {
+    "word": "alligator",
+    "language": "Spanish",
+    "parts": "el lagarto means the lizard",
+    "meaning": "a large reptile with a broad snout"
+  },
+  {
+    "word": "mosquito",
+    "language": "Spanish",
+    "parts": "mosca means fly, -ito means little",
+    "meaning": "a small insect that bites and sucks blood"
+  },
+  {
+    "word": "avocado",
+    "language": "Nahuatl, through Spanish",
+    "parts": "ahuacatl was the Nahuatl name for the fruit",
+    "meaning": "a green fruit with a large stone"
+  },
+  {
+    "word": "chocolate",
+    "language": "Nahuatl, through Spanish",
+    "parts": "a Nahuatl word for a drink made from cacao",
+    "meaning": "a sweet food made from roasted cacao seeds"
+  },
+  {
+    "word": "clue",
+    "language": "Old English",
+    "parts": "cliwen means a ball of thread",
+    "meaning": "a piece of evidence that helps solve a mystery"
+  },
+  {
+    "word": "bedlam",
+    "language": "English, from a place name",
+    "parts": "a London hospital called St Mary of Bethlehem",
+    "meaning": "a scene of noise and chaos"
+  },
+  {
+    "word": "sandwich",
+    "language": "English, from a title",
+    "parts": "John Montagu, the 4th Earl of Sandwich",
+    "meaning": "food between two slices of bread"
+  },
+  {
+    "word": "assassin",
+    "language": "Arabic, through Latin",
+    "parts": "a name enemies gave a 12th-century sect",
+    "meaning": "a person who murders someone important"
+  },
+  {
+    "word": "boycott",
+    "language": "English, from a person's name",
+    "parts": "Captain Charles Boycott, a land agent in Ireland",
+    "meaning": "to refuse to deal with someone in protest"
+  },
+  {
+    "word": "nightmare",
+    "language": "Old English",
+    "parts": "night plus mære, an evil spirit that sat on sleepers",
+    "meaning": "a frightening dream"
+  },
+  {
+    "word": "tantalize",
+    "language": "Greek, from a myth",
+    "parts": "Tantalus, who could never reach his food or drink",
+    "meaning": "to tease with something you cannot have"
+  },
+  {
+    "word": "panic",
+    "language": "Greek",
+    "parts": "Pan, god of wild places",
+    "meaning": "sudden overwhelming fear"
+  },
+  {
+    "word": "hypocrite",
+    "language": "Greek",
+    "parts": "hypokritēs means a stage actor",
+    "meaning": "someone who pretends to be better than they are"
+  },
+  {
+    "word": "ketchup",
+    "language": "probably Hokkien Chinese",
+    "parts": "kê-tsiap was a fish sauce",
+    "meaning": "a tomato sauce"
+  },
+  {
+    "word": "bikini",
+    "language": "Marshallese, from a place name",
+    "parts": "Bikini Atoll, where bombs were tested in 1946",
+    "meaning": "a two-piece swimsuit"
+  },
+  {
+    "word": "serendipity",
+    "language": "English, coined from a fairy tale",
+    "parts": "Serendip, an old name for Sri Lanka",
+    "meaning": "finding good things by chance"
+  },
+  {
+    "word": "silhouette",
+    "language": "French, from a person's name",
+    "parts": "Étienne de Silhouette, a penny-pinching minister",
+    "meaning": "a dark outline against a light background"
+  },
+  {
+    "word": "lunatic",
+    "language": "Latin",
+    "parts": "luna means moon",
+    "meaning": "a person thought to be mad"
+  },
+  {
+    "word": "malaria",
+    "language": "Italian",
+    "parts": "mal'aria means bad air",
+    "meaning": "a fever spread by mosquitoes"
+  },
+  {
+    "word": "whiskey",
+    "language": "Gaelic",
+    "parts": "uisce beatha means water of life",
+    "meaning": "a strong spirit made from grain"
+  },
+  {
+    "word": "easel",
+    "language": "Dutch",
+    "parts": "ezel means donkey",
+    "meaning": "a stand that holds a painting"
+  },
+  {
+    "word": "grenade",
+    "language": "French",
+    "parts": "grenade means pomegranate",
+    "meaning": "a small bomb thrown by hand"
+  },
+  {
+    "word": "companion",
+    "language": "Latin",
+    "parts": "com means with, panis means bread",
+    "meaning": "someone you spend time with"
+  },
+  {
+    "word": "candidate",
+    "language": "Latin",
+    "parts": "candidatus means dressed in white",
+    "meaning": "someone running for office or a job"
+  },
+  {
+    "word": "volcano",
+    "language": "Italian, from Latin",
+    "parts": "Vulcan, the Roman god of fire",
+    "meaning": "a mountain that erupts"
+  }
 ]
