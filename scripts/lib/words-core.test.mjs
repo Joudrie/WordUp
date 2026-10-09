@@ -127,3 +127,27 @@ test('earliestQuote ignores examples without a dated reference', () => {
   assert.equal(earliestQuote({ senses: [{ examples: [{ type: 'example', text: 'x' }] }] }), null)
   assert.equal(earliestQuote({}), null)
 })
+
+import { baseOf, partsHook, partsOf } from './words-core.mjs'
+
+test('partsOf reads every way Wiktionary records word parts', () => {
+  const forms = (t) => partsOf([t])?.map((p) => p.form)
+  assert.deepEqual(forms({ name: 'prefix', args: { 1: 'en', 2: 'un', 3: 'happy' } }), ['un-', 'happy'])
+  assert.deepEqual(forms({ name: 'suf', args: { 1: 'en', 2: 'teach', 3: 'er' } }), ['teach', '-er'])
+  assert.deepEqual(forms({ name: 'af', args: { 1: 'en', 2: 'unhappy', 3: '-ness' } }), ['unhappy', '-ness'])
+  assert.deepEqual(forms({ name: 'ety', args: { 1: 'en', 2: ':af', 3: 're-', 4: 'write', text: '+' } }), ['re-', 'write'])
+  assert.deepEqual(forms({ name: 'compound', args: { 1: 'en', 2: 'black', 3: 'bird' } }), ['black', 'bird'])
+  assert.equal(partsOf([{ name: 'inh', args: { 1: 'en', 2: 'enm', 3: 'x' } }]), null)
+})
+
+test('baseOf finds the single base, and none for compounds', () => {
+  assert.equal(baseOf(partsOf([{ name: 'prefix', args: { 1: 'en', 2: 'un', 3: 'happy' } }])), 'happy')
+  assert.equal(baseOf(partsOf([{ name: 'compound', args: { 1: 'en', 2: 'sun', 3: 'flower' } }])), null)
+})
+
+test('partsHook explains the parts and where the base comes from', () => {
+  const parts = [{ form: 'un-', affix: true }, { form: 'happy', affix: false }]
+  const chain = [{ family: 'norse', language: 'Old Norse', form: 'happ', gloss: 'luck' }, { family: 'other', language: 'Modern English', form: 'happy' }]
+  assert.equal(partsHook(parts, chain), 'Made from un- + happy. happy goes back to Old Norse happ, meaning "luck".')
+  assert.equal(partsHook([{ form: 'sun', affix: false }, { form: 'flower', affix: false }]), 'A compound of sun + flower.')
+})
