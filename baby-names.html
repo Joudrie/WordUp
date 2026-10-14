@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Name Swipe</title>
+<style>
+body{margin:0;height:100vh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#f4f1ea;font-family:system-ui,sans-serif;color:#222;overflow:hidden;touch-action:none}
+#stack{flex:1;display:flex;align-items:center;justify-content:center;width:100%}
+#card{width:min(80vw,320px);height:min(60vh,420px);background:#fff;border-radius:20px;box-shadow:0 8px 24px #0002;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:600;user-select:none;cursor:grab}
+#hint{font-size:13px;color:#888;padding:8px}
+#btns{display:flex;gap:12px;padding:16px;justify-content:center;flex-wrap:wrap}
+button{font-size:18px;padding:12px 18px;border:0;border-radius:12px;background:#222;color:#fff;min-width:56px}
+#list{position:fixed;inset:0;background:#fff;display:none;overflow:auto;padding:16px;box-sizing:border-box;font-size:18px;line-height:1.7}
+</style></head>
+<body>
+<div id="stack"><div id="card"></div></div>
+<div id="hint">← no · → yes · ↑ not sure</div>
+<div id="btns"><button id="no">✕</button><button id="unsure">↑</button><button id="yes">✓</button><button id="show"></button></div>
+<div id="list" onclick="this.style.display='none'"></div>
+<script>
+const NAMES=[...new Set(`
+James John Robert Michael William David Richard Joseph Thomas Charles Christopher Daniel Matthew Anthony Mark Donald Steven Paul Andrew Joshua Kenneth Kevin Brian George Edward Ronald Timothy Jason Jeffrey Ryan Jacob Gary Nicholas Eric Jonathan Stephen Larry Justin Scott Brandon Benjamin Samuel Gregory Alexander Frank Patrick Raymond Jack Dennis Jerry Tyler Aaron Adam Nathan Henry Douglas Zachary Peter Kyle Walter Ethan Jeremy Harold Keith Christian Roger Noah Gerald Carl Terry Sean Austin Arthur Lawrence Jesse Dylan Bryan Joe Jordan Billy Bruce Albert Gabriel Logan Alan Wayne Roy Ralph Randy Eugene Vincent Russell Elijah Louis Philip Johnny Wilbur Ezra Otis Cornelius Silas Abner Thaddeus Ambrose Clement Horace Lyle Cyrus Elmer Franklin Hollis Milo Atticus Emmett Harlan Ansel Ezekiel
+Mateo Santiago Diego Rafael Sebastian Alejandro Matias Emiliano Adrian Leonardo Julian Marcos Cruz Dante Enzo Marco Luca Lorenzo Augusto Rocco Cassius Julius Marcus Octavian Tiberius Gaius Lucian Valerio Nico Nicolas Ignacio Ramon Hugo Felix Alonzo Esteban Benicio Joaquin Gonzalo Jose Juan Carlos Fernando Ricardo Mauro Bautista Emilio
+Dmitri Ivan Mikhail Alexei Nikolai Yuri Sergei Viktor Anton Boris Pavel Oleg Vadim Yaroslav Stanislav Lev Vladimir Konstantin Ilya Arkady Gleb Radomir Bogdan Mirko Zoran Tomas Lukas Jakub Mateusz Stefan
+Kai Ren Hiro Kenji Haruto Arjun Rohan Dev Omar Idris Amir Malik Tariq Yusuf Kwame Kofi Jabari Oluwaseun Tobias Anders Lars Soren Finn Magnus Bjorn Sven Rowan Sawyer Declan Cormac Fionn Ronan Eamon Rory Callum Hamish Angus Ewan Lachlan Wolfgang Friedrich Klaus Matteo Giovanni Cesare Dario Fabio Orion Atlas Jasper Oliver Theo Hudson Beckett Maddox Crosby Remington Thatcher Easton Emerson Forrest Hank Lincoln Porter Wesley Cooper Holden Ford Knox Rhett Brooks
+`.trim().split(/\s+/))];
+
+const SEEN_KEY='names-seen', LIKED_KEY='names-liked';
+const load=(k)=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return []}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+let seen=load(SEEN_KEY), liked=load(LIKED_KEY);
+let pile=shuffle(NAMES.filter(n=>!seen.includes(n)));
+const card=document.getElementById('card'), list=document.getElementById('list'), showBtn=document.getElementById('show');
+let busy=false;
+
+function show(){
+  card.style.transition='none'; card.style.transform='';
+  card.textContent=pile.length?pile[0]:'done 🎉';
+  showBtn.textContent=liked.length+' ♥';
+}
+
+function decide(d){
+  if(busy||!pile.length)return;
+  busy=true;
+  const n=pile.shift();
+  if(d==='up') pile.push(n);
+  else{ seen.push(n); save(SEEN_KEY,seen); if(d==='right'){liked.push(n); save(LIKED_KEY,liked)} }
+  const t={right:'translate(600px,0) rotate(30deg)',left:'translate(-600px,0) rotate(-30deg)',up:'translate(0,-900px)'}[d];
+  card.style.transition='transform .25s'; card.style.transform=t;
+  setTimeout(()=>{show(); busy=false},250);
+}
+
+let sx,sy,drag=false;
+card.onpointerdown=e=>{sx=e.clientX;sy=e.clientY;drag=true;card.setPointerCapture(e.pointerId);card.style.transition='none'};
+card.onpointermove=e=>{if(!drag)return;const dx=e.clientX-sx,dy=e.clientY-sy;card.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/20}deg)`};
+card.onpointerup=e=>{
+  if(!drag)return; drag=false;
+  const dx=e.clientX-sx, dy=e.clientY-sy;
+  if(Math.abs(dx)>Math.abs(dy)){ if(dx>100)return decide('right'); if(dx<-100)return decide('left'); }
+  else if(dy<-100)return decide('up');
+  card.style.transition='transform .2s'; card.style.transform='';
+};
+
+document.getElementById('yes').onclick=()=>decide('right');
+document.getElementById('no').onclick=()=>decide('left');
+document.getElementById('unsure').onclick=()=>decide('up');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')decide('right');
+  if(e.key==='ArrowLeft')decide('left');
+  if(e.key==='ArrowUp'){e.preventDefault();decide('up')}
+});
+showBtn.onclick=()=>{
+  list.innerHTML=liked.map(n=>`<div>${n}</div>`).join('')||'nothing yet';
+  list.style.display='block';
+};
+show();
+</script>
+</body></html>
