@@ -23,28 +23,27 @@ Dmitri Ivan Mikhail Alexei Nikolai Yuri Sergei Viktor Anton Boris Pavel Oleg Vad
 Kai Ren Hiro Kenji Haruto Arjun Rohan Dev Omar Idris Amir Malik Tariq Yusuf Kwame Kofi Jabari Oluwaseun Tobias Anders Lars Soren Finn Magnus Bjorn Sven Rowan Sawyer Declan Cormac Fionn Ronan Eamon Rory Callum Hamish Angus Ewan Lachlan Wolfgang Friedrich Klaus Matteo Giovanni Cesare Dario Fabio Orion Atlas Jasper Oliver Theo Hudson Beckett Maddox Crosby Remington Thatcher Easton Emerson Forrest Hank Lincoln Porter Wesley Cooper Holden Ford Knox Rhett Brooks
 `.trim().split(/\s+/))];
 
-const SEEN_KEY='names-seen', LIKED_KEY='names-liked';
-const load=(k)=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return []}};
-const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-
-let seen=load(SEEN_KEY), liked=load(LIKED_KEY);
-let pile=shuffle(NAMES.filter(n=>!seen.includes(n)));
 const card=document.getElementById('card'), list=document.getElementById('list'), showBtn=document.getElementById('show');
-let busy=false;
+
+let db=null, decided={}, pile=shuffle(NAMES.slice()), synced=false, busy=false;
+const likedList=()=>Object.keys(decided).filter(n=>decided[n]==='yes');
 
 function show(){
   card.style.transition='none'; card.style.transform='';
   card.textContent=pile.length?pile[0]:'done 🎉';
-  showBtn.textContent=liked.length+' ♥';
+  showBtn.textContent=likedList().length+' ♥';
 }
 
-function decide(d){
+async function decide(d){
   if(busy||!pile.length)return;
   busy=true;
   const n=pile.shift();
   if(d==='up') pile.push(n);
-  else{ seen.push(n); save(SEEN_KEY,seen); if(d==='right'){liked.push(n); save(LIKED_KEY,liked)} }
+  else{
+    decided[n]=d==='right'?'yes':'no';
+    if(db){ try{ await db.doc('names/'+n).set({decision:decided[n]}) }catch(e){ console.warn(e) } }
+  }
   const t={right:'translate(600px,0) rotate(30deg)',left:'translate(-600px,0) rotate(-30deg)',up:'translate(0,-900px)'}[d];
   card.style.transition='transform .25s'; card.style.transform=t;
   setTimeout(()=>{show(); busy=false},250);
@@ -70,9 +69,20 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowUp'){e.preventDefault();decide('up')}
 });
 showBtn.onclick=()=>{
-  list.innerHTML=liked.map(n=>`<div>${n}</div>`).join('')||'nothing yet';
+  list.innerHTML=likedList().map(n=>`<div>${n}</div>`).join('')||'nothing yet';
   list.style.display='block';
 };
+
+// Saved picks live in the shared db: one doc per name at names/<name>.
+window.claude.use('db').then(d=>{
+  if(!d){ showBtn.textContent='not saving'; return; }
+  db=d;
+  db.collection('names').onSnapshot(snap=>{
+    snap.docs.forEach(x=>{ if(x.exists) decided[x.id]=x.data().decision; });
+    if(!synced){ synced=true; pile=shuffle(NAMES.filter(n=>!decided[n])); show(); }
+    else show();
+  }, e=>console.warn(e));
+});
 show();
 </script>
 </body></html>
