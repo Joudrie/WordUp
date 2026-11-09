@@ -46,7 +46,7 @@ export function ExplorePage() {
     <section>
       <div className="mb-4 flex items-baseline justify-between">
         <h1 className="headword text-2xl sm:text-3xl">Explore</h1>
-        <span className="text-sm font-semibold">9 places to dig</span>
+        <span className="text-sm font-semibold">10 places to dig</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <a href="#/origins" className="sticker bg-blue col-span-2 flex flex-col gap-2 p-4">
@@ -57,6 +57,17 @@ export function ExplorePage() {
             ))}
             <span className="ml-1">21 languages and families</span>
           </span>
+        </a>
+        <a href="#/journeys" className="sticker bg-yellow col-span-2 flex items-center justify-between gap-3 p-4">
+          <span>
+            <span className="headword block text-2xl leading-none">Word journeys</span>
+            <span className="text-sm font-semibold">nāraṅga → nārang → naranja → orange, on a map</span>
+          </span>
+          <svg width="56" height="40" viewBox="0 0 56 40" fill="none" aria-hidden="true">
+            <path d="M4 32 Q 18 6 30 20 T 52 8" stroke="#16161d" strokeWidth="3" strokeDasharray="5 4" strokeLinecap="round" />
+            <circle cx="4" cy="32" r="4" fill="#fff" stroke="#16161d" strokeWidth="2.5" />
+            <circle cx="52" cy="8" r="5" fill="#ff6b4a" stroke="#16161d" strokeWidth="2.5" />
+          </svg>
         </a>
         <a href="#/roots" className="sticker bg-green row-span-2 flex flex-col gap-1 p-3.5">
           <span className="text-sm font-semibold">Roots</span>

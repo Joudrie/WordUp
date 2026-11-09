@@ -1,0 +1,667 @@
+[
+  {
+    "id": "orange",
+    "word": "orange",
+    "title": "One fruit, three names",
+    "summary": "Sanskrit, Persian, Arabic, Spanish, Italian, French, English",
+    "steps": [
+      {
+        "headline": "It starts in India, as nāraṅga.",
+        "text": "Sanskrit nāraṅga meant the orange tree. It may come from an older Dravidian word from southern India.",
+        "lang": "Sanskrit",
+        "form": "nāraṅga",
+        "stop": [
+          25.5,
+          81.8
+        ],
+        "areas": [
+          {
+            "iso": "356",
+            "color": "yellow",
+            "label": "nāraṅga",
+            "at": [
+              22.5,
+              79
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Persian traders called it nārang.",
+        "text": "The fruit and its name moved west along the trade routes into Persia.",
+        "lang": "Persian",
+        "form": "nārang",
+        "stop": [
+          32.6,
+          51.7
+        ],
+        "areas": [
+          {
+            "iso": "364",
+            "color": "green",
+            "label": "nārang",
+            "at": [
+              32.6,
+              54
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "In Arabic it became nāranj.",
+        "text": "Arab farmers grew the bitter orange across the Middle East and carried it further west.",
+        "lang": "Arabic",
+        "form": "nāranj",
+        "stop": [
+          33.3,
+          44.4
+        ],
+        "areas": [
+          {
+            "iso": "368",
+            "color": "purple",
+            "label": "nāranj",
+            "at": [
+              33,
+              43.5
+            ]
+          },
+          {
+            "iso": "682",
+            "color": "purple"
+          }
+        ]
+      },
+      {
+        "headline": "The Arabs brought the bitter orange to Spain and Sicily.",
+        "text": "By the 900s orange trees grew in Muslim Spain. Spanish still says naranja, almost unchanged from the Arabic.",
+        "lang": "Spanish",
+        "form": "naranja",
+        "stop": [
+          37.9,
+          -4.8
+        ],
+        "areas": [
+          {
+            "iso": "724",
+            "color": "coral",
+            "label": "naranja",
+            "at": [
+              40,
+              -3.7
+            ]
+          },
+          {
+            "iso": "380",
+            "color": "coral"
+          }
+        ]
+      },
+      {
+        "headline": "Italian lost the n: una narancia became un'arancia.",
+        "text": "Old Italian narancia was heard as if the n belonged to the word for a, so the fruit became arancia. English did the same to a napron, which is why we say apron.",
+        "lang": "Italian",
+        "form": "arancia",
+        "stop": [
+          43.8,
+          11.2
+        ],
+        "areas": [
+          {
+            "iso": "380",
+            "color": "blue",
+            "label": "arancia",
+            "at": [
+              42.5,
+              12.8
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "French made it orenge, probably after or, gold.",
+        "text": "Old French orenge took its o probably from or, gold, the colour of the fruit. The town of Orange in Provence, a trading point for oranges, may have helped.",
+        "lang": "Old French",
+        "form": "orenge",
+        "stop": [
+          48.9,
+          2.35
+        ],
+        "areas": [
+          {
+            "iso": "250",
+            "color": "yellow",
+            "label": "orenge",
+            "at": [
+              46.6,
+              2.4
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "English took the fruit first and the colour later.",
+        "text": "Orange reached English in the 1300s as the name of the fruit. It was not used for the colour until the 1500s; before that, people said something like yellow-red.",
+        "lang": "English",
+        "form": "orange",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "green",
+            "label": "orange",
+            "at": [
+              52.8,
+              -1.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Today Europe uses three kinds of name.",
+        "text": "Most of the west kept the naranja and orange family. When the Portuguese brought sweet oranges from Asia in the 1500s, much of the eastern Mediterranean named the fruit after Portugal. In the Netherlands it became the apple from China.",
+        "noRoute": true,
+        "areas": [
+          {
+            "iso": "724",
+            "color": "coral",
+            "label": "naranja",
+            "at": [
+              40.2,
+              -3.3
+            ]
+          },
+          {
+            "iso": "620",
+            "color": "coral",
+            "label": "laranja",
+            "at": [
+              39.0,
+              -12.8
+            ]
+          },
+          {
+            "iso": "250",
+            "color": "coral",
+            "label": "orange",
+            "at": [
+              46.6,
+              2.2
+            ]
+          },
+          {
+            "iso": "826",
+            "color": "coral",
+            "label": "orange",
+            "at": [
+              53.6,
+              -2.2
+            ]
+          },
+          {
+            "iso": "380",
+            "color": "coral",
+            "label": "arancia",
+            "at": [
+              42.0,
+              13.4
+            ]
+          },
+          {
+            "iso": "276",
+            "color": "coral",
+            "label": "Orange",
+            "at": [
+              50.4,
+              10.6
+            ]
+          },
+          {
+            "iso": "616",
+            "color": "coral",
+            "label": "pomarańcza",
+            "at": [
+              52.3,
+              20.4
+            ]
+          },
+          {
+            "iso": "528",
+            "color": "blue",
+            "label": "sinaasappel",
+            "at": [
+              54.6,
+              4.2
+            ]
+          },
+          {
+            "iso": "300",
+            "color": "purple",
+            "label": "portokáli",
+            "at": [
+              38.4,
+              21.8
+            ]
+          },
+          {
+            "iso": "792",
+            "color": "purple",
+            "label": "portakal",
+            "at": [
+              38.9,
+              34.6
+            ]
+          },
+          {
+            "iso": "642",
+            "color": "purple",
+            "label": "portocală",
+            "at": [
+              46.3,
+              25.2
+            ]
+          },
+          {
+            "iso": "100",
+            "color": "purple",
+            "label": "portokal",
+            "at": [
+              42.7,
+              25.6
+            ]
+          }
+        ],
+        "key": [
+          {
+            "color": "coral",
+            "text": "naranja and orange"
+          },
+          {
+            "color": "purple",
+            "text": "named after Portugal"
+          },
+          {
+            "color": "blue",
+            "text": "apple from China"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sugar",
+    "word": "sugar",
+    "title": "Sugar was once gravel",
+    "summary": "Sanskrit, Persian, Arabic, Italian, French, English",
+    "steps": [
+      {
+        "headline": "In Sanskrit, śarkarā meant gravel.",
+        "text": "Indian cooks were boiling cane juice into hard crystals by the first centuries AD. The word for grit or gravel became the word for those crystals.",
+        "lang": "Sanskrit",
+        "form": "śarkarā",
+        "stop": [
+          25.5,
+          81.8
+        ],
+        "areas": [
+          {
+            "iso": "356",
+            "color": "yellow",
+            "label": "śarkarā",
+            "at": [
+              22.5,
+              79
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Persia learned the secret and called it shakar.",
+        "text": "Sugarcane and the refining method spread into Persia, and the name went with them.",
+        "lang": "Persian",
+        "form": "shakar",
+        "stop": [
+          32.6,
+          51.7
+        ],
+        "areas": [
+          {
+            "iso": "364",
+            "color": "green",
+            "label": "shakar",
+            "at": [
+              32.6,
+              54
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Arabic made it sukkar.",
+        "text": "Arab rulers planted sugarcane wherever the climate allowed. Another Arabic word, qandī, sugar crystals, gave English candy.",
+        "lang": "Arabic",
+        "form": "sukkar",
+        "stop": [
+          33.3,
+          44.4
+        ],
+        "areas": [
+          {
+            "iso": "368",
+            "color": "purple",
+            "label": "sukkar",
+            "at": [
+              33,
+              43.5
+            ]
+          },
+          {
+            "iso": "682",
+            "color": "purple"
+          }
+        ]
+      },
+      {
+        "headline": "Sugarcane reached Sicily and Spain.",
+        "text": "Arab farmers grew cane in the Mediterranean. Medieval Latin wrote succarum, and Italian still says zucchero.",
+        "lang": "Italian",
+        "form": "zucchero",
+        "stop": [
+          38.1,
+          13.4
+        ],
+        "areas": [
+          {
+            "iso": "380",
+            "color": "blue",
+            "label": "zucchero",
+            "at": [
+              42.5,
+              12.8
+            ]
+          },
+          {
+            "iso": "724",
+            "color": "blue",
+            "label": "azúcar",
+            "at": [
+              40,
+              -3.7
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "French made it sucre.",
+        "text": "Sugar was an expensive spice in medieval France, sold by apothecaries alongside medicines.",
+        "lang": "Old French",
+        "form": "sucre",
+        "stop": [
+          48.9,
+          2.35
+        ],
+        "areas": [
+          {
+            "iso": "250",
+            "color": "yellow",
+            "label": "sucre",
+            "at": [
+              46.6,
+              2.4
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "English got sugre, and the g stayed.",
+        "text": "Middle English sugre arrived from French around 1300. The sh sound we say today came later and was never written.",
+        "lang": "English",
+        "form": "sugar",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "green",
+            "label": "sugar",
+            "at": [
+              52.8,
+              -1.5
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "coffee",
+    "word": "coffee",
+    "title": "Coffee crossed three empires",
+    "summary": "Arabic, Turkish, Italian, Dutch, English",
+    "steps": [
+      {
+        "headline": "The coffee plant grows wild in Ethiopia.",
+        "text": "A famous legend says a goatherd named Kaldi noticed his goats dancing after eating the berries. The story was first written down in 1671, so treat it as a legend.",
+        "lang": "Ethiopia",
+        "form": "the plant",
+        "stop": [
+          7.3,
+          36.2
+        ],
+        "areas": [
+          {
+            "iso": "231",
+            "color": "green",
+            "label": "coffee plant",
+            "at": [
+              9,
+              39.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "In Yemen it became qahwa.",
+        "text": "In the 1400s Sufi mystics in Yemen drank coffee to stay awake for night prayers. The Arabic word qahwa may first have meant a kind of wine.",
+        "lang": "Arabic",
+        "form": "qahwa",
+        "stop": [
+          13.3,
+          43.3
+        ],
+        "areas": [
+          {
+            "iso": "887",
+            "color": "purple",
+            "label": "qahwa",
+            "at": [
+              15.6,
+              47.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Istanbul opened coffeehouses: kahve.",
+        "text": "The first coffeehouses opened in Istanbul in the 1550s, and Ottoman Turkish called the drink kahve.",
+        "lang": "Ottoman Turkish",
+        "form": "kahve",
+        "stop": [
+          41,
+          29
+        ],
+        "areas": [
+          {
+            "iso": "792",
+            "color": "coral",
+            "label": "kahve",
+            "at": [
+              39,
+              34.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Venice traded it as caffè.",
+        "text": "Venetian merchants brought coffee into Europe in the 1600s, and Italian made the word caffè.",
+        "lang": "Italian",
+        "form": "caffè",
+        "stop": [
+          45.4,
+          12.3
+        ],
+        "areas": [
+          {
+            "iso": "380",
+            "color": "blue",
+            "label": "caffè",
+            "at": [
+              42.5,
+              12.8
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "The Dutch grew it and called it koffie.",
+        "text": "Dutch traders started coffee plantations on Java in the late 1600s. English coffee probably owes its shape to Dutch koffie.",
+        "lang": "Dutch",
+        "form": "koffie",
+        "stop": [
+          52.4,
+          4.9
+        ],
+        "areas": [
+          {
+            "iso": "528",
+            "color": "yellow",
+            "label": "koffie",
+            "at": [
+              54.0,
+              3.2
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "London drank coffee by the 1650s.",
+        "text": "English writers mentioned the drink from 1598. Coffeehouses opened in Oxford and London in the 1650s and became places to talk business and news.",
+        "lang": "English",
+        "form": "coffee",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "green",
+            "label": "coffee",
+            "at": [
+              52.8,
+              -1.5
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "algebra",
+    "word": "algebra",
+    "title": "Algebra was a book title",
+    "summary": "Arabic, Latin, Italian, English",
+    "steps": [
+      {
+        "headline": "Baghdad, around 820: al-jabr.",
+        "text": "The mathematician al-Khwārizmī wrote a book on solving equations at the House of Wisdom. Its title included al-jabr, the reunion of broken parts.",
+        "lang": "Arabic",
+        "form": "al-jabr",
+        "stop": [
+          33.3,
+          44.4
+        ],
+        "areas": [
+          {
+            "iso": "368",
+            "color": "purple",
+            "label": "al-jabr",
+            "at": [
+              33,
+              43.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Spain, 1145: translated into Latin.",
+        "text": "Robert of Chester translated al-Khwārizmī's book into Latin in Segovia. Arabic science reached Europe through Spain.",
+        "lang": "Medieval Latin",
+        "form": "algebra",
+        "stop": [
+          40.9,
+          -4.1
+        ],
+        "areas": [
+          {
+            "iso": "724",
+            "color": "coral",
+            "label": "algebra",
+            "at": [
+              40,
+              -3.7
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Italy made it a merchant's subject.",
+        "text": "Italian traders and teachers spread the new arithmetic and algebra through the 1200s to 1400s, helped by Fibonacci's book on calculation in 1202.",
+        "lang": "Italian",
+        "form": "algebra",
+        "stop": [
+          43.7,
+          10.4
+        ],
+        "areas": [
+          {
+            "iso": "380",
+            "color": "blue",
+            "label": "algebra",
+            "at": [
+              42.5,
+              12.8
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "In English it first meant setting bones.",
+        "text": "When algebra reached English in the 1500s, one of its first meanings was the surgical setting of broken bones, straight from al-jabr. The maths sense won.",
+        "lang": "English",
+        "form": "algebra",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "green",
+            "label": "algebra",
+            "at": [
+              52.8,
+              -1.5
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

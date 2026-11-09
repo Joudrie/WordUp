@@ -11,6 +11,7 @@ import { LabPage } from './components/Lab.tsx'
 import { OldEnglishPage } from './components/OldEnglish.tsx'
 import { StoriesPage, StoryPage } from './components/Stories.tsx'
 import { PlayPage } from './components/Play.tsx'
+import { JourneyPage, JourneysPage } from './components/Journey.tsx'
 import { ThemeToggle } from './components/ThemeToggle.tsx'
 
 // Hash routes keep the app working on any static host with no server rules.
@@ -29,7 +30,7 @@ function useHash(): string {
 
 const TABS: { href: string; label: string; Icon: ComponentType<{ size?: number; 'aria-hidden'?: boolean }>; match: RegExp }[] = [
   { href: '#/', label: 'Search', Icon: Search, match: /^(#\/?)?$|^#\/w\// },
-  { href: '#/explore', label: 'Explore', Icon: Compass, match: /^#\/(explore|roots|affixes|patterns|slang|lab|old-english|stories)/ },
+  { href: '#/explore', label: 'Explore', Icon: Compass, match: /^#\/(explore|roots|affixes|patterns|slang|lab|old-english|stories|journeys)/ },
   { href: '#/play', label: 'Play', Icon: Puzzle, match: /^#\/play/ },
   { href: '#/origins', label: 'Origins', Icon: Globe, match: /^#\/origins/ },
 ]
@@ -53,6 +54,8 @@ function route(hash: string, query: string, setQuery: (q: string) => void) {
   if (hash === '#/stories') return <StoriesPage />
   if ((r = m(/^#\/stories\/([a-z-]+)$/))) return <StoryPage id={r[1]} />
   if (hash === '#/play') return <PlayPage />
+  if (hash === '#/journeys') return <JourneysPage />
+  if ((r = m(/^#\/journeys\/([a-z-]+)$/))) return <JourneyPage id={r[1]} />
   return <Home query={query} onQuery={setQuery} />
 }
 

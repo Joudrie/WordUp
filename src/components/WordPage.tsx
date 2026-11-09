@@ -2,6 +2,7 @@ import type { Confidence, Word } from '../data/types.ts'
 import { useEntries } from '../lib/hooks.ts'
 import { FamilyLine } from './FamilyLine.tsx'
 import { OriginChips } from './Origins.tsx'
+import { JourneyLink } from './Journey.tsx'
 
 // Quotation references are long; end them at a word boundary rather than mid-word.
 function shortSource(source: string, max = 110): string {
@@ -102,6 +103,8 @@ export function WordPage({ word, sense }: { word: string; sense: number | null }
           <p className="mt-2 text-sm text-[var(--color-muted)]">Drafted from Wiktionary; not yet checked by a person.</p>
         )}
       </div>
+
+      <JourneyLink word={entry.word} />
 
       {entry.parts && entry.parts.length > 0 && (
         <section aria-labelledby="parts">
