@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowRight, ChevronsDown, MapPinned } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPinned } from 'lucide-react'
 import { geoNaturalEarth1, geoPath } from 'd3-geo'
 import type { Feature, Geometry } from 'geojson'
 import journeys from '../../content/journeys.json'
@@ -101,6 +101,9 @@ function viewFor(j: JourneyData, i: number, overview: boolean): Box {
   return boxAround(pts)
 }
 
+/** How long the camera and the dotted line take to travel one leg. */
+const MOVE_MS = 1100
+
 /** Glides the view when the target changes; jumps when the reader prefers reduced motion. */
 function useAnimatedBox(target: Box): Box {
   const [box, setBox] = useState(target)
@@ -116,7 +119,7 @@ function useAnimatedBox(target: Box): Box {
     let frame = 0
     const t0 = performance.now()
     const tick = (now: number) => {
-      const t = Math.min(1, (now - t0) / 700)
+      const t = Math.min(1, (now - t0) / MOVE_MS)
       const e = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2
       const next = start.map((v, k) => v + (target[k] - v) * e) as Box
       from.current = next
@@ -151,22 +154,61 @@ function Label({ x, y, text, size, faded }: { x: number; y: number; text: string
   )
 }
 
-/** The map for one step, or with `overview` the whole route at once. */
-function JourneyMap({ journey, step, overview = false }: { journey: JourneyData; step: number; overview?: boolean }) {
+/** A point along the arc from a to b, t from 0 to 1 (the same curve `arc` draws). */
+function alongArc(a: [number, number], b: [number, number], t: number): [number, number] {
+  const mx = (a[0] + b[0]) / 2
+  const my = (a[1] + b[1]) / 2
+  const c: [number, number] = [mx - (b[1] - a[1]) * 0.18, my + (b[0] - a[0]) * 0.18]
+  const u = 1 - t
+  return [u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]
+}
+
+/** The first part of the arc, up to t, as path commands. */
+function partialArc(a: [number, number], b: [number, number], t: number): string {
+  const n = Math.max(2, Math.ceil(40 * t))
+  let d = ''
+  for (let k = 1; k <= n; k++) {
+    const p = alongArc(a, b, (t * k) / n)
+    d += ` L ${p[0]} ${p[1]}`
+  }
+  return d
+}
+
+const clamp01 = (x: number) => Math.max(0, Math.min(1, x))
+
+/**
+ * The map. `step` is where the reader is; `progress` (0 to 1) is how far the dotted
+ * line has travelled from the previous stop to this one. The new country fills in and
+ * its word appears as the line arrives. With `overview`, the whole trip at once.
+ */
+function JourneyMap({ journey, step, progress = 1, overview = false }: { journey: JourneyData; step: number; progress?: number; overview?: boolean }) {
   const world = useWorld()
   const target = useMemo(() => viewFor(journey, step, overview), [journey, step, overview])
   const box = useAnimatedBox(target)
   const s = journey.steps[step]
   const unit = box[2] / 100 // one hundredth of the visible width
+  const arrive = clamp01((progress - 0.6) / 0.4) // the last stretch of the leg
 
-  // Overview colours every country on the route; a step colours only its own.
+  // Countries: overview colours the whole route; a step colours its own as the line lands.
   const fills = new Map<string, string>()
   const areaSource = overview ? journey.steps.filter((x) => !x.noRoute) : [s]
   for (const x of areaSource) for (const a of x.areas) if (!fills.has(a.iso)) fills.set(a.iso, FILL[a.color])
+  const fillOpacity = overview ? 1 : arrive
 
   const stops = overview ? routeSteps(journey) : s.noRoute ? [] : journey.steps.slice(0, step + 1).filter((x) => x.stop && !x.noRoute)
   const pts = stops.map((x) => project(x.stop!) as [number, number])
-  const route = pts.length > 1 ? `M ${pts[0][0]} ${pts[0][1]} ` + pts.slice(1).map((p, k) => arc(pts[k], p)).join(' ') : ''
+  // Every finished leg in full; the newest leg only as far as the line has got.
+  let route = ''
+  let tip: [number, number] | null = null
+  if (pts.length > 1) {
+    route = `M ${pts[0][0]} ${pts[0][1]} `
+    route += pts.slice(1, -1).map((p, k) => arc(pts[k], p)).join(' ')
+    const a = pts[pts.length - 2]
+    const b = pts[pts.length - 1]
+    const t = overview ? 1 : progress
+    route += partialArc(a, b, t)
+    tip = overview || t >= 1 ? null : alongArc(a, b, t)
+  }
   const prev = overview || s.noRoute ? undefined : previousStop(journey.steps, step)
 
   return (
@@ -175,18 +217,31 @@ function JourneyMap({ journey, step, overview = false }: { journey: JourneyData;
         <div className="flex h-full items-center justify-center"><Loading /></div>
       ) : (
         <svg viewBox={box.join(' ')} className="block h-full w-full" role="img"
-          aria-label={overview ? `Map of the route: ${stops.map((x) => x.form).join(', ')}` : `Map: ${s.areas.map((a) => a.label).filter(Boolean).join(', ')}`}>
-          {world.map((c) => (
-            <path key={c.id} d={c.d} fill={fills.get(c.id) ?? '#dcdde6'} stroke={fills.has(c.id) ? '#16161d' : '#ffffff'}
-              strokeWidth={fills.has(c.id) ? unit * 0.28 : unit * 0.12} strokeLinejoin="round" />
-          ))}
+          aria-label={overview ? `Map of the whole trip: ${stops.map((x) => x.form).join(', ')}` : `Map: ${s.areas.map((a) => a.label).filter(Boolean).join(', ')}`}>
+          {world.map((c) => {
+            const fill = fills.get(c.id)
+            return (
+              <g key={c.id}>
+                <path d={c.d} fill="#dcdde6" stroke="#ffffff" strokeWidth={unit * 0.12} strokeLinejoin="round" />
+                {fill && (
+                  <path d={c.d} fill={fill} stroke="#16161d" strokeWidth={unit * 0.28} strokeLinejoin="round" opacity={fillOpacity} />
+                )}
+              </g>
+            )
+          })}
           {route && (
-            <path d={route} fill="none" stroke="#16161d" strokeWidth={unit * 0.45} strokeDasharray={`${unit * 1.4} ${unit * 1.1}`} strokeLinecap="round" />
+            <path d={route} fill="none" stroke="#16161d" strokeWidth={unit * 0.5} strokeDasharray={`${unit * 1.4} ${unit * 1.1}`} strokeLinecap="round" />
           )}
-          {pts.map((p, k) => (
-            <circle key={k} cx={p[0]} cy={p[1]} r={unit * (!overview && k === pts.length - 1 ? 1.3 : 0.9)}
-              fill={!overview && k === pts.length - 1 ? 'var(--sticker-yellow)' : '#ffffff'} stroke="#16161d" strokeWidth={unit * 0.35} />
-          ))}
+          {pts.map((p, k) => {
+            const isNew = !overview && k === pts.length - 1
+            if (isNew && pts.length > 1 && progress < 1) return null // not arrived yet
+            return (
+              <circle key={k} cx={p[0]} cy={p[1]} r={unit * (isNew ? 1.3 : 0.9)}
+                fill={isNew ? 'var(--sticker-yellow)' : '#ffffff'} stroke="#16161d" strokeWidth={unit * 0.35} />
+            )
+          })}
+          {/* The traveller: rides the front of the line while it moves. */}
+          {tip && <circle cx={tip[0]} cy={tip[1]} r={unit * 1.5} fill="var(--sticker-yellow)" stroke="#16161d" strokeWidth={unit * 0.4} />}
           {overview
             ? (() => {
                 // Try above, below, right, then left of each stop; skip a label that still
@@ -219,10 +274,12 @@ function JourneyMap({ journey, step, overview = false }: { journey: JourneyData;
                   const [px, py] = project(prev.stop!)
                   return <Label x={px} y={py - unit * 3.4} text={prev.form} size={unit * 2.8} faded />
                 })()}
-                {s.areas.filter((a) => a.label && a.at).map((a, k) => {
-                  const [px, py] = project(a.at!)
-                  return <Label key={k} x={px} y={py} text={a.label!} size={unit * (s.noRoute ? 2.3 : 3.8)} />
-                })}
+                <g opacity={arrive}>
+                  {s.areas.filter((a) => a.label && a.at).map((a, k) => {
+                    const [px, py] = project(a.at!)
+                    return <Label key={k} x={px} y={py} text={a.label!} size={unit * (s.noRoute ? 2.3 : 3.8)} />
+                  })}
+                </g>
               </>
             )}
         </svg>
@@ -248,51 +305,75 @@ function RouteChips({ journey, current }: { journey: JourneyData; current?: numb
 }
 
 // ---------------------------------------------------------------------------------------
-// The journeys feed: scroll through every word that has a map, one card per step.
-// Each word opens with its whole route, then one card for every leg of the trip.
+// The journeys feed: one screen per word, scrolled vertically. On each screen the reader
+// swipes sideways to travel: the dotted line draws itself to the next country, the camera
+// follows it, and the country fills in when the line arrives. The last swipe shows the
+// whole trip. No geography needed: you follow the line instead of knowing the route.
 
-type Card =
-  | { kind: 'intro'; journey: JourneyData; key: string }
-  | { kind: 'step'; journey: JourneyData; step: number; leg: number; legs: number; key: string }
-
-function buildCards(): Card[] {
-  const cards: Card[] = []
-  for (const j of JOURNEYS) {
-    cards.push({ kind: 'intro', journey: j, key: `${j.id}-intro` })
-    j.steps.forEach((_, i) => cards.push({ kind: 'step', journey: j, step: i, leg: i + 1, legs: j.steps.length, key: `${j.id}-${i}` }))
-  }
-  return cards
-}
-const CARDS = buildCards()
-
-function IntroCard({ journey, index }: { journey: JourneyData; index: number }) {
-  const legs = routeSteps(journey).length
-  return (
-    <>
-      <p className="text-sm font-bold uppercase tracking-wide text-[var(--sticker-coral)]">Word journey {index + 1} of {JOURNEYS.length}</p>
-      <h2 className="headword text-5xl leading-none">{journey.word}</h2>
-      <p className="headword text-lg leading-tight">{journey.title}</p>
-      <div className="mt-1"><JourneyMap journey={journey} step={0} overview /></div>
-      <RouteChips journey={journey} />
-      <p className="mt-auto flex items-center gap-1 text-sm font-bold">
-        <ChevronsDown size={18} aria-hidden /> Scroll to travel all {legs} stops
-      </p>
-    </>
-  )
+/** Runs the dotted line from 0 to 1 whenever `step` moves forward; jumps when it moves back. */
+function useLegProgress(step: number): number {
+  const [progress, setProgress] = useState(1)
+  const last = useRef(step)
+  useEffect(() => {
+    const forward = step > last.current
+    last.current = step
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (!forward || reduce) {
+      setProgress(1)
+      return
+    }
+    let frame = 0
+    const t0 = performance.now()
+    setProgress(0)
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - t0) / MOVE_MS)
+      setProgress(t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2)
+      if (t < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [step])
+  return progress
 }
 
-function StepCard({ journey, step, leg, legs }: { journey: JourneyData; step: number; leg: number; legs: number }) {
+function WordJourney({ journey, index }: { journey: JourneyData; index: number }) {
+  // Slides: every step, then one more for the whole trip.
+  const slides = journey.steps.length + 1
+  const [slide, setSlide] = useState(0)
+  const overview = slide === journey.steps.length
+  const step = overview ? journey.steps.length - 1 : slide
+  const progress = useLegProgress(slide)
   const s = journey.steps[step]
-  const prev = s.noRoute ? undefined : previousStop(journey.steps, step)
+  const prev = overview || s.noRoute ? undefined : previousStop(journey.steps, step)
+  const go = (d: number) => setSlide((n) => Math.max(0, Math.min(slides - 1, n + d)))
+
+  // Sideways swipes travel; vertical movement is left to the page (touch-action: pan-y).
+  const swipe = useRef<{ x: number; y: number } | null>(null)
+  const onPointerDown = (e: React.PointerEvent) => {
+    swipe.current = { x: e.clientX, y: e.clientY }
+  }
+  const onPointerUp = (e: React.PointerEvent) => {
+    const from = swipe.current
+    swipe.current = null
+    if (!from) return
+    const dx = e.clientX - from.x
+    const dy = e.clientY - from.y
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) go(dx < 0 ? 1 : -1)
+  }
+
   return (
     <>
       <p className="flex items-center justify-between text-sm font-bold">
-        <span className="uppercase tracking-wide text-[var(--sticker-coral)]">{journey.word}</span>
-        <span className="tabular-nums">Step {leg} of {legs}</span>
+        <span className="uppercase tracking-wide text-[var(--sticker-coral)]">Word journey {index + 1} of {JOURNEYS.length}</span>
+        <a href={`#/w/${journey.word}`} className="underline">word page</a>
       </p>
-      {/* The leg itself: where the word was, and where it went next. */}
-      <p className="flex flex-wrap items-center gap-1.5 text-sm font-bold">
-        {prev?.form ? (
+      <h2 className="headword text-4xl leading-none">{journey.word}</h2>
+
+      {/* Where the word was, and where it is going. */}
+      <p className="flex min-h-8 flex-wrap items-center gap-1.5 text-sm font-bold">
+        {overview ? (
+          <span className="rounded-full border-2 border-[#16161d] bg-[var(--sticker-yellow)] px-2 py-0.5 text-[#16161d]">The whole trip</span>
+        ) : prev?.form ? (
           <>
             <span className="rounded-full border-2 border-[#16161d] px-2 py-0.5">{prev.form} <span className="opacity-70">{prev.lang}</span></span>
             <ArrowRight size={16} aria-hidden />
@@ -304,40 +385,76 @@ function StepCard({ journey, step, leg, legs }: { journey: JourneyData; step: nu
           <span className="rounded-full border-2 border-[#16161d] px-2 py-0.5">Where it ended up</span>
         )}
       </p>
-      <h2 className="headword text-xl leading-tight sm:text-2xl">{s.headline}</h2>
-      <JourneyMap journey={journey} step={step} />
-      {s.key && (
-        <ul className="flex flex-wrap gap-3 text-xs font-semibold">
-          {s.key.map((k) => (
-            <li key={k.text} className="flex items-center gap-1.5">
-              <span className="h-3.5 w-3.5 rounded-full border-2 border-[#16161d]" style={{ background: FILL[k.color] }} />
-              {k.text}
+
+      <div onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => { swipe.current = null }}
+        className="select-none" style={{ touchAction: 'pan-y' }}>
+        <JourneyMap journey={journey} step={step} progress={overview ? 1 : progress} overview={overview} />
+      </div>
+
+      {/* Dots: one per stop, plus the whole trip. Arrows for anyone who cannot swipe. */}
+      <div className="flex items-center justify-between gap-2">
+        <button type="button" onClick={() => go(-1)} disabled={slide === 0} aria-label="Previous stop"
+          className="sticker flex h-10 w-10 items-center justify-center bg-[var(--color-card)] text-[var(--color-ink)] disabled:opacity-30">
+          <ArrowLeft size={18} aria-hidden />
+        </button>
+        <ol className="flex flex-1 flex-wrap items-center justify-center gap-1.5" aria-label="Stops">
+          {Array.from({ length: slides }, (_, i) => (
+            <li key={i}>
+              <button type="button" onClick={() => setSlide(i)} aria-label={i === slides - 1 ? 'The whole trip' : `Stop ${i + 1}`}
+                aria-current={i === slide ? 'step' : undefined}
+                className={`block h-3 rounded-full border-2 border-[#16161d] ${i === slide ? 'w-7 bg-[#16161d]' : i < slide ? 'w-3 bg-[var(--sticker-yellow)]' : 'w-3 bg-white'}`} />
             </li>
           ))}
-        </ul>
+        </ol>
+        <button type="button" onClick={() => go(1)} disabled={slide === slides - 1} aria-label="Next stop"
+          className="sticker bg-yellow flex h-10 w-10 items-center justify-center disabled:opacity-30">
+          <ArrowRight size={18} aria-hidden />
+        </button>
+      </div>
+
+      {overview ? (
+        <>
+          <h3 className="headword text-xl leading-tight">{journey.title}</h3>
+          <RouteChips journey={journey} />
+        </>
+      ) : (
+        <>
+          <h3 className="headword text-xl leading-tight" aria-live="polite">{s.headline}</h3>
+          {s.key && (
+            <ul className="flex flex-wrap gap-3 text-xs font-semibold">
+              {s.key.map((k) => (
+                <li key={k.text} className="flex items-center gap-1.5">
+                  <span className="h-3.5 w-3.5 rounded-full border-2 border-[#16161d]" style={{ background: FILL[k.color] }} />
+                  {k.text}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="text-[15px] leading-snug">{s.text}</p>
+        </>
       )}
-      <p className="text-[15px] leading-snug">{s.text}</p>
-      {step === legs - 1 && (
-        <a href={`#/w/${journey.word}`} className="sticker bg-purple mt-auto self-start px-4 py-2 font-extrabold">Open the word page</a>
+      {slide === 0 && (
+        <p className="mt-auto flex items-center gap-1 text-sm font-bold">
+          <ArrowLeft size={16} aria-hidden /> Swipe the map to travel · scroll for the next word
+        </p>
       )}
     </>
   )
 }
 
-/** The feed. `start` scrolls to a word's first card. */
+/** The feed. `start` scrolls to a word's screen. */
 function JourneyFeed({ start }: { start?: string }) {
   const scroller = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
   const [active, setActive] = useState(0)
 
-  // Jump to the requested word once, on arrival.
   useEffect(() => {
     if (!start) return
-    const i = CARDS.findIndex((c) => c.kind === 'intro' && c.journey.id === start)
+    const i = JOURNEYS.findIndex((j) => j.id === start)
     if (i > 0) cardRefs.current[i]?.scrollIntoView({ block: 'start' })
   }, [start])
 
-  // Track which card is on screen, to draw nearby maps and light up the word bar.
+  // Track which word is on screen, to draw nearby maps and light up the word bar.
   useEffect(() => {
     const root = scroller.current
     if (!root) return
@@ -351,36 +468,24 @@ function JourneyFeed({ start }: { start?: string }) {
     return () => io.disconnect()
   }, [])
 
-  const activeWord = CARDS[active]?.journey.id
-  const jump = (id: string) => {
-    const i = CARDS.findIndex((c) => c.kind === 'intro' && c.journey.id === id)
-    cardRefs.current[i]?.scrollIntoView({ block: 'start', behavior: 'smooth' })
-  }
-
   return (
     <div className="fixed inset-x-0 bottom-[5.75rem] top-[4.5rem] z-[5] bg-[var(--color-page)] sm:bottom-0 sm:top-[5rem]">
       <div className="mx-auto flex h-full max-w-3xl flex-col px-4">
         <nav aria-label="Words with maps" className="flex shrink-0 gap-2 overflow-x-auto pb-2">
-          {JOURNEYS.map((j) => (
-            <button key={j.id} type="button" onClick={() => jump(j.id)} aria-current={j.id === activeWord ? 'true' : undefined}
-              className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-extrabold ${j.id === activeWord ? 'bg-[var(--color-ink)] text-[var(--color-page)]' : 'border-2 border-[var(--color-ink)]'}`}>
+          {JOURNEYS.map((j, i) => (
+            <button key={j.id} type="button" onClick={() => cardRefs.current[i]?.scrollIntoView({ block: 'start', behavior: 'smooth' })}
+              aria-current={i === active ? 'true' : undefined}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-extrabold ${i === active ? 'bg-[var(--color-ink)] text-[var(--color-page)]' : 'border-2 border-[var(--color-ink)]'}`}>
               {j.word}
             </button>
           ))}
         </nav>
         <div ref={scroller} className="min-h-0 flex-1 snap-y snap-mandatory overflow-y-auto overscroll-contain">
-          {CARDS.map((c, i) => (
-            <section key={c.key} data-index={i} ref={(el) => { cardRefs.current[i] = el }}
-              aria-label={c.kind === 'intro' ? `${c.journey.word}: the whole route` : `${c.journey.word}, step ${c.leg}`}
+          {JOURNEYS.map((j, i) => (
+            <section key={j.id} data-index={i} ref={(el) => { cardRefs.current[i] = el }} aria-label={`${j.word}: its journey`}
               className="flex h-full snap-start flex-col gap-2 overflow-hidden py-2">
-              {/* Only cards near the screen draw their maps; the rest keep their space. */}
-              {Math.abs(i - active) <= 1 ? (
-                c.kind === 'intro'
-                  ? <IntroCard journey={c.journey} index={JOURNEYS.indexOf(c.journey)} />
-                  : <StepCard journey={c.journey} step={c.step} leg={c.leg} legs={c.legs} />
-              ) : (
-                <p className="headword text-2xl">{c.journey.word}</p>
-              )}
+              {/* Only words near the screen draw their maps; the rest keep their space. */}
+              {Math.abs(i - active) <= 1 ? <WordJourney journey={j} index={i} /> : <p className="headword text-4xl">{j.word}</p>}
             </section>
           ))}
           <section className="flex h-full snap-start flex-col items-center justify-center gap-3 text-center">
