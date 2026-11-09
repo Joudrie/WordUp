@@ -189,11 +189,29 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
   const unit = box[2] / 100 // one hundredth of the visible width
   const arrive = clamp01((progress - 0.6) / 0.4) // the last stretch of the leg
 
-  // Countries: overview colours the whole route; a step colours its own as the line lands.
-  const fills = new Map<string, string>()
-  const areaSource = overview ? journey.steps.filter((x) => !x.noRoute) : [s]
-  for (const x of areaSource) for (const a of x.areas) if (!fills.has(a.iso)) fills.set(a.iso, FILL[a.color])
-  const fillOpacity = overview ? 1 : arrive
+  // Countries. Overview colours the whole route at full strength. On a step, the new
+  // country fades in as the line lands, the country just left eases to a lighter
+  // "visited" shade as the line departs, and every earlier stop stays lightly coloured:
+  // a trail of where the word has been. Nothing disappears mid-leg.
+  const VISITED = 0.4
+  const fills = new Map<string, { color: string; opacity: number }>()
+  if (overview) {
+    for (const x of journey.steps.filter((y) => !y.noRoute)) for (const a of x.areas) if (!fills.has(a.iso)) fills.set(a.iso, { color: FILL[a.color], opacity: 1 })
+  } else {
+    if (!s.noRoute) {
+      const left = previousStop(journey.steps, step)
+      journey.steps.slice(0, step).forEach((x) => {
+        if (x.noRoute) return
+        const opacity = x === left ? 1 - (1 - VISITED) * clamp01(progress / 0.6) : VISITED
+        for (const a of x.areas) fills.set(a.iso, { color: FILL[a.color], opacity })
+      })
+    }
+    // The current stop wins over the trail when they share a country.
+    for (const a of s.areas) {
+      const trail = fills.get(a.iso)
+      fills.set(a.iso, { color: FILL[a.color], opacity: Math.max(arrive, trail && trail.color === FILL[a.color] ? trail.opacity : 0) })
+    }
+  }
 
   const stops = overview ? routeSteps(journey) : s.noRoute ? [] : journey.steps.slice(0, step + 1).filter((x) => x.stop && !x.noRoute)
   const pts = stops.map((x) => project(x.stop!) as [number, number])
@@ -223,8 +241,8 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
             return (
               <g key={c.id}>
                 <path d={c.d} fill="#dcdde6" stroke="#ffffff" strokeWidth={unit * 0.12} strokeLinejoin="round" />
-                {fill && (
-                  <path d={c.d} fill={fill} stroke="#16161d" strokeWidth={unit * 0.28} strokeLinejoin="round" opacity={fillOpacity} />
+                {fill && fill.opacity > 0 && (
+                  <path d={c.d} fill={fill.color} stroke="#16161d" strokeWidth={unit * 0.28} strokeLinejoin="round" opacity={fill.opacity} />
                 )}
               </g>
             )
@@ -310,30 +328,41 @@ function RouteChips({ journey, current }: { journey: JourneyData; current?: numb
 // follows it, and the country fills in when the line arrives. The last swipe shows the
 // whole trip. No geography needed: you follow the line instead of knowing the route.
 
-/** Runs the dotted line from 0 to 1 whenever `step` moves forward; jumps when it moves back. */
+/**
+ * Runs the dotted line from 0 to 1 whenever `step` moves forward; jumps when it moves back.
+ * The value is derived during render, so the very first frame after a swipe already starts
+ * at 0: the destination never flashes in before the line has travelled.
+ */
 function useLegProgress(step: number): number {
-  const [progress, setProgress] = useState(1)
-  const last = useRef(step)
+  // done: the last step whose leg finished; target: the step a running leg is heading to.
+  const [state, setState] = useState({ done: step, target: step, progress: 1 })
+  const reduce = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
   useEffect(() => {
-    const forward = step > last.current
-    last.current = step
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (!forward || reduce) {
-      setProgress(1)
+    if (step === state.done) return
+    if (step < state.done || reduce) {
+      setState({ done: step, target: step, progress: 1 })
       return
     }
     let frame = 0
     const t0 = performance.now()
-    setProgress(0)
+    const from = state.done
     const tick = (now: number) => {
       const t = Math.min(1, (now - t0) / MOVE_MS)
-      setProgress(t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2)
+      const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2
+      setState(t < 1 ? { done: from, target: step, progress: eased } : { done: step, target: step, progress: 1 })
       if (t < 1) frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step])
-  return progress
+
+  if (step === state.done) return state.progress
+  if (step === state.target) return state.progress // this leg is already under way
+  // A new step this render: forward starts at the very beginning of the leg; backward, or
+  // reduced motion, is already there.
+  return step > state.done && !reduce ? 0 : 1
 }
 
 function WordJourney({ journey, index }: { journey: JourneyData; index: number }) {
