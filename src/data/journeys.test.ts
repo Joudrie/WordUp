@@ -31,6 +31,9 @@ test('every step has text, a valid stop when it is on the route, and real countr
     for (const [i, s] of j.steps.entries()) {
       const where = `${j.id} step ${i + 1}`
       assert.ok(s.headline && s.text, `${where} needs a headline and text`)
+      // The text sits in a fixed room under the map on a phone; longer text squeezes the map.
+      assert.ok(s.headline.length <= 56, `${where} headline is too long for a phone (${s.headline.length} > 56)`)
+      assert.ok(s.text.length <= 170, `${where} text is too long for a phone (${s.text.length} > 170)`)
       if (!s.noRoute) assert.ok(okPoint(s.stop), `${where} needs a stop [lat, lon]`)
       assert.ok(s.areas.length > 0, `${where} needs at least one area`)
       for (const a of s.areas) {
