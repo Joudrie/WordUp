@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, MapPinned } from 'lucide-react'
 import { geoNaturalEarth1, geoPath } from 'd3-geo'
 import type { Feature, Geometry } from 'geojson'
@@ -72,15 +72,14 @@ function previousStop(steps: Step[], i: number): Step | undefined {
 
 const routeSteps = (j: JourneyData) => j.steps.filter((x) => x.stop && !x.noRoute)
 
-/** Pads a set of points and widens it to 4:3. */
-function boxAround(pts: [number, number][], pad = 45): Box {
+/** Pads a set of points and widens it to the map's shape (width / height). */
+function boxAround(pts: [number, number][], pad = 45, aspect = 4 / 3): Box {
   const xs = pts.map((p) => p[0])
   const ys = pts.map((p) => p[1])
   const x0 = Math.min(...xs) - pad, x1 = Math.max(...xs) + pad
   const y0 = Math.min(...ys) - pad, y1 = Math.max(...ys) + pad
   let w = Math.max(x1 - x0, 150)
   let h = Math.max(y1 - y0, 110)
-  const aspect = 4 / 3
   if (w / h > aspect) h = w / aspect
   else w = h * aspect
   const cx = (x0 + x1) / 2
@@ -90,15 +89,15 @@ function boxAround(pts: [number, number][], pad = 45): Box {
 
 /** The view for a step: the leg just travelled (previous stop to this one) plus this
  *  step's labels. In overview, the whole route. */
-function viewFor(j: JourneyData, i: number, overview: boolean): Box {
-  if (overview) return boxAround(routeSteps(j).map((x) => project(x.stop!) as [number, number]), 55)
+function viewFor(j: JourneyData, i: number, overview: boolean, aspect: number): Box {
+  if (overview) return boxAround(routeSteps(j).map((x) => project(x.stop!) as [number, number]), 55, aspect)
   const step = j.steps[i]
   const pts: [number, number][] = []
   const prev = step.noRoute ? undefined : previousStop(j.steps, i)
   if (prev?.stop) pts.push(project(prev.stop) as [number, number])
   for (const a of step.areas) if (a.at) pts.push(project(a.at) as [number, number])
   if (step.stop) pts.push(project(step.stop) as [number, number])
-  return boxAround(pts)
+  return boxAround(pts, 45, aspect)
 }
 
 /** How long the camera and the dotted line take to travel one leg. */
@@ -111,7 +110,8 @@ function useAnimatedBox(target: Box): Box {
   useEffect(() => {
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     const start = from.current
-    if (reduce || start.join(',') === target.join(',')) {
+    const reshaped = Math.abs(start[2] / start[3] - target[2] / target[3]) > 0.01
+    if (reduce || reshaped || start.join(',') === target.join(',')) {
       from.current = target
       setBox(target)
       return
@@ -183,7 +183,22 @@ const clamp01 = (x: number) => Math.max(0, Math.min(1, x))
  */
 function JourneyMap({ journey, step, progress = 1, overview = false }: { journey: JourneyData; step: number; progress?: number; overview?: boolean }) {
   const world = useWorld()
-  const target = useMemo(() => viewFor(journey, step, overview), [journey, step, overview])
+  // The map fills whatever room the screen leaves it, so the view takes the map's shape.
+  const frame = useRef<HTMLDivElement>(null)
+  const [aspect, setAspect] = useState(4 / 3)
+  useLayoutEffect(() => {
+    const el = frame.current
+    if (!el) return
+    const measure = () => {
+      const { width, height } = el.getBoundingClientRect()
+      if (width > 0 && height > 0) setAspect(Math.round((width / height) * 100) / 100)
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  const target = useMemo(() => viewFor(journey, step, overview, aspect), [journey, step, overview, aspect])
   const box = useAnimatedBox(target)
   const s = journey.steps[step]
   const unit = box[2] / 100 // one hundredth of the visible width
@@ -230,7 +245,7 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
   const prev = overview || s.noRoute ? undefined : previousStop(journey.steps, step)
 
   return (
-    <div className="sticker overflow-hidden bg-[#eef1f7]" style={{ aspectRatio: '4 / 3' }}>
+    <div ref={frame} className="sticker h-full overflow-hidden bg-[#eef1f7]">
       {!world ? (
         <div className="flex h-full items-center justify-center"><Loading /></div>
       ) : (
@@ -376,30 +391,54 @@ function WordJourney({ journey, index }: { journey: JourneyData; index: number }
   const prev = overview || s.noRoute ? undefined : previousStop(journey.steps, step)
   const go = (d: number) => setSlide((n) => Math.max(0, Math.min(slides - 1, n + d)))
 
-  // Sideways swipes travel; vertical movement is left to the page (touch-action: pan-y).
-  const swipe = useRef<{ x: number; y: number } | null>(null)
-  const onPointerDown = (e: React.PointerEvent) => {
-    swipe.current = { x: e.clientX, y: e.clientY }
+  // The map owns every touch on it (touch-action: none), so a finger on the map never scrolls
+  // the feed to the next word: sideways swipes travel, and the text below scrolls the feed.
+  // While the finger moves, the map leans a little with it so the swipe feels held.
+  const swipe = useRef<{ x: number; y: number; id: number } | null>(null)
+  const mapBox = useRef<HTMLDivElement>(null)
+  const lean = (dx: number) => {
+    const el = mapBox.current
+    if (!el) return
+    el.style.transform = dx ? `translateX(${Math.max(-36, Math.min(36, dx * 0.3))}px)` : ''
+    el.style.transition = dx ? 'none' : 'transform 180ms ease-out'
+  }
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    swipe.current = { x: e.clientX, y: e.clientY, id: e.pointerId }
+    try { e.currentTarget.setPointerCapture(e.pointerId) } catch { /* the swipe still works without capture */ }
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    const from = swipe.current
+    if (!from || from.id !== e.pointerId) return
+    const dx = e.clientX - from.x
+    if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - from.y)) lean(dx)
   }
   const onPointerUp = (e: React.PointerEvent) => {
     const from = swipe.current
     swipe.current = null
-    if (!from) return
+    lean(0)
+    if (!from || from.id !== e.pointerId) return
     const dx = e.clientX - from.x
     const dy = e.clientY - from.y
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) go(dx < 0 ? 1 : -1)
   }
+  const onPointerCancel = () => {
+    swipe.current = null
+    lean(0)
+  }
 
   return (
     <>
-      <p className="flex items-center justify-between text-sm font-bold">
-        <span className="uppercase tracking-wide text-[var(--sticker-coral)]">Word journey {index + 1} of {JOURNEYS.length}</span>
-        <a href={`#/w/${journey.word}`} className="underline">word page</a>
-      </p>
-      <h2 className="headword text-4xl leading-none">{journey.word}</h2>
+      <div className="flex shrink-0 items-end justify-between gap-3">
+        <h2 className="headword text-4xl leading-none">{journey.word}</h2>
+        <p className="flex shrink-0 items-center gap-3 pb-0.5 text-sm font-bold">
+          <span className="text-[var(--sticker-coral)]">{index + 1} of {JOURNEYS.length}</span>
+          <a href={`#/w/${journey.word}`} className="underline">word page</a>
+        </p>
+      </div>
 
       {/* Where the word was, and where it is going. */}
-      <p className="flex min-h-8 flex-wrap items-center gap-1.5 text-sm font-bold">
+      <p className="flex min-h-8 shrink-0 flex-wrap items-center gap-1.5 text-sm font-bold [@media(max-height:620px)]:hidden">
         {overview ? (
           <span className="rounded-full border-2 border-[#16161d] bg-[var(--sticker-yellow)] px-2 py-0.5 text-[#16161d]">The whole trip</span>
         ) : prev?.form ? (
@@ -415,13 +454,20 @@ function WordJourney({ journey, index }: { journey: JourneyData; index: number }
         )}
       </p>
 
-      <div onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => { swipe.current = null }}
-        className="select-none" style={{ touchAction: 'pan-y' }}>
-        <JourneyMap journey={journey} step={step} progress={overview ? 1 : progress} overview={overview} />
+      <div onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerCancel}
+        className="relative min-h-[150px] flex-1 [@media(max-height:620px)]:min-h-[120px] cursor-grab select-none active:cursor-grabbing" style={{ touchAction: 'none' }}>
+        <div ref={mapBox} className="h-full">
+          <JourneyMap journey={journey} step={step} progress={overview ? 1 : progress} overview={overview} />
+        </div>
+        {slide === 0 && (
+          <p className="pointer-events-none absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-[#16161d] bg-white px-3 py-1 text-sm font-extrabold text-[#16161d]">
+            <ArrowLeft size={15} aria-hidden /> Swipe to travel
+          </p>
+        )}
       </div>
 
       {/* Dots: one per stop, plus the whole trip. Arrows for anyone who cannot swipe. */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex shrink-0 items-center justify-between gap-2">
         <button type="button" onClick={() => go(-1)} disabled={slide === 0} aria-label="Previous stop"
           className="sticker flex h-10 w-10 items-center justify-center bg-[var(--color-card)] text-[var(--color-ink)] disabled:opacity-30">
           <ArrowLeft size={18} aria-hidden />
@@ -441,32 +487,34 @@ function WordJourney({ journey, index }: { journey: JourneyData; index: number }
         </button>
       </div>
 
-      {overview ? (
-        <>
-          <h3 className="headword text-xl leading-tight">{journey.title}</h3>
-          <RouteChips journey={journey} />
-        </>
-      ) : (
-        <>
-          <h3 className="headword text-xl leading-tight" aria-live="polite">{s.headline}</h3>
-          {s.key && (
-            <ul className="flex flex-wrap gap-3 text-xs font-semibold">
-              {s.key.map((k) => (
-                <li key={k.text} className="flex items-center gap-1.5">
-                  <span className="h-3.5 w-3.5 rounded-full border-2 border-[#16161d]" style={{ background: FILL[k.color] }} />
-                  {k.text}
-                </li>
-              ))}
-            </ul>
-          )}
-          <p className="text-[15px] leading-snug">{s.text}</p>
-        </>
-      )}
-      {slide === 0 && (
-        <p className="mt-auto flex items-center gap-1 text-sm font-bold">
-          <ArrowLeft size={16} aria-hidden /> Swipe the map to travel · scroll for the next word
-        </p>
-      )}
+      {/* The text keeps a fixed room, so the map stays the same size from stop to stop.
+          Scrolling here (not on the map) moves the feed to the next word. */}
+      <div className="flex min-h-[9.75rem] shrink-0 flex-col gap-1.5">
+        {overview ? (
+          <>
+            <h3 className="headword text-lg leading-tight">{journey.title}</h3>
+            <RouteChips journey={journey} />
+          </>
+        ) : (
+          <>
+            <h3 className="headword text-lg leading-tight" aria-live="polite">{s.headline}</h3>
+            {s.key && (
+              <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold">
+                {s.key.map((k) => (
+                  <li key={k.text} className="flex items-center gap-1.5">
+                    <span className="h-3.5 w-3.5 rounded-full border-2 border-[#16161d]" style={{ background: FILL[k.color] }} />
+                    {k.text}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="text-[15px] leading-snug">{s.text}</p>
+          </>
+        )}
+        {index === 0 && slide === 0 && (
+          <p className="mt-auto text-sm font-semibold text-[var(--color-muted)]">Scroll here for the next word.</p>
+        )}
+      </div>
     </>
   )
 }
@@ -498,9 +546,9 @@ function JourneyFeed({ start }: { start?: string }) {
   }, [])
 
   return (
-    <div className="fixed inset-x-0 bottom-[5.75rem] top-[4.5rem] z-[5] bg-[var(--color-page)] sm:bottom-0 sm:top-[5rem]">
+    <div className="fixed inset-x-0 bottom-[5.75rem] top-0 z-[5] bg-[var(--color-page)] pt-[env(safe-area-inset-top)] sm:bottom-0 sm:top-[5rem] sm:pt-0">
       <div className="mx-auto flex h-full max-w-3xl flex-col px-4">
-        <nav aria-label="Words with maps" className="flex shrink-0 gap-2 overflow-x-auto pb-2">
+        <nav aria-label="Words with maps" className="flex shrink-0 gap-2 overflow-x-auto pb-2 pt-3 sm:pt-0">
           {JOURNEYS.map((j, i) => (
             <button key={j.id} type="button" onClick={() => cardRefs.current[i]?.scrollIntoView({ block: 'start', behavior: 'smooth' })}
               aria-current={i === active ? 'true' : undefined}
