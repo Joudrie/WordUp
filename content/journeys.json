@@ -179,7 +179,7 @@
             "color": "coral",
             "label": "laranja",
             "at": [
-              39.0,
+              39,
               -12.8
             ]
           },
@@ -206,7 +206,7 @@
             "color": "coral",
             "label": "arancia",
             "at": [
-              42.0,
+              42,
               13.4
             ]
           },
@@ -543,7 +543,7 @@
             "color": "yellow",
             "label": "koffie",
             "at": [
-              54.0,
+              54,
               3.2
             ]
           }
@@ -658,6 +658,744 @@
             "at": [
               52.8,
               -1.5
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tea",
+    "word": "tea",
+    "title": "Tea took two roads out of China",
+    "summary": "Hokkien, Dutch, English",
+    "steps": [
+      {
+        "headline": "Fujian, China: the coast says tê.",
+        "text": "Chinese writes tea with one character, 茶, but says it differently by region. Most of China says chá. On the Fujian coast, in Hokkien, it is tê.",
+        "lang": "Hokkien",
+        "form": "tê",
+        "stop": [
+          24.5,
+          118.1
+        ],
+        "areas": [
+          {
+            "iso": "156",
+            "color": "yellow",
+            "label": "tê",
+            "at": [
+              27.5,
+              113
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Batavia: Dutch traders buy it from Fujian.",
+        "text": "The Dutch East India Company bought tea in Batavia, now Jakarta, from Chinese junks sailing out of Fujian. The Dutch took the coastal name: thee.",
+        "lang": "Dutch",
+        "form": "thee",
+        "stop": [
+          -6.2,
+          106.8
+        ],
+        "areas": [
+          {
+            "iso": "360",
+            "color": "green",
+            "label": "thee",
+            "at": [
+              -2.5,
+              113
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Amsterdam makes tea a fashion.",
+        "text": "Dutch ships carried tea to Europe from the early 1600s. It caught on in the Netherlands first, and Dutch merchants sold it on to their neighbours.",
+        "lang": "Dutch",
+        "form": "thee",
+        "stop": [
+          52.37,
+          4.9
+        ],
+        "areas": [
+          {
+            "iso": "528",
+            "color": "blue",
+            "label": "thee",
+            "at": [
+              52.6,
+              6.6
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "London, 1658: Tcha, Tay or Tee.",
+        "text": "A 1658 London advert sold the China drink called Tcha by the Chinese, and Tay or Tee by other nations. Pepys tried his first cup of tee in 1660.",
+        "lang": "English",
+        "form": "tea",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "coral",
+            "label": "tea",
+            "at": [
+              53.2,
+              -1.8
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Two roads: te by sea, cha by land.",
+        "text": "Languages that got tea by sea from Fujian, mostly through the Dutch, say te. Those that got it overland, or through Portuguese Macau, say cha or chai.",
+        "areas": [
+          {
+            "iso": "826",
+            "color": "blue",
+            "label": "tea",
+            "at": [
+              54.5,
+              -3.0
+            ]
+          },
+          {
+            "iso": "528",
+            "color": "blue"
+          },
+          {
+            "iso": "250",
+            "color": "blue",
+            "label": "thé",
+            "at": [
+              46.4,
+              2.0
+            ]
+          },
+          {
+            "iso": "276",
+            "color": "blue",
+            "label": "Tee",
+            "at": [
+              50.8,
+              11.5
+            ]
+          },
+          {
+            "iso": "724",
+            "color": "blue",
+            "label": "té",
+            "at": [
+              40.0,
+              -3.6
+            ]
+          },
+          {
+            "iso": "752",
+            "color": "blue"
+          },
+          {
+            "iso": "620",
+            "color": "purple",
+            "label": "chá",
+            "at": [
+              38.6,
+              -12.5
+            ]
+          },
+          {
+            "iso": "643",
+            "color": "purple",
+            "label": "chai",
+            "at": [
+              56.5,
+              40
+            ]
+          },
+          {
+            "iso": "792",
+            "color": "purple",
+            "label": "çay",
+            "at": [
+              38.9,
+              34.6
+            ]
+          },
+          {
+            "iso": "364",
+            "color": "purple",
+            "label": "chay",
+            "at": [
+              32.5,
+              54
+            ]
+          },
+          {
+            "iso": "356",
+            "color": "purple",
+            "label": "chai",
+            "at": [
+              22.5,
+              78.5
+            ]
+          },
+          {
+            "iso": "818",
+            "color": "purple",
+            "label": "shāy",
+            "at": [
+              26.5,
+              29.5
+            ]
+          }
+        ],
+        "noRoute": true,
+        "key": [
+          {
+            "color": "blue",
+            "text": "te, by sea"
+          },
+          {
+            "color": "purple",
+            "text": "cha, by land or Portugal"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "zero",
+    "word": "zero",
+    "title": "Zero was translated before it was borrowed",
+    "summary": "Sanskrit, Arabic, Latin, Italian, French, English",
+    "steps": [
+      {
+        "headline": "India, 628: nothing becomes a number.",
+        "text": "Indian mathematicians treated zero as a number of its own. In 628 Brahmagupta wrote rules for adding and multiplying it. The Sanskrit word was śūnya, empty.",
+        "lang": "Sanskrit",
+        "form": "śūnya",
+        "stop": [
+          25,
+          72.25
+        ],
+        "areas": [
+          {
+            "iso": "356",
+            "color": "yellow",
+            "label": "śūnya",
+            "at": [
+              21.5,
+              78.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Baghdad, 800s: translated as ṣifr.",
+        "text": "Arab scholars took up the Indian numerals; al-Khwārizmī wrote about them around 825. They translated the word rather than borrowing it: ṣifr also means empty.",
+        "lang": "Arabic",
+        "form": "ṣifr",
+        "stop": [
+          33.3,
+          44.4
+        ],
+        "areas": [
+          {
+            "iso": "368",
+            "color": "purple",
+            "label": "ṣifr",
+            "at": [
+              33,
+              43
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Béjaïa: a merchant’s son learns ṣifr.",
+        "text": "Leonardo of Pisa, later called Fibonacci, learned the Arabic numerals as a boy in Béjaïa, in what is now Algeria, where his father worked for Pisan merchants.",
+        "lang": "Arabic",
+        "form": "ṣifr",
+        "stop": [
+          36.75,
+          5.08
+        ],
+        "areas": [
+          {
+            "iso": "012",
+            "color": "green",
+            "label": "ṣifr",
+            "at": [
+              31.5,
+              3
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Pisa, 1202: zephirum, then zero.",
+        "text": "Fibonacci’s Liber Abaci brought the numerals to Europe and wrote zero as zephirum. Italian turned that into zefiro and then wore it down to zero.",
+        "lang": "Italian",
+        "form": "zero",
+        "stop": [
+          43.7,
+          10.4
+        ],
+        "areas": [
+          {
+            "iso": "380",
+            "color": "blue",
+            "label": "zero",
+            "at": [
+              42.3,
+              13.2
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "France: zero, by the late 1400s.",
+        "text": "French took zero from Italian. The same Arabic ṣifr had already given French chiffre, a digit, and English cipher.",
+        "lang": "Middle French",
+        "form": "zero",
+        "stop": [
+          48.86,
+          2.35
+        ],
+        "areas": [
+          {
+            "iso": "250",
+            "color": "coral",
+            "label": "zero",
+            "at": [
+              46.6,
+              2.4
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "England, around 1600: zero.",
+        "text": "English borrowed zero around 1600. Before that, the word for zero in English was cipher, from the same ṣifr by an older road.",
+        "lang": "English",
+        "form": "zero",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "pink",
+            "label": "zero",
+            "at": [
+              53.2,
+              -1.8
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "coach",
+    "word": "coach",
+    "title": "Coach is a village in Hungary",
+    "summary": "Hungarian, German, French, English",
+    "steps": [
+      {
+        "headline": "Kocs, Hungary: the wagon of Kocs.",
+        "text": "In the 1400s Kocs, a village on the road from Buda to Vienna, became known for a light, fast passenger wagon: kocsi szekér, the wagon of Kocs.",
+        "lang": "Hungarian",
+        "form": "kocsi",
+        "stop": [
+          47.6,
+          18.2
+        ],
+        "areas": [
+          {
+            "iso": "348",
+            "color": "green",
+            "label": "kocsi",
+            "at": [
+              46.4,
+              19.4
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Vienna, 1500s: Kutsche.",
+        "text": "German speakers took the wagon and the name together. In German it became Kutsche.",
+        "lang": "German",
+        "form": "Kutsche",
+        "stop": [
+          48.2,
+          16.37
+        ],
+        "areas": [
+          {
+            "iso": "040",
+            "color": "yellow",
+            "label": "Kutsche",
+            "at": [
+              47.2,
+              13.6
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "France, 1500s: coche.",
+        "text": "French borrowed it from German as coche, and the new carriages spread to royal courts across Europe.",
+        "lang": "Middle French",
+        "form": "coche",
+        "stop": [
+          48.86,
+          2.35
+        ],
+        "areas": [
+          {
+            "iso": "250",
+            "color": "blue",
+            "label": "coche",
+            "at": [
+              46.6,
+              2.4
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "England, 1550s: coach.",
+        "text": "English said coach from the 1550s. In the 1800s Oxford students called a tutor a coach, who carried you through exams. Sports coaches came next.",
+        "lang": "English",
+        "form": "coach",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "coral",
+            "label": "coach",
+            "at": [
+              53.2,
+              -1.8
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "apricot",
+    "word": "apricot",
+    "title": "Apricot went round the Mediterranean",
+    "summary": "Latin, Greek, Arabic, Catalan, English",
+    "steps": [
+      {
+        "headline": "Rome: the early-ripening fruit.",
+        "text": "Romans called the fruit praecocia, the early-ripening ones, because it ripened before the peach. The tree had come west from Asia long before.",
+        "lang": "Latin",
+        "form": "praecocia",
+        "stop": [
+          41.9,
+          12.5
+        ],
+        "areas": [
+          {
+            "iso": "380",
+            "color": "yellow",
+            "label": "praecocia",
+            "at": [
+              42.6,
+              13.6
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Constantinople: praikokkion.",
+        "text": "Greek speakers in the eastern Roman Empire borrowed the Latin word as praikokkion.",
+        "lang": "Greek",
+        "form": "praikokkion",
+        "stop": [
+          41,
+          28.97
+        ],
+        "areas": [
+          {
+            "iso": "300",
+            "color": "blue"
+          },
+          {
+            "iso": "792",
+            "color": "blue",
+            "label": "praikokkion",
+            "at": [
+              39.2,
+              33
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Arabic: al-barqūq.",
+        "text": "Arabic took the Greek word as barqūq, usually with the article al- in front. In much of the Arab world today barqūq means plum.",
+        "lang": "Arabic",
+        "form": "al-barqūq",
+        "stop": [
+          33.5,
+          36.3
+        ],
+        "areas": [
+          {
+            "iso": "760",
+            "color": "purple",
+            "label": "al-barqūq",
+            "at": [
+              35,
+              38.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Al-Andalus: abercoc.",
+        "text": "In Muslim Spain the Arabic name passed into Catalan as abercoc and Spanish as albaricoque, still carrying the al-.",
+        "lang": "Catalan",
+        "form": "abercoc",
+        "stop": [
+          39.47,
+          -0.38
+        ],
+        "areas": [
+          {
+            "iso": "724",
+            "color": "coral",
+            "label": "abercoc",
+            "at": [
+              40.2,
+              -3.6
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "England, 1550s: abrecock, then apricot.",
+        "text": "English borrowed the Catalan word as abrecock in the 1550s, then respelled it after French abricot. The a- at the front is still the Arabic al-.",
+        "lang": "English",
+        "form": "apricot",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "green",
+            "label": "apricot",
+            "at": [
+              53.2,
+              -1.8
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkmate",
+    "word": "checkmate",
+    "title": "Checkmate means the king is helpless",
+    "summary": "Persian, Arabic, Old French, English",
+    "steps": [
+      {
+        "headline": "Persia: šāh māt, the king is helpless.",
+        "text": "Chess reached Persia from India by the 500s. When a king was trapped, players said šāh māt: the king is stunned, helpless. Šāh is Persian for king.",
+        "lang": "Persian",
+        "form": "šāh māt",
+        "stop": [
+          32.6,
+          53
+        ],
+        "areas": [
+          {
+            "iso": "364",
+            "color": "yellow",
+            "label": "šāh māt",
+            "at": [
+              32.6,
+              54.5
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "Baghdad: the king is dead?",
+        "text": "Arabic took the game and kept the cry. Arabic māta means he died, so the phrase came to be heard as the king is dead, though the Persian meant helpless.",
+        "lang": "Arabic",
+        "form": "šāh māt",
+        "stop": [
+          33.3,
+          44.4
+        ],
+        "areas": [
+          {
+            "iso": "368",
+            "color": "purple",
+            "label": "šāh māt",
+            "at": [
+              33,
+              43
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "France: eschec mat.",
+        "text": "Chess reached Europe through Muslim Spain and Italy around 1000. Old French made šāh into eschec, and eschecs, the game: chess means kings.",
+        "lang": "Old French",
+        "form": "eschec mat",
+        "stop": [
+          48.86,
+          2.35
+        ],
+        "areas": [
+          {
+            "iso": "250",
+            "color": "blue",
+            "label": "eschec mat",
+            "at": [
+              46.6,
+              2.4
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "England, 1300s: chekmat.",
+        "text": "English said chekmat by the 1300s. The same eschec gave check, chess, and exchequer, the royal treasury named after its checked counting table.",
+        "lang": "English",
+        "form": "checkmate",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "coral",
+            "label": "checkmate",
+            "at": [
+              53.2,
+              -1.8
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ketchup",
+    "word": "ketchup",
+    "title": "Ketchup started as fish sauce",
+    "summary": "Hokkien, Malay, English",
+    "steps": [
+      {
+        "headline": "Fujian, China: probably kê-tsiap.",
+        "text": "In Hokkien, the language of southern Fujian, kê-tsiap was a fish sauce. Hokkien traders and settlers carried their food across Southeast Asia.",
+        "lang": "Hokkien",
+        "form": "kê-tsiap",
+        "stop": [
+          24.5,
+          118.1
+        ],
+        "areas": [
+          {
+            "iso": "156",
+            "color": "yellow",
+            "label": "kê-tsiap",
+            "at": [
+              27.5,
+              113
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "The Malay world: kecap.",
+        "text": "In Malay, kecap came to mean a sauce, now mostly soy sauce, as in Indonesian kecap manis. British traders in the region met it in the late 1600s.",
+        "lang": "Malay",
+        "form": "kecap",
+        "stop": [
+          3.1,
+          101.7
+        ],
+        "areas": [
+          {
+            "iso": "458",
+            "color": "purple",
+            "label": "kecap",
+            "at": [
+              4.5,
+              102.2
+            ]
+          },
+          {
+            "iso": "360",
+            "color": "purple"
+          }
+        ]
+      },
+      {
+        "headline": "England, 1690: catchup.",
+        "text": "A 1690 dictionary defined catchup as a high East-India sauce. English cooks of the 1700s made it from mushrooms, walnuts or oysters. No tomato yet.",
+        "lang": "English",
+        "form": "catchup",
+        "stop": [
+          51.5,
+          -0.1
+        ],
+        "areas": [
+          {
+            "iso": "826",
+            "color": "blue",
+            "label": "catchup",
+            "at": [
+              53.2,
+              -1.8
+            ]
+          }
+        ]
+      },
+      {
+        "headline": "America adds the tomato.",
+        "text": "Tomato ketchup recipes appeared in the United States in the early 1800s. Heinz began bottling it in 1876, and the tomato took over the word.",
+        "lang": "American",
+        "form": "ketchup",
+        "stop": [
+          40.44,
+          -80
+        ],
+        "areas": [
+          {
+            "iso": "840",
+            "color": "coral",
+            "label": "ketchup",
+            "at": [
+              39.5,
+              -98
             ]
           }
         ]

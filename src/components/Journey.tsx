@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, MapPinned } from 'lucide-react'
-import { geoNaturalEarth1, geoPath } from 'd3-geo'
+import { geoArea, geoNaturalEarth1, geoPath } from 'd3-geo'
 import type { Feature, Geometry } from 'geojson'
 import journeys from '../../content/journeys.json'
 import { Loading } from './ui.tsx'
@@ -39,13 +39,26 @@ const path = geoPath(projection)
 const project = ([lat, lon]: [number, number]) => projection([lon, lat]) ?? [0, 0]
 
 interface Country { id: string; d: string }
+/** A country's largest landmass, so France is framed without French Guiana. */
+function mainland(f: Feature<Geometry>): Feature<Geometry> {
+  if (f.geometry?.type !== 'MultiPolygon') return f
+  const parts = f.geometry.coordinates.map((coordinates) => ({ type: 'Polygon' as const, coordinates }))
+  const biggest = parts.reduce((a, b) => (geoArea(b) > geoArea(a) ? b : a))
+  return { ...f, geometry: biggest }
+}
+
+/** Each country's projected extent, filled in when the world loads, so a step can frame it. */
+const EXTENT = new Map<string, [[number, number], [number, number]]>()
 let worldPromise: Promise<Country[]> | null = null
 function loadWorld(): Promise<Country[]> {
   worldPromise ??= Promise.all([import('world-atlas/countries-110m.json'), import('topojson-client')]).then(([world, topo]) => {
     const topology = (world.default ?? world) as unknown as Parameters<typeof topo.feature>[0]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fc = topo.feature(topology, (topology as any).objects.countries) as unknown as { features: Feature<Geometry>[] }
-    return fc.features.map((f) => ({ id: String(f.id), d: path(f) ?? '' }))
+    return fc.features.map((f) => {
+      EXTENT.set(String(f.id), path.bounds(mainland(f)) as [[number, number], [number, number]])
+      return { id: String(f.id), d: path(f) ?? '' }
+    })
   })
   return worldPromise
 }
@@ -73,13 +86,16 @@ function previousStop(steps: Step[], i: number): Step | undefined {
 const routeSteps = (j: JourneyData) => j.steps.filter((x) => x.stop && !x.noRoute)
 
 /** Pads a set of points and widens it to the map's shape (width / height). */
-function boxAround(pts: [number, number][], pad = 45, aspect = 4 / 3): Box {
+function boxAround(pts: [number, number][], pad?: number, aspect = 4 / 3): Box {
   const xs = pts.map((p) => p[0])
   const ys = pts.map((p) => p[1])
+  // Without a set padding, pad in proportion: snug round one small country, roomier round
+  // a long leg, whose end labels need space.
+  pad ??= 14 + 0.12 * Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys))
   const x0 = Math.min(...xs) - pad, x1 = Math.max(...xs) + pad
   const y0 = Math.min(...ys) - pad, y1 = Math.max(...ys) + pad
-  let w = Math.max(x1 - x0, 150)
-  let h = Math.max(y1 - y0, 110)
+  let w = Math.max(x1 - x0, 64)
+  let h = Math.max(y1 - y0, 46)
   if (w / h > aspect) h = w / aspect
   else w = h * aspect
   const cx = (x0 + x1) / 2
@@ -95,9 +111,15 @@ function viewFor(j: JourneyData, i: number, overview: boolean, aspect: number): 
   const pts: [number, number][] = []
   const prev = step.noRoute ? undefined : previousStop(j.steps, i)
   if (prev?.stop) pts.push(project(prev.stop) as [number, number])
-  for (const a of step.areas) if (a.at) pts.push(project(a.at) as [number, number])
+  for (const a of step.areas) {
+    if (a.at) pts.push(project(a.at) as [number, number])
+    // Frame the country itself, so a small one (Hungary) is not lost in a view of Europe.
+    // Very wide ones (Russia, the US with Alaska) are left to their labelled points.
+    const e = step.noRoute ? undefined : EXTENT.get(a.iso)
+    if (e && e[1][0] - e[0][0] < 200) pts.push(e[0], e[1])
+  }
   if (step.stop) pts.push(project(step.stop) as [number, number])
-  return boxAround(pts, 45, aspect)
+  return boxAround(pts, undefined, aspect)
 }
 
 /** How long the camera and the dotted line take to travel one leg. */
@@ -181,7 +203,9 @@ const clamp01 = (x: number) => Math.max(0, Math.min(1, x))
  * line has travelled from the previous stop to this one. The new country fills in and
  * its word appears as the line arrives. With `overview`, the whole trip at once.
  */
-function JourneyMap({ journey, step, progress = 1, overview = false }: { journey: JourneyData; step: number; progress?: number; overview?: boolean }) {
+type MapProps = { journey: JourneyData; step: number; progress?: number; overview?: boolean }
+
+function JourneyMap(props: MapProps) {
   const world = useWorld()
   // The map fills whatever room the screen leaves it, so the view takes the map's shape.
   const frame = useRef<HTMLDivElement>(null)
@@ -198,6 +222,14 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
+  return (
+    <div ref={frame} className="sticker h-full overflow-hidden bg-[#eef1f7]">
+      {!world ? <div className="flex h-full items-center justify-center"><Loading /></div> : <MapView {...props} world={world} aspect={aspect} />}
+    </div>
+  )
+}
+
+function MapView({ journey, step, progress = 1, overview = false, world, aspect }: MapProps & { world: Country[]; aspect: number }) {
   const target = useMemo(() => viewFor(journey, step, overview, aspect), [journey, step, overview, aspect])
   const box = useAnimatedBox(target)
   const s = journey.steps[step]
@@ -245,10 +277,6 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
   const prev = overview || s.noRoute ? undefined : previousStop(journey.steps, step)
 
   return (
-    <div ref={frame} className="sticker h-full overflow-hidden bg-[#eef1f7]">
-      {!world ? (
-        <div className="flex h-full items-center justify-center"><Loading /></div>
-      ) : (
         <svg viewBox={box.join(' ')} className="block h-full w-full" role="img"
           aria-label={overview ? `Map of the whole trip: ${stops.map((x) => x.form).join(', ')}` : `Map: ${s.areas.map((a) => a.label).filter(Boolean).join(', ')}`}>
           {world.map((c) => {
@@ -316,8 +344,6 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
               </>
             )}
         </svg>
-      )}
-    </div>
   )
 }
 
@@ -325,7 +351,10 @@ function JourneyMap({ journey, step, progress = 1, overview = false }: { journey
 function RouteChips({ journey, current }: { journey: JourneyData; current?: number }) {
   return (
     <ol className="flex flex-wrap items-center gap-1">
-      {journey.steps.map((x, i) => ({ x, i })).filter(({ x }) => x.form).map(({ x, i }, k) => (
+      {journey.steps.map((x, i) => ({ x, i }))
+        // One chip per form: the same word carried to a new place is not a new chip.
+        .filter(({ x }, k, all) => x.form && !(k > 0 && all.slice(0, k).reverse().find((y) => y.x.form)?.x.form === x.form && all.slice(0, k).reverse().find((y) => y.x.form)?.x.lang === x.lang))
+        .map(({ x, i }, k) => (
         <li key={i} className="flex items-center gap-1">
           {k > 0 && <span aria-hidden="true" className="text-sm font-extrabold">→</span>}
           <span className={`rounded-full border-2 border-[#16161d] px-2 py-0.5 text-xs font-bold ${i === current ? 'bg-[var(--sticker-yellow)] text-[#16161d]' : ''}`}>
